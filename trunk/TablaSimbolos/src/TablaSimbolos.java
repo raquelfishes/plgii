@@ -26,4 +26,8 @@ public class TablaSimbolos {
 	{
 		return listaLexemas.contains(lexema);
 	}
+	
+	public LinkedList<String> getLexemas() {
+		return listaLexemas;
+	}
 }
