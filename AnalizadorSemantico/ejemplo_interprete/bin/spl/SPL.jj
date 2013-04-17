@@ -209,7 +209,7 @@ void Expression()      :
   ConditionalOrExpression()
 }
 
-/** Assignment. */
+/** Assignment. lalalalala */
 void Assignment()                :
 {/*@bgen(jjtree) #Assignment( 2) */
   ASTAssignment jjtn000 = new ASTAssignment(JJTASSIGNMENT);
