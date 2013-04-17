@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import javacc.EG1;
+import javacc.Compilador;
 import javacc.ParseException;
 import javacc.TokenMgrError;
 
@@ -270,12 +270,12 @@ private void abrirFichero (){
 				if(fich!=null){
 					if (fich.endsWith(".pdf")) System.out.print("*.PDF no es un formato correcto.");
 					try {
-						new EG1(new java.io.FileInputStream(fich));
+						new Compilador(new java.io.FileInputStream(fich));
 						
 						try {
-							EG1.usaInterfaz = true;
-							EG1.initGestorTS();
-					        EG1.start();
+							Compilador.usaInterfaz = true;
+							Compilador.initGestorTS();
+							Compilador.compilar();
 					        
 					        System.out.println ("ExampleParser: La entrada ha sido leida con \u00e9xito.");
 					      }

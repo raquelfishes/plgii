@@ -10,63 +10,63 @@ options {
   
 }
 
-PARSER_BEGIN(EG1)
+PARSER_BEGIN(Compilador)
 package javacc;
 
 import tabla.simbolos.CGestorTS;
 import tabla.simbolos.Atributos;
 import interfaz.InterfazPlg;
 
-public class EG1 {
+public class Compilador {
   public static CGestorTS gestorTS;
   public static boolean usaInterfaz = false;
   
   public static void main ( String args [ ] ) {
 
       //Inicialización del analizador
-      EG1 parser;
+      Compilador compilador;
       usaInterfaz = false;
       initGestorTS();
-		
+    	
       if(args.length == 0){
 
-        System.out.println ("ExampleParser: Leyendo de fichero ");
+        System.out.println ("Compilador: Leyendo de fichero ");
         try {
-          parser = new EG1(new java.io.FileInputStream("ProgramaPrueba.java"));
+          compilador = new Compilador(new java.io.FileInputStream("ProgramaPrueba.java"));
         }
         catch(java.io.FileNotFoundException e) {
-          System.out.println ("ExampleParser: El fichero no ha sido encontrado.");
+          System.out.println ("Compilador: El fichero no ha sido encontrado.");
           return;
         }
       }
       else if(args.length == 1){
-        System.out.println ("ExampleParser: Leyendo de fichero " + args[0] + " ..." );
+        System.out.println ("Compilador: Leyendo de fichero " + args[0] + " ..." );
         try {
-          parser = new EG1(new java.io.FileInputStream(args[0]));
+          compilador = new Compilador(new java.io.FileInputStream(args[0]));
         }
         catch(java.io.FileNotFoundException e) {
-          System.out.println ("ExampleParser: El fichero " + args[0] + " no ha sido encontrado.");
+          System.out.println ("Compilador: El fichero " + args[0] + " no ha sido encontrado.");
           return;
         }
       }
       else {
-        System.out.println ("ExampleParser:  Debes utilizarlo de una de las siguientes formas:");
+        System.out.println ("Compilador:  Debes utilizarlo de una de las siguientes formas:");
         System.out.println ("         java ExampleParser < fichero");
         System.out.println ("Or");
         System.out.println ("         java ExampleParser fichero");
         return ;
       }
       try {
-        SimpleNode root = parser.start();
+        SimpleNode root = compilador.compilar();
         root.dump("");
-        System.out.println ("ExampleParser: La entrada ha sido leida con éxito.");
+        System.out.println ("Compilador: La entrada ha sido leida con éxito.");
       }
       catch(ParseException e){
-        System.out.println ("ExampleParser: Ha ocurrido un error durante el análisis.");
+        System.out.println ("Compilador: Ha ocurrido un error durante el análisis.");
         System.out.println (e.getMessage());
       }
       catch(TokenMgrError e){
-        System.out.println ("ExampleParser: Ha ocurrido un error.");
+        System.out.println ("Compilador: Ha ocurrido un error.");
         System.out.println (e.getMessage());
       }
     }
@@ -79,7 +79,7 @@ public class EG1 {
 }
 
 
-PARSER_END(EG1)
+PARSER_END(Compilador)
 
 
 /**	Elementos ignorados por el analizador
@@ -267,7 +267,8 @@ TOKEN : {
 			",", "=", "%", "+", "-", "*", "/", "(", ")", "[", "]" ] )* ) > { System.out.println("Identificador mal formado.");}
 }
 
-SimpleNode start() #Root:
+
+SimpleNode compilar():
 {
   if (usaInterfaz)
   {
@@ -307,7 +308,7 @@ void identificador() :
   }
 }
 
-void literal() :
+void literal() #void :
 {
   if (usaInterfaz)
   {
@@ -315,11 +316,69 @@ void literal() :
   }
 }
 {
-  <LITERAL_INTEGER> | <LITERAL_FLOAT> | <LITERAL_CARACTER> | <LITERAL_STRING> | <LITERAL_BOOLEAN> | <LITERAL_NULL>
+  literal_integer() #LiteralInteger | literal_float() #LiteralFloat | literal_caracter() #LiteralCaracter | literal_string() #LiteralString | literal_boolean() #LiteralBoolean | literal_null() #LiteralNull
 }
 
+void literal_integer() : 
+{
+if (usaInterfaz)
 
-void tipo() :
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_INTEGER>
+}
+
+void literal_float() : 
+{
+if (usaInterfaz)
+
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_FLOAT>
+}
+
+void literal_caracter() : 
+{
+if (usaInterfaz)
+
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_CARACTER>
+}
+
+void literal_string() : 
+{
+if (usaInterfaz)
+
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_STRING>
+}
+
+void literal_boolean() : 
+{
+if (usaInterfaz)
+
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_BOOLEAN>
+}
+
+void literal_null() : 
+{
+if (usaInterfaz)
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_NULL>
+}
+
+void tipo() #void:
 {
   if (usaInterfaz)
   {
@@ -330,7 +389,7 @@ void tipo() :
   ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*
 }
 
-void tipo_primitivo() :
+void tipo_primitivo() #void:
 {
   if (usaInterfaz)
   {
@@ -341,7 +400,7 @@ void tipo_primitivo() :
   <BOOLEAN> | <CHAR> | <SHORT> | <INT> | <LONG> | <FLOAT> | <DOUBLE>
 }
 
-void declaracion_tipo() :
+void declaracion_tipo() #void:
 {
   if (usaInterfaz)
   {
@@ -356,7 +415,7 @@ void declaracion_tipo() :
   <PYC>
 }
 
-void tipo_metodo() :
+void tipo_metodo() #void:
 {
   if (usaInterfaz)
   {
@@ -367,7 +426,7 @@ void tipo_metodo() :
   tipo() | <VOID>
 }
 
-void lista_de_tipos() :
+void lista_de_tipos() #void:
 {
   if (usaInterfaz)
   {
@@ -380,7 +439,7 @@ void lista_de_tipos() :
   )*
 }
 
-void declaracion_clase() :
+void declaracion_clase() #void:
 {
   if (usaInterfaz)
   {
@@ -393,7 +452,7 @@ void declaracion_clase() :
   <LLAVE_A> ( declaracion_cuerpo_clase() )* <LLAVE_C>
 }
 
-void declaracion_cuerpo_clase() :
+void declaracion_cuerpo_clase() #void:
 {
   if (usaInterfaz)
   {
@@ -413,7 +472,7 @@ void declaracion_cuerpo_clase() :
   campo_declaracion()
 }
 
-void declaracionR_metodo() :
+void declaracionR_metodo() #void:
 {
   if (usaInterfaz)
   {
@@ -425,7 +484,7 @@ void declaracionR_metodo() :
   tipo_metodo() <IDENTIFICADOR> <PAR_A>
 }
 
-void declaracion_interface() :
+void declaracion_interface() #void:
 {
   if (usaInterfaz)
   {
@@ -438,7 +497,7 @@ void declaracion_interface() :
   <LLAVE_A> ( declaracion_miembro_interface() )* <LLAVE_C>
 }
 
-void declaracion_miembro_interface() :
+void declaracion_miembro_interface() #void:
 {
   if (usaInterfaz)
   {
@@ -451,7 +510,7 @@ void declaracion_miembro_interface() :
   campo_declaracion()
 }
 
-void campo_declaracion() :
+void campo_declaracion() #void:
 {
   if (usaInterfaz)
   {
@@ -493,7 +552,7 @@ void iniciar_variable() :
   expresion()
 }
 
-void declaracion_metodo() :
+void declaracion_metodo() #void:
 {
   if (usaInterfaz)
   {
@@ -506,7 +565,7 @@ void declaracion_metodo() :
   ( bloque() | <PYC> )
 }
 
-void declarador_metodo() :
+void declarador_metodo() #void:
 {
   if (usaInterfaz)
   {
@@ -517,7 +576,7 @@ void declarador_metodo() :
   <IDENTIFICADOR> parametros_formales() ( <COR_A> <COR_C> )*
 }
 
-void parametros_formales() :
+void parametros_formales() #void:
 {
   if (usaInterfaz)
   {
@@ -528,7 +587,7 @@ void parametros_formales() :
   <PAR_A> [ parametro_formal() ( <COMA> parametro_formal() )* ] <PAR_C>
 }
 
-void parametro_formal() :
+void parametro_formal() #void:
 {
   if (usaInterfaz)
   {
@@ -539,7 +598,7 @@ void parametro_formal() :
   tipo() declarador_variable_id()
 }
 
-void declaracion_constructora() :
+void declaracion_constructora() #void:
 {
   if (usaInterfaz)
   {
@@ -552,7 +611,7 @@ void declaracion_constructora() :
   <LLAVE_A> [ LOOKAHEAD(2) const_explic() ] ( sentencia_bloque() )* <LLAVE_C>
 }
 
-void const_explic() :
+void const_explic() #void:
 {
   if (usaInterfaz)
   {
@@ -565,7 +624,7 @@ void const_explic() :
   <SUPER> argumentos() <PYC>
 }
 
-void inicializador_static() :
+void inicializador_static() #void:
 {
   if (usaInterfaz)
   {
@@ -576,7 +635,7 @@ void inicializador_static() :
   <STATIC> bloque()
 }
 
-void expresion() :
+void expresion() #void:
 {
   if (usaInterfaz)
   {
@@ -590,7 +649,7 @@ void expresion() :
   expresion_cond()
 }
 
-void asignacion() :
+void asignacion() #asignacion(2):
 {
   if (usaInterfaz)
   {
@@ -692,7 +751,7 @@ void expresion_equal() :
   						)*
 }
 
-void expresion_instanceof() :
+void expresion_instanceof() #void:
 {
   if (usaInterfaz)
   {
@@ -822,7 +881,7 @@ void expresion_unaria_dif() :
   expresion_post()
 }
 
-void look_cast() :
+void look_cast() #void:
 {
   if (usaInterfaz)
   {
@@ -850,7 +909,7 @@ void expresion_post() :
   expresion_primaria() [ <PLUS_PLUS> | <SUB_SUB> ]
 }
 
-void expresion_cast() :
+void expresion_cast() #void:
 {
   if (usaInterfaz)
   {
@@ -864,7 +923,7 @@ void expresion_cast() :
   <PAR_A> identificador() ( <COR_A> <COR_C> )* <PAR_C> expresion_unaria_dif()
 }
 
-void expresion_primaria() :
+void expresion_primaria() #void:
 {
   if (usaInterfaz)
   {
@@ -875,7 +934,7 @@ void expresion_primaria() :
   prefijo_primario() ( sufijo_primario() )*
 }
 
-void prefijo_primario() :
+void prefijo_primario() #void:
 {
   if (usaInterfaz)
   {
@@ -896,7 +955,7 @@ void prefijo_primario() :
   expresion_asignacion()
 }
 
-void sufijo_primario() :
+void sufijo_primario() #void:
 {
   if (usaInterfaz)
   {
@@ -911,7 +970,7 @@ void sufijo_primario() :
   argumentos()
 }
 
-void argumentos() :
+void argumentos() #void:
 {
   if (usaInterfaz)
   {
@@ -922,7 +981,7 @@ void argumentos() :
   <PAR_A> [ lista_argumentos() ] <PAR_C>
 }
 
-void lista_argumentos() :
+void lista_argumentos() #void:
 {
   if (usaInterfaz)
   {
@@ -947,7 +1006,7 @@ void expresion_asignacion() :
   <NEW> identificador() ( argumentos() | dimensiones_array() )
 }
 
-void dimensiones_array() :
+void dimensiones_array() #void:
 {
   if (usaInterfaz)
   {
@@ -958,7 +1017,7 @@ void dimensiones_array() :
   ( LOOKAHEAD(2) <COR_A> expresion() <COR_C> )+ ( LOOKAHEAD(2) <COR_A> <COR_C> )*
 }
 
-void sentencia() :
+void sentencia() #void:
 {
   if (usaInterfaz)
   {
@@ -998,7 +1057,7 @@ void sentencia() :
   sentencia_try()
 }
 
-void sentencia_etiqueta() :
+void sentencia_etiqueta() #void:
 {
   if (usaInterfaz)
   {
@@ -1146,7 +1205,7 @@ void sentencia_for() :
   <FOR> <PAR_A> [ inicio_for() ] <PYC> [ expresion() ] <PYC> [ actualizar_for() ] <PAR_C> sentencia()
 }
 
-void lista_expresion_sentencia() :
+void lista_expresion_sentencia() #void:
 {
   if (usaInterfaz)
   {
@@ -1157,7 +1216,7 @@ void lista_expresion_sentencia() :
   expresion_sentencia() ( <COMA> expresion_sentencia() )*
 }
 
-void inicio_for() :
+void inicio_for() #void:
 {
   if (usaInterfaz)
   {
@@ -1171,7 +1230,7 @@ void inicio_for() :
   lista_expresion_sentencia()
 }
 
-void actualizar_for() :
+void actualizar_for() #void:
 {
   if (usaInterfaz)
   {
