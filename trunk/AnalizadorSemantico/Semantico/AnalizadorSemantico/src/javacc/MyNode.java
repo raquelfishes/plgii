@@ -1,5 +1,6 @@
 package javacc;
-/* Copyright (c) 2006, Sun Microsystems, Inc.
+
+/* Copyright (c) 2006, Sreenivasa Viswanadha <sreeni@viswanadha.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,41 +28,44 @@ package javacc;
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 
 /**
- *  All AST nodes must implement this interface.
- *  It provides basic machinery for constructing the parent and
- *  child relationships between nodes.
+ * Specialised node.
  */
-public interface Node {
+public class MyNode
+{
+  /** Symbol table */
+  protected static java.util.Hashtable<String, Object> symtab = new java.util.Hashtable<String, Object>();
 
-  /** This method is called after the node has been made the current
-    node.  It indicates that child nodes can now be added to it. */
-  public void jjtOpen();
+  /** Stack for calculations. */
+  protected static Object[] stack = new Object[1024];
+  protected static int top = -1;
 
-  /** This method is called after all the child nodes have been
-    added. */
-  public void jjtClose();
+  /** @throws UnsupportedOperationException if called */
+  public void interpret()
+  {
+     throw new UnsupportedOperationException(); // It better not come here.
+  }
 
-  /** This pair of methods are used to inform the node of its
-    parent. */
-  public void jjtSetParent(Node n);
-  /** Get this node's parent. */
-  public Node jjtGetParent();
+  protected static Writer out = new PrintWriter(System.out);
+  protected static Reader in = new InputStreamReader(System.in);
 
-  /** This method tells the node to add its argument to the node's
-    list of children.  */
-  public void jjtAddChild(Node n, int i);
+  /**
+   * @param in the input to set
+   */
+  public static void setIn(Reader in) {
+    MyNode.in = in;
+  }
 
-  /** This method returns a child node.  The children are numbered
-     from zero, left to right. */
-  public Node jjtGetChild(int i);
+  /**
+   * @param out the output to set
+   */
+  public static void setOut(Writer out) {
+    MyNode.out = out;
+  }
 
-  /** Return the number of children the node has. */
-  int jjtGetNumChildren();
-
-  /************************* Added by Sreeni. *******************/
-
-  /** Interpret method */
-  public void interpret();
 }
