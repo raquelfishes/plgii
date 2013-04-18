@@ -4,7 +4,7 @@ options {
   JAVA_UNICODE_ESCAPE = true;
   IGNORE_CASE = false;
   MULTI=true;
-  NODE_EXTENDS="MyNode";
+  NODE_EXTENDS="XNode";
   TRACK_TOKENS=true;
   NODE_PREFIX="Nodo";
   
@@ -308,7 +308,7 @@ void identificador() :
   }
 }
 
-void literal() #void :
+void literal() #void:
 {
   if (usaInterfaz)
   {
@@ -319,7 +319,7 @@ void literal() #void :
   literal_integer() #LiteralInteger | literal_float() #LiteralFloat | literal_caracter() #LiteralCaracter | literal_string() #LiteralString | literal_boolean() #LiteralBoolean | literal_null() #LiteralNull
 }
 
-void literal_integer() : 
+void literal_integer() #void: 
 {
 if (usaInterfaz)
 
@@ -329,7 +329,7 @@ if (usaInterfaz)
     <LITERAL_INTEGER>
 }
 
-void literal_float() : 
+void literal_float() #void: 
 {
 if (usaInterfaz)
 
@@ -339,7 +339,7 @@ if (usaInterfaz)
     <LITERAL_FLOAT>
 }
 
-void literal_caracter() : 
+void literal_caracter() #void: 
 {
 if (usaInterfaz)
 
@@ -349,7 +349,7 @@ if (usaInterfaz)
     <LITERAL_CARACTER>
 }
 
-void literal_string() : 
+void literal_string() #void: 
 {
 if (usaInterfaz)
 
@@ -359,7 +359,7 @@ if (usaInterfaz)
     <LITERAL_STRING>
 }
 
-void literal_boolean() : 
+void literal_boolean() #void: 
 {
 if (usaInterfaz)
 
@@ -369,7 +369,7 @@ if (usaInterfaz)
     <LITERAL_BOOLEAN>
 }
 
-void literal_null() : 
+void literal_null() #void: 
 {
 if (usaInterfaz)
     InterfazPlg.escribirAvisos();
@@ -671,7 +671,7 @@ void operador_asignacion() :
   <EQUALS> | <MULT_E> | <DIV_E> | <MOD_E> | <ADD_E> | <SUB_E> | <AND_E> | <OR_E>
 }
 
-void expresion_cond() :
+void expresion_cond() #void:
 {
   if (usaInterfaz)
   {
@@ -682,7 +682,7 @@ void expresion_cond() :
   expresion_cond_or() [ <PREG> expresion() <PYP> expresion_cond() ]
 }
 
-void expresion_cond_or() :
+void expresion_cond_or() #void:
 {
   if (usaInterfaz)
   {
@@ -693,7 +693,7 @@ void expresion_cond_or() :
   expresion_cond_and() ( <OR> expresion_cond_and() #Or(2) )*
 }
 
-void expresion_cond_and() :
+void expresion_cond_and() #void:
 {
   if (usaInterfaz)
   {
@@ -704,7 +704,7 @@ void expresion_cond_and() :
   expresion_or_bin() ( <AND> expresion_or_bin() #And(2) )*
 }
 
-void expresion_or_bin() :
+void expresion_or_bin() #void:
 {
   if (usaInterfaz)
   {
@@ -715,7 +715,7 @@ void expresion_or_bin() :
   expresion_xor() ( <OR_B> expresion_xor()  #BOr(2))*
 }
 
-void expresion_xor() :
+void expresion_xor() #void:
 {
   if (usaInterfaz)
   {
@@ -726,7 +726,7 @@ void expresion_xor() :
   expresion_and_bin() ( <XOR> expresion_and_bin() #XOr(2))*
 }
 
-void expresion_and_bin() :
+void expresion_and_bin() #void:
 {
   if (usaInterfaz)
   {
@@ -737,7 +737,7 @@ void expresion_and_bin() :
   expresion_equal() ( <AND_B> expresion_equal() #BAnd(2))*
 }
 
-void expresion_equal() :
+void expresion_equal() #void:
 {
   if (usaInterfaz)
   {
@@ -762,7 +762,7 @@ void expresion_instanceof() #void:
   expresion_relacional() [ <INSTANCEOF> tipo() ]
 }
 
-void expresion_relacional() :
+void expresion_relacional() #void:
 {
   if (usaInterfaz)
   {
@@ -778,7 +778,7 @@ void expresion_relacional() :
   					)*
 }
 
-void expresion_shift() :
+void expresion_shift() #void:
 {
   if (usaInterfaz)
   {
@@ -793,7 +793,7 @@ void expresion_shift() :
   				)*
 }
 
-void expresion_add() :
+void expresion_add() #void:
 {
   if (usaInterfaz)
   {
@@ -807,7 +807,7 @@ void expresion_add() :
   				)*
 }
 
-void expresion_mult() :
+void expresion_mult() #void:
 {
   if (usaInterfaz)
   {
@@ -822,7 +822,7 @@ void expresion_mult() :
   					)*
 }
 
-void expresion_unaria() :
+void expresion_unaria() #void:
 {
   if (usaInterfaz)
   {
@@ -841,7 +841,7 @@ void expresion_unaria() :
   expresion_unaria_dif()
 }
 
-void expresion_pre_inc() :
+void expresion_pre_inc() #void:
 {
   if (usaInterfaz)
   {
@@ -852,7 +852,7 @@ void expresion_pre_inc() :
   <PLUS_PLUS> expresion_primaria() #PlusPlus
 }
 
-void expresion_pre_dec() :
+void expresion_pre_dec() #void:
 {
   if (usaInterfaz)
   {
@@ -863,7 +863,7 @@ void expresion_pre_dec() :
   <SUB_SUB> expresion_primaria() #SubSub
 }
 
-void expresion_unaria_dif() :
+void expresion_unaria_dif() #void:
 {
   if (usaInterfaz)
   {
@@ -898,7 +898,7 @@ void look_cast() #void:
   <PAR_A> identificador() <PAR_C> ( <COMP> | <NOT> | <PAR_A> | <IDENTIFICADOR> | <THIS> | <SUPER> | <NEW> | literal() )
 }
 
-void expresion_post() :
+void expresion_post() #void:
 {
   if (usaInterfaz)
   {
