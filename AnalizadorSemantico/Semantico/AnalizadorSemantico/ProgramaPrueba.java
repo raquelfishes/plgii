@@ -1,7 +1,7 @@
 public class Prueba {
 
-	public static void main(String[] args) {
+	void main(String[] args) {
 		int a, b;
-		return a + b;
+		return a + 1;
 	}
 }

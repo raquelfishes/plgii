@@ -12,76 +12,54 @@ public interface CompiladorTreeConstants
   public int JJTLITERALSTRING = 6;
   public int JJTLITERALBOOLEAN = 7;
   public int JJTLITERALNULL = 8;
-  public int JJTLITERAL_INTEGER = 9;
-  public int JJTLITERAL_FLOAT = 10;
-  public int JJTLITERAL_CARACTER = 11;
-  public int JJTLITERAL_STRING = 12;
-  public int JJTLITERAL_BOOLEAN = 13;
-  public int JJTLITERAL_NULL = 14;
-  public int JJTDECLARADOR_VARIABLE = 15;
-  public int JJTDECLARADOR_VARIABLE_ID = 16;
-  public int JJTINICIAR_VARIABLE = 17;
-  public int JJTASIGNACION = 18;
-  public int JJTOPERADOR_ASIGNACION = 19;
-  public int JJTEXPRESION_COND = 20;
-  public int JJTEXPRESION_COND_OR = 21;
-  public int JJTOR = 22;
-  public int JJTEXPRESION_COND_AND = 23;
-  public int JJTAND = 24;
-  public int JJTEXPRESION_OR_BIN = 25;
-  public int JJTBOR = 26;
-  public int JJTEXPRESION_XOR = 27;
-  public int JJTXOR = 28;
-  public int JJTEXPRESION_AND_BIN = 29;
-  public int JJTBAND = 30;
-  public int JJTEXPRESION_EQUAL = 31;
-  public int JJTIGUAL = 32;
-  public int JJTNIGUAL = 33;
-  public int JJTEXPRESION_RELACIONAL = 34;
-  public int JJTMENOR = 35;
-  public int JJTMAYOR = 36;
-  public int JJTMENOREQ = 37;
-  public int JJTMAYOREQ = 38;
-  public int JJTEXPRESION_SHIFT = 39;
-  public int JJTDESPI = 40;
-  public int JJTDESPD = 41;
-  public int JJTDESPDNS = 42;
-  public int JJTEXPRESION_ADD = 43;
-  public int JJTADD = 44;
-  public int JJTSUB = 45;
-  public int JJTEXPRESION_MULT = 46;
-  public int JJTMULT = 47;
-  public int JJTDIV = 48;
-  public int JJTMOD = 49;
-  public int JJTEXPRESION_UNARIA = 50;
-  public int JJTUNARYADD = 51;
-  public int JJTUNARYSUB = 52;
-  public int JJTEXPRESION_PRE_INC = 53;
-  public int JJTPLUSPLUS = 54;
-  public int JJTEXPRESION_PRE_DEC = 55;
-  public int JJTSUBSUB = 56;
-  public int JJTEXPRESION_UNARIA_DIF = 57;
-  public int JJTCOMP = 58;
-  public int JJTNOT = 59;
-  public int JJTEXPRESION_POST = 60;
-  public int JJTEXPRESION_ASIGNACION = 61;
-  public int JJTBLOQUE = 62;
-  public int JJTSENTENCIA_BLOQUE = 63;
-  public int JJTDECLARACION_VARIABLE_LOCAL = 64;
-  public int JJTSENTENCIA_VACIA = 65;
-  public int JJTEXPRESION_SENTENCIA = 66;
-  public int JJTSENTENCIA_SWITCH = 67;
-  public int JJTETIQUETA_SWITCH = 68;
-  public int JJTSENTENCIA_IF = 69;
-  public int JJTSENTENCIA_WHILE = 70;
-  public int JJTSENTENCIA_DO = 71;
-  public int JJTSENTENCIA_FOR = 72;
-  public int JJTSENTENCIA_BREAK = 73;
-  public int JJTSENTENCIA_CONTINUE = 74;
-  public int JJTSENTENCIA_RETURN = 75;
-  public int JJTSENTENCIA_THROW = 76;
-  public int JJTSENTENCIA_SYNCHRONIZED = 77;
-  public int JJTSENTENCIA_TRY = 78;
+  public int JJTDECLARADOR_VARIABLE = 9;
+  public int JJTDECLARADOR_VARIABLE_ID = 10;
+  public int JJTINICIAR_VARIABLE = 11;
+  public int JJTASIGNACION = 12;
+  public int JJTOPERADOR_ASIGNACION = 13;
+  public int JJTOR = 14;
+  public int JJTAND = 15;
+  public int JJTBOR = 16;
+  public int JJTXOR = 17;
+  public int JJTBAND = 18;
+  public int JJTIGUAL = 19;
+  public int JJTNIGUAL = 20;
+  public int JJTMENOR = 21;
+  public int JJTMAYOR = 22;
+  public int JJTMENOREQ = 23;
+  public int JJTMAYOREQ = 24;
+  public int JJTDESPI = 25;
+  public int JJTDESPD = 26;
+  public int JJTDESPDNS = 27;
+  public int JJTADD = 28;
+  public int JJTSUB = 29;
+  public int JJTMULT = 30;
+  public int JJTDIV = 31;
+  public int JJTMOD = 32;
+  public int JJTUNARYADD = 33;
+  public int JJTUNARYSUB = 34;
+  public int JJTPLUSPLUS = 35;
+  public int JJTSUBSUB = 36;
+  public int JJTCOMP = 37;
+  public int JJTNOT = 38;
+  public int JJTEXPRESION_ASIGNACION = 39;
+  public int JJTBLOQUE = 40;
+  public int JJTSENTENCIA_BLOQUE = 41;
+  public int JJTDECLARACION_VARIABLE_LOCAL = 42;
+  public int JJTSENTENCIA_VACIA = 43;
+  public int JJTEXPRESION_SENTENCIA = 44;
+  public int JJTSENTENCIA_SWITCH = 45;
+  public int JJTETIQUETA_SWITCH = 46;
+  public int JJTSENTENCIA_IF = 47;
+  public int JJTSENTENCIA_WHILE = 48;
+  public int JJTSENTENCIA_DO = 49;
+  public int JJTSENTENCIA_FOR = 50;
+  public int JJTSENTENCIA_BREAK = 51;
+  public int JJTSENTENCIA_CONTINUE = 52;
+  public int JJTSENTENCIA_RETURN = 53;
+  public int JJTSENTENCIA_THROW = 54;
+  public int JJTSENTENCIA_SYNCHRONIZED = 55;
+  public int JJTSENTENCIA_TRY = 56;
 
 
   public String[] jjtNodeName = {
@@ -94,58 +72,36 @@ public interface CompiladorTreeConstants
     "LiteralString",
     "LiteralBoolean",
     "LiteralNull",
-    "literal_integer",
-    "literal_float",
-    "literal_caracter",
-    "literal_string",
-    "literal_boolean",
-    "literal_null",
     "declarador_variable",
     "declarador_variable_id",
     "iniciar_variable",
     "asignacion",
     "operador_asignacion",
-    "expresion_cond",
-    "expresion_cond_or",
     "Or",
-    "expresion_cond_and",
     "And",
-    "expresion_or_bin",
     "BOr",
-    "expresion_xor",
     "XOr",
-    "expresion_and_bin",
     "BAnd",
-    "expresion_equal",
     "Igual",
     "NIgual",
-    "expresion_relacional",
     "Menor",
     "Mayor",
     "MenorEq",
     "MayorEq",
-    "expresion_shift",
     "DespI",
     "DespD",
     "DespDNS",
-    "expresion_add",
     "Add",
     "Sub",
-    "expresion_mult",
     "Mult",
     "Div",
     "Mod",
-    "expresion_unaria",
     "UnaryAdd",
     "UnarySub",
-    "expresion_pre_inc",
     "PlusPlus",
-    "expresion_pre_dec",
     "SubSub",
-    "expresion_unaria_dif",
     "Comp",
     "Not",
-    "expresion_post",
     "expresion_asignacion",
     "bloque",
     "sentencia_bloque",
@@ -166,4 +122,4 @@ public interface CompiladorTreeConstants
     "sentencia_try",
   };
 }
-/* JavaCC - OriginalChecksum=e92613908c7589d8f134c9bec09755c8 (do not edit this line) */
+/* JavaCC - OriginalChecksum=9eb161935abf4f55f8d487279ee14c29 (do not edit this line) */
