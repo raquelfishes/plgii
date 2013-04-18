@@ -629,7 +629,7 @@ void tipo_primitivo()      :
   }
 }
 {
-  <BOOLEAN> | <CHAR> | <SHORT> | <INT> | <LONG> | <FLOAT> | <DOUBLE>
+  <BOOLEAN> { jjtn000.type = BOOL; } | <CHAR> | <SHORT> | <INT> { jjtn000.type = INT; } | <LONG> | <FLOAT> | <DOUBLE>
 }
 
 void declaracion_tipo()      :
@@ -800,6 +800,7 @@ void declarador_variable_id() :
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+  Token t;
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -808,7 +809,7 @@ void declarador_variable_id() :
 {/*@bgen(jjtree) declarador_variable_id */
   try {
 /*@egen*/
-  <IDENTIFICADOR> ( <COR_A> <COR_C> )*/*@bgen(jjtree)*/
+  t = <IDENTIFICADOR> { jjtn000.name = t.image; } ( <COR_A> <COR_C> )*/*@bgen(jjtree)*/
   } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
