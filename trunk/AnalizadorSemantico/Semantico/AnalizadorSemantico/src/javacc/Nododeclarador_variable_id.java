@@ -4,6 +4,9 @@ package javacc;
 
 public
 class Nododeclarador_variable_id extends SimpleNode {
+	int type;
+	String name;
+	  
   public Nododeclarador_variable_id(int id) {
     super(id);
   }

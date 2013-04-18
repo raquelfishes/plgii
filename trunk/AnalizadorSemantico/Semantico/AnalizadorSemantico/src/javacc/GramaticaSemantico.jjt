@@ -397,7 +397,7 @@ void tipo_primitivo() #void:
   }
 }
 {
-  <BOOLEAN> | <CHAR> | <SHORT> | <INT> | <LONG> | <FLOAT> | <DOUBLE>
+  <BOOLEAN> { jjtThis.type = BOOL; } | <CHAR> | <SHORT> | <INT> { jjtThis.type = INT; } | <LONG> | <FLOAT> | <DOUBLE>
 }
 
 void declaracion_tipo() #void:
@@ -535,13 +535,14 @@ void declarador_variable() :
 
 void declarador_variable_id() :
 {
+  Token t;
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <IDENTIFICADOR> ( <COR_A> <COR_C> )*
+  t = <IDENTIFICADOR> { jjtThis.name = t.image; } ( <COR_A> <COR_C> )*
 }
 
 void iniciar_variable() :
