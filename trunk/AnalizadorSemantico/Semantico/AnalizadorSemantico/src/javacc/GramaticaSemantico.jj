@@ -61,7 +61,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@ege
         return ;
       }
       try {
-        SimpleNode root = compilador.compilar();
+        SimpleNode root = Compilador.compilar();
         root.dump("");
         System.out.println ("Compilador: La entrada ha sido leida con \u00e9xito.");
       }
@@ -621,15 +621,47 @@ void tipo()      :
   ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*
 }
 
-void tipo_primitivo()      :
-{
+void tipo_primitivo() :
+{/*@bgen(jjtree) tipo_primitivo */
+  Nodotipo_primitivo jjtn000 = new Nodotipo_primitivo(JJTTIPO_PRIMITIVO);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
-{
-  <BOOLEAN> { jjtn000.type = BOOL; } | <CHAR> | <SHORT> | <INT> { jjtn000.type = INT; } | <LONG> | <FLOAT> | <DOUBLE>
+{/*@bgen(jjtree) tipo_primitivo */
+        try {
+/*@egen*/
+  	(<BOOLEAN>/*@bgen(jjtree)*/
+                   {
+                     jjtree.closeNodeScope(jjtn000, true);
+                     jjtc000 = false;
+                     jjtn000.jjtSetLastToken(getToken(0));
+                   }
+/*@egen*/ { jjtn000.type = BOOLEAN; })
+    | <CHAR>
+    | <SHORT>
+    | (<INT>/*@bgen(jjtree)*/
+             {
+               jjtree.closeNodeScope(jjtn000, true);
+               jjtc000 = false;
+               jjtn000.jjtSetLastToken(getToken(0));
+             }
+/*@egen*/ { jjtn000.type = INT; })
+    | <LONG>
+    | <FLOAT>
+    | <DOUBLE>/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+            jjtn000.jjtSetLastToken(getToken(0));
+          }
+        }
+/*@egen*/
 }
 
 void declaracion_tipo()      :

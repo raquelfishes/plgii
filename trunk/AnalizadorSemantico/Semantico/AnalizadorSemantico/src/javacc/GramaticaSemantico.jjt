@@ -57,7 +57,7 @@ public class Compilador {
         return ;
       }
       try {
-        SimpleNode root = compilador.compilar();
+        SimpleNode root = Compilador.compilar();
         root.dump("");
         System.out.println ("Compilador: La entrada ha sido leida con éxito.");
       }
@@ -389,7 +389,7 @@ void tipo() #void:
   ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*
 }
 
-void tipo_primitivo() #void:
+void tipo_primitivo() :
 {
   if (usaInterfaz)
   {
@@ -397,7 +397,13 @@ void tipo_primitivo() #void:
   }
 }
 {
-  <BOOLEAN> { jjtThis.type = BOOL; } | <CHAR> | <SHORT> | <INT> { jjtThis.type = INT; } | <LONG> | <FLOAT> | <DOUBLE>
+  	(<BOOLEAN> { jjtThis.type = BOOLEAN; })
+    | <CHAR>
+    | <SHORT>
+    | (<INT> { jjtThis.type = INT; })
+    | <LONG>
+    | <FLOAT>
+    | <DOUBLE>
 }
 
 void declaracion_tipo() #void:

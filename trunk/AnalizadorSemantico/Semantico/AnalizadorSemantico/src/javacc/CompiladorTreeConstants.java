@@ -12,54 +12,55 @@ public interface CompiladorTreeConstants
   public int JJTLITERALSTRING = 6;
   public int JJTLITERALBOOLEAN = 7;
   public int JJTLITERALNULL = 8;
-  public int JJTDECLARADOR_VARIABLE = 9;
-  public int JJTDECLARADOR_VARIABLE_ID = 10;
-  public int JJTINICIAR_VARIABLE = 11;
-  public int JJTASIGNACION = 12;
-  public int JJTOPERADOR_ASIGNACION = 13;
-  public int JJTOR = 14;
-  public int JJTAND = 15;
-  public int JJTBOR = 16;
-  public int JJTXOR = 17;
-  public int JJTBAND = 18;
-  public int JJTIGUAL = 19;
-  public int JJTNIGUAL = 20;
-  public int JJTMENOR = 21;
-  public int JJTMAYOR = 22;
-  public int JJTMENOREQ = 23;
-  public int JJTMAYOREQ = 24;
-  public int JJTDESPI = 25;
-  public int JJTDESPD = 26;
-  public int JJTDESPDNS = 27;
-  public int JJTADD = 28;
-  public int JJTSUB = 29;
-  public int JJTMULT = 30;
-  public int JJTDIV = 31;
-  public int JJTMOD = 32;
-  public int JJTUNARYADD = 33;
-  public int JJTUNARYSUB = 34;
-  public int JJTPLUSPLUS = 35;
-  public int JJTSUBSUB = 36;
-  public int JJTCOMP = 37;
-  public int JJTNOT = 38;
-  public int JJTEXPRESION_ASIGNACION = 39;
-  public int JJTBLOQUE = 40;
-  public int JJTSENTENCIA_BLOQUE = 41;
-  public int JJTDECLARACION_VARIABLE_LOCAL = 42;
-  public int JJTSENTENCIA_VACIA = 43;
-  public int JJTEXPRESION_SENTENCIA = 44;
-  public int JJTSENTENCIA_SWITCH = 45;
-  public int JJTETIQUETA_SWITCH = 46;
-  public int JJTSENTENCIA_IF = 47;
-  public int JJTSENTENCIA_WHILE = 48;
-  public int JJTSENTENCIA_DO = 49;
-  public int JJTSENTENCIA_FOR = 50;
-  public int JJTSENTENCIA_BREAK = 51;
-  public int JJTSENTENCIA_CONTINUE = 52;
-  public int JJTSENTENCIA_RETURN = 53;
-  public int JJTSENTENCIA_THROW = 54;
-  public int JJTSENTENCIA_SYNCHRONIZED = 55;
-  public int JJTSENTENCIA_TRY = 56;
+  public int JJTTIPO_PRIMITIVO = 9;
+  public int JJTDECLARADOR_VARIABLE = 10;
+  public int JJTDECLARADOR_VARIABLE_ID = 11;
+  public int JJTINICIAR_VARIABLE = 12;
+  public int JJTASIGNACION = 13;
+  public int JJTOPERADOR_ASIGNACION = 14;
+  public int JJTOR = 15;
+  public int JJTAND = 16;
+  public int JJTBOR = 17;
+  public int JJTXOR = 18;
+  public int JJTBAND = 19;
+  public int JJTIGUAL = 20;
+  public int JJTNIGUAL = 21;
+  public int JJTMENOR = 22;
+  public int JJTMAYOR = 23;
+  public int JJTMENOREQ = 24;
+  public int JJTMAYOREQ = 25;
+  public int JJTDESPI = 26;
+  public int JJTDESPD = 27;
+  public int JJTDESPDNS = 28;
+  public int JJTADD = 29;
+  public int JJTSUB = 30;
+  public int JJTMULT = 31;
+  public int JJTDIV = 32;
+  public int JJTMOD = 33;
+  public int JJTUNARYADD = 34;
+  public int JJTUNARYSUB = 35;
+  public int JJTPLUSPLUS = 36;
+  public int JJTSUBSUB = 37;
+  public int JJTCOMP = 38;
+  public int JJTNOT = 39;
+  public int JJTEXPRESION_ASIGNACION = 40;
+  public int JJTBLOQUE = 41;
+  public int JJTSENTENCIA_BLOQUE = 42;
+  public int JJTDECLARACION_VARIABLE_LOCAL = 43;
+  public int JJTSENTENCIA_VACIA = 44;
+  public int JJTEXPRESION_SENTENCIA = 45;
+  public int JJTSENTENCIA_SWITCH = 46;
+  public int JJTETIQUETA_SWITCH = 47;
+  public int JJTSENTENCIA_IF = 48;
+  public int JJTSENTENCIA_WHILE = 49;
+  public int JJTSENTENCIA_DO = 50;
+  public int JJTSENTENCIA_FOR = 51;
+  public int JJTSENTENCIA_BREAK = 52;
+  public int JJTSENTENCIA_CONTINUE = 53;
+  public int JJTSENTENCIA_RETURN = 54;
+  public int JJTSENTENCIA_THROW = 55;
+  public int JJTSENTENCIA_SYNCHRONIZED = 56;
+  public int JJTSENTENCIA_TRY = 57;
 
 
   public String[] jjtNodeName = {
@@ -72,6 +73,7 @@ public interface CompiladorTreeConstants
     "LiteralString",
     "LiteralBoolean",
     "LiteralNull",
+    "tipo_primitivo",
     "declarador_variable",
     "declarador_variable_id",
     "iniciar_variable",
@@ -122,4 +124,4 @@ public interface CompiladorTreeConstants
     "sentencia_try",
   };
 }
-/* JavaCC - OriginalChecksum=9eb161935abf4f55f8d487279ee14c29 (do not edit this line) */
+/* JavaCC - OriginalChecksum=36ff2f0edb5cea043559cd0c2cf4be43 (do not edit this line) */
