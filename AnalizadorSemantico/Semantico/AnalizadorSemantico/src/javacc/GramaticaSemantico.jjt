@@ -60,6 +60,7 @@ public class Compilador {
         SimpleNode root = Compilador.compilar();
         root.dump("");
         System.out.println ("Compilador: La entrada ha sido leida con éxito.");
+        jjtree.rootNode().interpret();
       }
       catch(ParseException e){
         System.out.println ("Compilador: Ha ocurrido un error durante el análisis.");
@@ -76,6 +77,9 @@ public class Compilador {
 	    gestorTS = new CGestorTS();
 	}
 
+	public Node rootNode() {
+    	return jjtree.rootNode();
+  	} 
 }
 
 
@@ -378,7 +382,7 @@ if (usaInterfaz)
     <LITERAL_NULL>
 }
 
-void tipo() #void:
+void tipo() :
 {
   if (usaInterfaz)
   {
@@ -516,7 +520,7 @@ void declaracion_miembro_interface() #void:
   campo_declaracion()
 }
 
-void campo_declaracion() #void:
+void campo_declaracion() :
 {
   if (usaInterfaz)
   {

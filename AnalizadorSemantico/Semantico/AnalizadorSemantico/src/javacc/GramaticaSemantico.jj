@@ -64,6 +64,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@ege
         SimpleNode root = Compilador.compilar();
         root.dump("");
         System.out.println ("Compilador: La entrada ha sido leida con \u00e9xito.");
+        jjtree.rootNode().interpret();
       }
       catch(ParseException e){
         System.out.println ("Compilador: Ha ocurrido un error durante el an\u00e1lisis.");
@@ -80,6 +81,9 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@ege
 	    gestorTS = new CGestorTS();
 	}
 
+	public Node rootNode() {
+    	return jjtree.rootNode();
+  	} 
 }
 
 
@@ -610,15 +614,43 @@ if (usaInterfaz)
     <LITERAL_NULL>
 }
 
-void tipo()      :
-{
+void tipo() :
+{/*@bgen(jjtree) tipo */
+  Nodotipo jjtn000 = new Nodotipo(JJTTIPO);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
-{
-  ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*
+{/*@bgen(jjtree) tipo */
+  try {
+/*@egen*/
+  ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*/*@bgen(jjtree)*/
+  } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      throw (RuntimeException)jjte000;
+    }
+    if (jjte000 instanceof ParseException) {
+      throw (ParseException)jjte000;
+    }
+    throw (Error)jjte000;
+  } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtn000.jjtSetLastToken(getToken(0));
+    }
+  }
+/*@egen*/
 }
 
 void tipo_primitivo() :
@@ -774,16 +806,44 @@ void declaracion_miembro_interface()      :
   campo_declaracion()
 }
 
-void campo_declaracion()      :
-{
+void campo_declaracion() :
+{/*@bgen(jjtree) campo_declaracion */
+  Nodocampo_declaracion jjtn000 = new Nodocampo_declaracion(JJTCAMPO_DECLARACION);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
-{
+{/*@bgen(jjtree) campo_declaracion */
+  try {
+/*@egen*/
   ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <FINAL> | <VOLATILE> )*
-  tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC>
+  tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC>/*@bgen(jjtree)*/
+  } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      throw (RuntimeException)jjte000;
+    }
+    if (jjte000 instanceof ParseException) {
+      throw (ParseException)jjte000;
+    }
+    throw (Error)jjte000;
+  } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtn000.jjtSetLastToken(getToken(0));
+    }
+  }
+/*@egen*/
 }
 
 void declarador_variable() :
