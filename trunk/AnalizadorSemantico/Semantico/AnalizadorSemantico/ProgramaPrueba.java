@@ -1,6 +1,7 @@
 public class Prueba {
-
-	void main(String[] args) {
+	Integer paco;
+	
+	void main() {
 		int a, b;
 		return a + 1;
 	}

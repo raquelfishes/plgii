@@ -12,55 +12,57 @@ public interface CompiladorTreeConstants
   public int JJTLITERALSTRING = 6;
   public int JJTLITERALBOOLEAN = 7;
   public int JJTLITERALNULL = 8;
-  public int JJTTIPO_PRIMITIVO = 9;
-  public int JJTDECLARADOR_VARIABLE = 10;
-  public int JJTDECLARADOR_VARIABLE_ID = 11;
-  public int JJTINICIAR_VARIABLE = 12;
-  public int JJTASIGNACION = 13;
-  public int JJTOPERADOR_ASIGNACION = 14;
-  public int JJTOR = 15;
-  public int JJTAND = 16;
-  public int JJTBOR = 17;
-  public int JJTXOR = 18;
-  public int JJTBAND = 19;
-  public int JJTIGUAL = 20;
-  public int JJTNIGUAL = 21;
-  public int JJTMENOR = 22;
-  public int JJTMAYOR = 23;
-  public int JJTMENOREQ = 24;
-  public int JJTMAYOREQ = 25;
-  public int JJTDESPI = 26;
-  public int JJTDESPD = 27;
-  public int JJTDESPDNS = 28;
-  public int JJTADD = 29;
-  public int JJTSUB = 30;
-  public int JJTMULT = 31;
-  public int JJTDIV = 32;
-  public int JJTMOD = 33;
-  public int JJTUNARYADD = 34;
-  public int JJTUNARYSUB = 35;
-  public int JJTPLUSPLUS = 36;
-  public int JJTSUBSUB = 37;
-  public int JJTCOMP = 38;
-  public int JJTNOT = 39;
-  public int JJTEXPRESION_ASIGNACION = 40;
-  public int JJTBLOQUE = 41;
-  public int JJTSENTENCIA_BLOQUE = 42;
-  public int JJTDECLARACION_VARIABLE_LOCAL = 43;
-  public int JJTSENTENCIA_VACIA = 44;
-  public int JJTEXPRESION_SENTENCIA = 45;
-  public int JJTSENTENCIA_SWITCH = 46;
-  public int JJTETIQUETA_SWITCH = 47;
-  public int JJTSENTENCIA_IF = 48;
-  public int JJTSENTENCIA_WHILE = 49;
-  public int JJTSENTENCIA_DO = 50;
-  public int JJTSENTENCIA_FOR = 51;
-  public int JJTSENTENCIA_BREAK = 52;
-  public int JJTSENTENCIA_CONTINUE = 53;
-  public int JJTSENTENCIA_RETURN = 54;
-  public int JJTSENTENCIA_THROW = 55;
-  public int JJTSENTENCIA_SYNCHRONIZED = 56;
-  public int JJTSENTENCIA_TRY = 57;
+  public int JJTTIPO = 9;
+  public int JJTTIPO_PRIMITIVO = 10;
+  public int JJTCAMPO_DECLARACION = 11;
+  public int JJTDECLARADOR_VARIABLE = 12;
+  public int JJTDECLARADOR_VARIABLE_ID = 13;
+  public int JJTINICIAR_VARIABLE = 14;
+  public int JJTASIGNACION = 15;
+  public int JJTOPERADOR_ASIGNACION = 16;
+  public int JJTOR = 17;
+  public int JJTAND = 18;
+  public int JJTBOR = 19;
+  public int JJTXOR = 20;
+  public int JJTBAND = 21;
+  public int JJTIGUAL = 22;
+  public int JJTNIGUAL = 23;
+  public int JJTMENOR = 24;
+  public int JJTMAYOR = 25;
+  public int JJTMENOREQ = 26;
+  public int JJTMAYOREQ = 27;
+  public int JJTDESPI = 28;
+  public int JJTDESPD = 29;
+  public int JJTDESPDNS = 30;
+  public int JJTADD = 31;
+  public int JJTSUB = 32;
+  public int JJTMULT = 33;
+  public int JJTDIV = 34;
+  public int JJTMOD = 35;
+  public int JJTUNARYADD = 36;
+  public int JJTUNARYSUB = 37;
+  public int JJTPLUSPLUS = 38;
+  public int JJTSUBSUB = 39;
+  public int JJTCOMP = 40;
+  public int JJTNOT = 41;
+  public int JJTEXPRESION_ASIGNACION = 42;
+  public int JJTBLOQUE = 43;
+  public int JJTSENTENCIA_BLOQUE = 44;
+  public int JJTDECLARACION_VARIABLE_LOCAL = 45;
+  public int JJTSENTENCIA_VACIA = 46;
+  public int JJTEXPRESION_SENTENCIA = 47;
+  public int JJTSENTENCIA_SWITCH = 48;
+  public int JJTETIQUETA_SWITCH = 49;
+  public int JJTSENTENCIA_IF = 50;
+  public int JJTSENTENCIA_WHILE = 51;
+  public int JJTSENTENCIA_DO = 52;
+  public int JJTSENTENCIA_FOR = 53;
+  public int JJTSENTENCIA_BREAK = 54;
+  public int JJTSENTENCIA_CONTINUE = 55;
+  public int JJTSENTENCIA_RETURN = 56;
+  public int JJTSENTENCIA_THROW = 57;
+  public int JJTSENTENCIA_SYNCHRONIZED = 58;
+  public int JJTSENTENCIA_TRY = 59;
 
 
   public String[] jjtNodeName = {
@@ -73,7 +75,9 @@ public interface CompiladorTreeConstants
     "LiteralString",
     "LiteralBoolean",
     "LiteralNull",
+    "tipo",
     "tipo_primitivo",
+    "campo_declaracion",
     "declarador_variable",
     "declarador_variable_id",
     "iniciar_variable",
@@ -124,4 +128,4 @@ public interface CompiladorTreeConstants
     "sentencia_try",
   };
 }
-/* JavaCC - OriginalChecksum=36ff2f0edb5cea043559cd0c2cf4be43 (do not edit this line) */
+/* JavaCC - OriginalChecksum=77c38a525ad0d3e35a35e2f1bac772fe (do not edit this line) */

@@ -11,6 +11,29 @@ class Nodocompilar extends SimpleNode {
   public Nodocompilar(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+     {
+	System.out.print("Executing:");
+	Token first  = ((SimpleNode)jjtGetChild(i)).jjtGetFirstToken();
+	Token last = ((SimpleNode)jjtGetChild(i)).jjtGetLastToken();
+	for (Token t = first; t != null; t = t.next)
+	{
+	    System.out.print(" " + t);
+
+	    if (t == last)
+	    	break;
+	}
+	System.out.println();
+	
+        jjtGetChild(i).interpret();
+     }
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=297ca27b05a4a1e279d3a315d1fadbaa (do not edit this line) */
