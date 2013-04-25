@@ -183,7 +183,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
     jjtc000 = false;
     jjtn000.jjtSetLastToken(getToken(0));
     System.out.println("Identificador "+t.toString());
-    Atributos atribs = new Atributos(t.toString());
+    Atributos atribs = new Atributos(t.toString(), "nada");
     gestorTS.insertar(t.toString(), atribs);
     if (usaInterfaz){
       InterfazPlg.escribirIdentificadores(t.toString());
@@ -502,7 +502,7 @@ if (usaInterfaz)
                      jjtree.closeNodeScope(jjtn000, true);
                      jjtc000 = false;
                      jjtn000.jjtSetLastToken(getToken(0));
-                     jjtn000.type = BOOLEAN; jjtn000.name = "boolean";
+                     jjtn000.nodeType = "boolean";
         break;
       case CHAR:
         jj_consume_token(CHAR);
@@ -515,7 +515,7 @@ if (usaInterfaz)
                jjtree.closeNodeScope(jjtn000, true);
                jjtc000 = false;
                jjtn000.jjtSetLastToken(getToken(0));
-               jjtn000.type = INT; jjtn000.name = "int";
+               jjtn000.nodeType = "int";
         break;
       case LONG:
         jj_consume_token(LONG);
@@ -958,6 +958,10 @@ if (usaInterfaz)
         declarador_variable();
       }
       jj_consume_token(PYC);
+                                                                         jjtree.closeNodeScope(jjtn000, true);
+                                                                         jjtc000 = false;
+                                                                         jjtn000.jjtSetLastToken(getToken(0));
+                                                                         jjtn000.pilaTipos.clear();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);

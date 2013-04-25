@@ -300,7 +300,7 @@ void identificador() :
   t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> <IDENTIFICADOR> )*
   {
     System.out.println("Identificador "+t.toString());
-    Atributos atribs = new Atributos(t.toString());
+    Atributos atribs = new Atributos(t.toString(), "nada");
     gestorTS.insertar(t.toString(), atribs);
     if (usaInterfaz){
       InterfazPlg.escribirIdentificadores(t.toString());
@@ -401,10 +401,10 @@ void tipo_primitivo() :
   }
 }
 {
-  	(<BOOLEAN> { jjtThis.type = BOOLEAN; jjtThis.name = "boolean";})
+  	(<BOOLEAN> { jjtThis.nodeType = "boolean";})
     | <CHAR>
     | <SHORT>
-    | (<INT> { jjtThis.type = INT; jjtThis.name = "int";})
+    | (<INT> { jjtThis.nodeType = "int";})
     | <LONG>
     | <FLOAT>
     | <DOUBLE>
@@ -529,8 +529,7 @@ void campo_declaracion() :
 }
 {
   ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <FINAL> | <VOLATILE> )*
-  tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC>
-}
+  tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC> { jjtThis.pilaTipos.clear(); }}
 
 void declarador_variable() :
 {
