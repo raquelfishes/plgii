@@ -2,10 +2,11 @@ package tabla.simbolos;
 
 public class Atributos 
 {
-        public String lexema;
+        private String lexema, tipo;
         //...
         
-        public Atributos(String lexema) {
+        public Atributos(String lexema, String tipo) {
         	this.lexema = lexema;
+        	this.tipo = tipo;
         }
 }

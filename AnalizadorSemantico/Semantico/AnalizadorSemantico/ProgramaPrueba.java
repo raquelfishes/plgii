@@ -1,4 +1,4 @@
 public class Prueba {
-	int i;
+	int i,k;
 	boolean b;
 }

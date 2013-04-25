@@ -351,7 +351,7 @@ void identificador() :
 /*@egen*/
   {
     System.out.println("Identificador "+t.toString());
-    Atributos atribs = new Atributos(t.toString());
+    Atributos atribs = new Atributos(t.toString(), "nada");
     gestorTS.insertar(t.toString(), atribs);
     if (usaInterfaz){
       InterfazPlg.escribirIdentificadores(t.toString());
@@ -674,7 +674,7 @@ void tipo_primitivo() :
                      jjtc000 = false;
                      jjtn000.jjtSetLastToken(getToken(0));
                    }
-/*@egen*/ { jjtn000.type = BOOLEAN; jjtn000.name = "boolean";})
+/*@egen*/ { jjtn000.nodeType = "boolean";})
     | <CHAR>
     | <SHORT>
     | (<INT>/*@bgen(jjtree)*/
@@ -683,7 +683,7 @@ void tipo_primitivo() :
                jjtc000 = false;
                jjtn000.jjtSetLastToken(getToken(0));
              }
-/*@egen*/ { jjtn000.type = INT; jjtn000.name = "int";})
+/*@egen*/ { jjtn000.nodeType = "int";})
     | <LONG>
     | <FLOAT>
     | <DOUBLE>/*@bgen(jjtree)*/
@@ -823,6 +823,12 @@ void campo_declaracion() :
 /*@egen*/
   ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <FINAL> | <VOLATILE> )*
   tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC>/*@bgen(jjtree)*/
+                                                                       {
+                                                                         jjtree.closeNodeScope(jjtn000, true);
+                                                                         jjtc000 = false;
+                                                                         jjtn000.jjtSetLastToken(getToken(0));
+                                                                       }
+/*@egen*/ { jjtn000.pilaTipos.clear(); }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -843,8 +849,7 @@ void campo_declaracion() :
       jjtn000.jjtSetLastToken(getToken(0));
     }
   }
-/*@egen*/
-}
+/*@egen*/}
 
 void declarador_variable() :
 {/*@bgen(jjtree) declarador_variable */

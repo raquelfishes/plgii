@@ -2,6 +2,8 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=true,NODE_PREFIX=Nodo,NODE_EXTENDS=XNode,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package javacc;
 
+import tabla.simbolos.Atributos;
+
 public
 class Nododeclarador_variable_id extends SimpleNode {
   String name;
@@ -16,6 +18,9 @@ class Nododeclarador_variable_id extends SimpleNode {
 
   public void interpret()
   {
+	 Atributos atribs = new Atributos(name, pilaTipos.firstElement());
+	 Compilador.gestorTS.insertar(name, atribs); 
+	 
      int i, k = jjtGetNumChildren();
 
      for (i = 0; i < k; i++)

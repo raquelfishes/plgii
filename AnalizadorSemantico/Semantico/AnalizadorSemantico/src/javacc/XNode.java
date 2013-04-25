@@ -32,19 +32,24 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Stack;
 
 /**
  * Specialised node.
  */
 public class XNode
 {
+	protected String nodeType;
+	
   /** Symbol table */
   protected static java.util.Hashtable<String, Object> symtab = new java.util.Hashtable<String, Object>();
-
+ 
+  
   /** Stack for calculations. */
   protected static Object[] stack = new Object[1024];
   protected static int top = -1;
-
+  protected static Stack<String> pilaTipos= new Stack<String>();
+  
   /** @throws UnsupportedOperationException if called */
   public void interpret()
   {

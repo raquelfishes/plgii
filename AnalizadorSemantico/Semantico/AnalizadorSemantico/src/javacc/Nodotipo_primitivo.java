@@ -4,8 +4,6 @@ package javacc;
 
 public
 class Nodotipo_primitivo extends SimpleNode {
-	int type;
-	String name;
 	
   public Nodotipo_primitivo(int id) {
     super(id);
@@ -17,13 +15,15 @@ class Nodotipo_primitivo extends SimpleNode {
   
   public void interpret()
   {
-	  System.out.println("HOLA HOLA: "+type+" "+name);
+	  System.out.println("HOLA HOLA: "+nodeType);
+	  
+	  pilaTipos.push(nodeType);
 	  
      int i, k = jjtGetNumChildren();
 
      for (i = 0; i < k; i++)
         jjtGetChild(i).interpret();
-
+     
   }
 }
 /* JavaCC - OriginalChecksum=0074db8580e70e07ce4eed2293d9de72 (do not edit this line) */
