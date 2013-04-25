@@ -401,10 +401,10 @@ void tipo_primitivo() :
   }
 }
 {
-  	(<BOOLEAN> { jjtThis.type = BOOLEAN; })
+  	(<BOOLEAN> { jjtThis.type = BOOLEAN; jjtThis.name = "boolean";})
     | <CHAR>
     | <SHORT>
-    | (<INT> { jjtThis.type = INT; })
+    | (<INT> { jjtThis.type = INT; jjtThis.name = "int";})
     | <LONG>
     | <FLOAT>
     | <DOUBLE>

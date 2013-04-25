@@ -502,7 +502,7 @@ if (usaInterfaz)
                      jjtree.closeNodeScope(jjtn000, true);
                      jjtc000 = false;
                      jjtn000.jjtSetLastToken(getToken(0));
-                     jjtn000.type = BOOLEAN;
+                     jjtn000.type = BOOLEAN; jjtn000.name = "boolean";
         break;
       case CHAR:
         jj_consume_token(CHAR);
@@ -515,7 +515,7 @@ if (usaInterfaz)
                jjtree.closeNodeScope(jjtn000, true);
                jjtc000 = false;
                jjtn000.jjtSetLastToken(getToken(0));
-               jjtn000.type = INT;
+               jjtn000.type = INT; jjtn000.name = "int";
         break;
       case LONG:
         jj_consume_token(LONG);

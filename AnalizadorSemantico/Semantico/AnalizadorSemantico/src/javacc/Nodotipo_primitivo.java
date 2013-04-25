@@ -14,6 +14,16 @@ class Nodotipo_primitivo extends SimpleNode {
   public Nodotipo_primitivo(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+	  System.out.println("HOLA HOLA: "+type+" "+name);
+	  
+     int i, k = jjtGetNumChildren();
 
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 }
 /* JavaCC - OriginalChecksum=0074db8580e70e07ce4eed2293d9de72 (do not edit this line) */

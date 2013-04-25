@@ -674,7 +674,7 @@ void tipo_primitivo() :
                      jjtc000 = false;
                      jjtn000.jjtSetLastToken(getToken(0));
                    }
-/*@egen*/ { jjtn000.type = BOOLEAN; })
+/*@egen*/ { jjtn000.type = BOOLEAN; jjtn000.name = "boolean";})
     | <CHAR>
     | <SHORT>
     | (<INT>/*@bgen(jjtree)*/
@@ -683,7 +683,7 @@ void tipo_primitivo() :
                jjtc000 = false;
                jjtn000.jjtSetLastToken(getToken(0));
              }
-/*@egen*/ { jjtn000.type = INT; })
+/*@egen*/ { jjtn000.type = INT; jjtn000.name = "int";})
     | <LONG>
     | <FLOAT>
     | <DOUBLE>/*@bgen(jjtree)*/

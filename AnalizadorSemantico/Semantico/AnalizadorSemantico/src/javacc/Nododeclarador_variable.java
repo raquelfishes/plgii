@@ -11,6 +11,15 @@ class Nododeclarador_variable extends SimpleNode {
   public Nododeclarador_variable(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=6f8056255ac04875304f475b78929042 (do not edit this line) */

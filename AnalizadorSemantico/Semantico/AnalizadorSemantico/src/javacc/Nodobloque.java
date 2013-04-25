@@ -11,6 +11,15 @@ class Nodobloque extends SimpleNode {
   public Nodobloque(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=dd293d1c2cc8f0084b62366ec997cb31 (do not edit this line) */
