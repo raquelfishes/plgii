@@ -6,6 +6,7 @@ public class TablaSimbolos {
 
 	private Hashtable<String, Atributos> ts;
 	private LinkedList<String> listaLexemas;
+	private long numeroTemp;
 	
 	public TablaSimbolos()
 	{
@@ -31,5 +32,17 @@ public class TablaSimbolos {
 	
 	public LinkedList<String> getLexemas() {
 		return listaLexemas;
+	}
+	
+	public long getNumTemp(){
+		return numeroTemp;
+	}
+	
+	public void actualizaTemp(){
+		numeroTemp++;
+	}
+	
+	public void nuevoTemp(){
+		numeroTemp = 0;
 	}
 }
