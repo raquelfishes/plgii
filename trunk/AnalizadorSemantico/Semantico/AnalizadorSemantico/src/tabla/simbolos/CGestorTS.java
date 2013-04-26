@@ -16,7 +16,9 @@ public class CGestorTS implements IGestorTS {
 	private void apilaNuevaTS() //Siempre añadimos al principio de "ambitos" para que funcione como pila
 	{
 		TablaSimbolos ts = new TablaSimbolos();
-		ambitos.addFirst(ts);		
+		ts.nuevoTemp();
+		ambitos.addFirst(ts);
+				
 	}
 	
 	private void desapilaTS() //Siempre eliminamos del principio de "ambitos" para que funcione como pila
@@ -121,6 +123,14 @@ public class CGestorTS implements IGestorTS {
 			}
 		}
 		return lA;
+	}
+	
+	public String getNewTemp(){
+		TablaSimbolos ts = ambitos.getFirst();
+		long n = ts.getNumTemp();
+		ts.actualizaTemp();
+		return ("temp"+n);
+		
 	}
 
 }
