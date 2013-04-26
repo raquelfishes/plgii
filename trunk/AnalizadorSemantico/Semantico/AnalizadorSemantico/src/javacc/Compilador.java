@@ -3078,203 +3078,125 @@ if (usaInterfaz)
   }
 
   static final public void bloque() throws ParseException {
- /*@bgen(jjtree) bloque */
-  Nodobloque jjtn000 = new Nodobloque(JJTBLOQUE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));if (usaInterfaz)
+  if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
-    try {
     gestorTS.nuevoAmbito();
-      jj_consume_token(LLAVE_A);
-      label_35:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case BOOLEAN:
-        case BREAK:
-        case CHAR:
-        case CONTINUE:
-        case DO:
-        case DOUBLE:
-        case FLOAT:
-        case FOR:
-        case IF:
-        case INT:
-        case LONG:
-        case NEW:
-        case RETURN:
-        case SHORT:
-        case SUPER:
-        case SWITCH:
-        case SYNCHRONIZED:
-        case THIS:
-        case THROW:
-        case TRY:
-        case WHILE:
-        case LITERAL_INTEGER:
-        case LITERAL_FLOAT:
-        case LITERAL_CARACTER:
-        case LITERAL_STRING:
-        case LITERAL_BOOLEAN:
-        case LITERAL_NULL:
-        case PAR_A:
-        case LLAVE_A:
-        case PYC:
-        case PLUS_PLUS:
-        case SUB_SUB:
-        case IDENTIFICADOR:
-          ;
-          break;
-        default:
-          jj_la1[83] = jj_gen;
-          break label_35;
-        }
-        sentencia_bloque();
+    jj_consume_token(LLAVE_A);
+    label_35:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case BOOLEAN:
+      case BREAK:
+      case CHAR:
+      case CONTINUE:
+      case DO:
+      case DOUBLE:
+      case FLOAT:
+      case FOR:
+      case IF:
+      case INT:
+      case LONG:
+      case NEW:
+      case RETURN:
+      case SHORT:
+      case SUPER:
+      case SWITCH:
+      case SYNCHRONIZED:
+      case THIS:
+      case THROW:
+      case TRY:
+      case WHILE:
+      case LITERAL_INTEGER:
+      case LITERAL_FLOAT:
+      case LITERAL_CARACTER:
+      case LITERAL_STRING:
+      case LITERAL_BOOLEAN:
+      case LITERAL_NULL:
+      case PAR_A:
+      case LLAVE_A:
+      case PYC:
+      case PLUS_PLUS:
+      case SUB_SUB:
+      case IDENTIFICADOR:
+        ;
+        break;
+      default:
+        jj_la1[83] = jj_gen;
+        break label_35;
       }
-      jj_consume_token(LLAVE_C);
-    jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-    jjtn000.jjtSetLastToken(getToken(0));
+      sentencia_bloque();
+    }
+    jj_consume_token(LLAVE_C);
     gestorTS.cierraAmbito();
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-    }
   }
 
   static final public void sentencia_bloque() throws ParseException {
- /*@bgen(jjtree) sentencia_bloque */
-  Nodosentencia_bloque jjtn000 = new Nodosentencia_bloque(JJTSENTENCIA_BLOQUE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));if (usaInterfaz)
+  if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
-    try {
-      if (jj_2_18(2147483647)) {
-        declaracion_variable_local();
-        jj_consume_token(PYC);
-      } else {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case BREAK:
-        case CONTINUE:
-        case DO:
-        case FOR:
-        case IF:
-        case NEW:
-        case RETURN:
-        case SUPER:
-        case SWITCH:
-        case SYNCHRONIZED:
-        case THIS:
-        case THROW:
-        case TRY:
-        case WHILE:
-        case LITERAL_INTEGER:
-        case LITERAL_FLOAT:
-        case LITERAL_CARACTER:
-        case LITERAL_STRING:
-        case LITERAL_BOOLEAN:
-        case LITERAL_NULL:
-        case PAR_A:
-        case LLAVE_A:
-        case PYC:
-        case PLUS_PLUS:
-        case SUB_SUB:
-        case IDENTIFICADOR:
-          sentencia();
-          break;
-        default:
-          jj_la1[84] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
+    if (jj_2_18(2147483647)) {
+      declaracion_variable_local();
+      jj_consume_token(PYC);
     } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case BREAK:
+      case CONTINUE:
+      case DO:
+      case FOR:
+      case IF:
+      case NEW:
+      case RETURN:
+      case SUPER:
+      case SWITCH:
+      case SYNCHRONIZED:
+      case THIS:
+      case THROW:
+      case TRY:
+      case WHILE:
+      case LITERAL_INTEGER:
+      case LITERAL_FLOAT:
+      case LITERAL_CARACTER:
+      case LITERAL_STRING:
+      case LITERAL_BOOLEAN:
+      case LITERAL_NULL:
+      case PAR_A:
+      case LLAVE_A:
+      case PYC:
+      case PLUS_PLUS:
+      case SUB_SUB:
+      case IDENTIFICADOR:
+        sentencia();
+        break;
+      default:
+        jj_la1[84] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
     }
   }
 
   static final public void declaracion_variable_local() throws ParseException {
- /*@bgen(jjtree) declaracion_variable_local */
-  Nododeclaracion_variable_local jjtn000 = new Nododeclaracion_variable_local(JJTDECLARACION_VARIABLE_LOCAL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));if (usaInterfaz)
+  if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
-    try {
-      tipo();
-      declarador_variable();
-      label_36:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case COMA:
-          ;
-          break;
-        default:
-          jj_la1[85] = jj_gen;
-          break label_36;
-        }
-        jj_consume_token(COMA);
-        declarador_variable();
+    tipo();
+    declarador_variable();
+    label_36:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case COMA:
+        ;
+        break;
+      default:
+        jj_la1[85] = jj_gen;
+        break label_36;
       }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
+      jj_consume_token(COMA);
+      declarador_variable();
     }
   }
 

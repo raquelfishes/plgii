@@ -2263,132 +2263,42 @@ void sentencia_etiqueta()      :
   <IDENTIFICADOR> <PYP> sentencia()
 }
 
-void bloque() :
-{/*@bgen(jjtree) bloque */
-  Nodobloque jjtn000 = new Nodobloque(JJTBLOQUE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/
+void bloque()      :
+{
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
-{/*@bgen(jjtree) bloque */
-  try {
-/*@egen*/
+{
   { gestorTS.nuevoAmbito(); }
-  <LLAVE_A> ( sentencia_bloque() )* <LLAVE_C>/*@bgen(jjtree)*/
-  {
-    jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-    jjtn000.jjtSetLastToken(getToken(0));
-  }
-/*@egen*/
-  { gestorTS.cierraAmbito();  }/*@bgen(jjtree)*/
-  } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      throw (RuntimeException)jjte000;
-    }
-    if (jjte000 instanceof ParseException) {
-      throw (ParseException)jjte000;
-    }
-    throw (Error)jjte000;
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-  }
-/*@egen*/
+  <LLAVE_A> ( sentencia_bloque() )* <LLAVE_C>
+  { gestorTS.cierraAmbito();  }
 }
 
-void sentencia_bloque() :
-{/*@bgen(jjtree) sentencia_bloque */
-  Nodosentencia_bloque jjtn000 = new Nodosentencia_bloque(JJTSENTENCIA_BLOQUE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/
+void sentencia_bloque()      :
+{
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
-{/*@bgen(jjtree) sentencia_bloque */
-  try {
-/*@egen*/
+{
   LOOKAHEAD(tipo() <IDENTIFICADOR>)
   declaracion_variable_local() <PYC>
 |
-  sentencia()/*@bgen(jjtree)*/
-  } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      throw (RuntimeException)jjte000;
-    }
-    if (jjte000 instanceof ParseException) {
-      throw (ParseException)jjte000;
-    }
-    throw (Error)jjte000;
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-  }
-/*@egen*/
+  sentencia()
 }
 
-void declaracion_variable_local() :
-{/*@bgen(jjtree) declaracion_variable_local */
-  Nododeclaracion_variable_local jjtn000 = new Nododeclaracion_variable_local(JJTDECLARACION_VARIABLE_LOCAL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/
+void declaracion_variable_local()      :
+{
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
-{/*@bgen(jjtree) declaracion_variable_local */
-  try {
-/*@egen*/
-  tipo() declarador_variable() ( <COMA> declarador_variable() )*/*@bgen(jjtree)*/
-  } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      throw (RuntimeException)jjte000;
-    }
-    if (jjte000 instanceof ParseException) {
-      throw (ParseException)jjte000;
-    }
-    throw (Error)jjte000;
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-  }
-/*@egen*/
+{
+  tipo() declarador_variable() ( <COMA> declarador_variable() )*
 }
 
 void sentencia_vacia() :
