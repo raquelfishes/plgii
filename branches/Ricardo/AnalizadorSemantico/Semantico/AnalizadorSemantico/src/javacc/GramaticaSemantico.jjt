@@ -1,0 +1,1320 @@
+
+options {
+  LOOKAHEAD = 1;
+  JAVA_UNICODE_ESCAPE = true;
+  IGNORE_CASE = false;
+  MULTI=true;
+  NODE_EXTENDS="XNode";
+  TRACK_TOKENS=true;
+  NODE_PREFIX="Nodo";
+  
+}
+
+PARSER_BEGIN(Compilador)
+package javacc;
+
+import tabla.simbolos.CGestorTS;
+import tabla.simbolos.Atributos;
+import interfaz.InterfazPlg;
+
+public class Compilador {
+  public static CGestorTS gestorTS;
+  public static boolean usaInterfaz = false;
+  
+  public static void main ( String args [ ] ) {
+
+      //Inicialización del analizador
+      Compilador compilador;
+      usaInterfaz = false;
+      initGestorTS();
+    	
+      if(args.length == 0){
+
+        System.out.println ("Compilador: Leyendo de fichero ");
+        try {
+          compilador = new Compilador(new java.io.FileInputStream("ProgramaPrueba.java"));
+        }
+        catch(java.io.FileNotFoundException e) {
+          System.out.println ("Compilador: El fichero no ha sido encontrado.");
+          return;
+        }
+      }
+      else if(args.length == 1){
+        System.out.println ("Compilador: Leyendo de fichero " + args[0] + " ..." );
+        try {
+          compilador = new Compilador(new java.io.FileInputStream(args[0]));
+        }
+        catch(java.io.FileNotFoundException e) {
+          System.out.println ("Compilador: El fichero " + args[0] + " no ha sido encontrado.");
+          return;
+        }
+      }
+      else {
+        System.out.println ("Compilador:  Debes utilizarlo de una de las siguientes formas:");
+        System.out.println ("         java ExampleParser < fichero");
+        System.out.println ("Or");
+        System.out.println ("         java ExampleParser fichero");
+        return ;
+      }
+      try {
+        SimpleNode root = Compilador.compilar();
+        root.dump("");
+        System.out.println ("Compilador: La entrada ha sido leida con éxito.");
+        jjtree.rootNode().interpret();
+      }
+      catch(ParseException e){
+        System.out.println ("Compilador: Ha ocurrido un error durante el análisis.");
+        System.out.println (e.getMessage());
+      }
+      catch(TokenMgrError e){
+        System.out.println ("Compilador: Ha ocurrido un error.");
+        System.out.println (e.getMessage());
+      }
+    }
+
+	public static void initGestorTS(){
+		//Inicialización Tabla de Símbolos y Gestor de Ámbitos
+	    gestorTS = new CGestorTS();
+	}
+
+	public Node rootNode() {
+    	return jjtree.rootNode();
+  	} 
+}
+
+
+PARSER_END(Compilador)
+
+
+/**	Elementos ignorados por el analizador
+**	-Espacios en blanco
+**	-Caracteres de escape
+**	-Comentarios de una linea y comentarios multilinea
+*/
+SKIP :
+{
+  " "
+| "\r"
+| "\t"
+| "\n"
+| <  "//" (~ ["\n", "\r"])*  >
+|  "/*":EntreComentarios 
+}
+
+<EntreComentarios> SKIP: 
+{  
+"*/" : DEFAULT 
+} 
+<EntreComentarios> MORE: 
+{ 
+   <~ [ ] > 
+}
+
+
+/** Elementos terminales:
+**	-Letras
+**	-Digitos
+*/
+TOKEN :
+{
+  < #DIGITO : [ "0"-"9" ] >
+}
+
+TOKEN :
+{ 
+  < #LETRA : [ "a" - "z", "A" - "Z" ] >
+}
+
+
+/** Tokens reconocidos por e analizador léxico(El orden importa)
+**	-Identificador
+**	-Palabra reservada
+**	-Literal
+**	-Delimitador
+**	-Operador
+*/
+
+
+//PALABRAS RESERVADAS
+
+TOKEN : {
+  		<ABSTRACT: "abstract">  
+		|  <BOOLEAN: "boolean">
+		|  <BREAK: "break">
+		|  <CASE: "case">
+		|  <CATCH: "catch">
+		|  <CHAR: "char">
+		|  <CLASS: "class">
+		|  <CONST: "const">
+		|  <CONTINUE: "continue">
+		|  <DEFAULT_PLG: "default">
+		|  <DO: "do">
+		|  <DOUBLE: "double">
+		|  <ELSE: "else">
+		|  <ENUM :"enum">
+		|  <EXTENDS :"extends">
+		|  <FINAL :"final">
+		|  <FINALLY :"finally">
+		|  <FLOAT :"float">
+		|  <FOR :"for">
+		|  <GOTO :"goto">
+		|  <IF :"if">
+		|  <IMPLEMENTS :"implements">
+		|  <IMPORT :"import">
+		|  <INSTANCEOF :"instanceof">
+		|  <INT :"int">
+		|  <INTERFACE :"interface">
+		|  <LONG :"long">
+		|  <NEW :"new">
+		|  <PACKAGE :"package">
+		|  <PRIVATE :"private">
+		|  <PROTECTED :"protected">
+		|  <PUBLIC :"public">
+		|  <RETURN :"return">
+		|  <SHORT :"short">
+		|  <STATIC :"static">
+		|  <SUPER :"super">
+		|  <SWITCH :"switch">
+		|  <SYNCHRONIZED :"synchronized">
+		|  <THIS :"this">
+		|  <THROW :"throw">
+		|  <THROWS :"throws">
+		|  <TRY :"try">
+		|  <VOID :"void">
+		|  <VOLATILE :"volatile">
+		|  <WHILE :"while">
+		|  <TRUE :"true">
+		|  <FALSE :"false">
+}
+
+
+//LITERALES
+TOKEN :
+{
+  < LITERAL_INTEGER:  (<DIGITO>)+ >
+|
+  < LITERAL_INTEGER_ERROR: (<DIGITO>)+ (~["0"-"9", "\"",".", ";", ",", "=", "%", "+", "-", "*", "/", "(", ")", "[", "]"])+ > { System.out.println("Constante numérica mal formada.");}
+|
+  < LITERAL_FLOAT: ( (<DIGITO>)+ <PUNTO> (<DIGITO>)+ ) >
+|
+  < LITERAL_CARACTER: ( "'" ~[  "\'" ] "'" ) >
+|
+  < LITERAL_STRING: ( "\"" (~[ "\"", "\n" ])* "\"" ) >
+| 
+  < LITERAL_BOOLEAN :  ( "true" | "false" ) >
+| 
+  < LITERAL_NULL :  "null" >
+}
+
+
+//DELIMITADORES
+TOKEN : {
+  < PAR_A : "(" > |
+  < PAR_C : ")" > |
+  < LLAVE_A : "{" > |
+  < LLAVE_C : "}" > |
+  < COR_A : "[" > |
+  < COR_C : "]" > |
+  < PYC : ";" > |
+  < COMA : "," > |
+  < PUNTO : "." > |
+  < PYP : ":" > |
+  < PREG : "?" >
+}
+
+ 
+//OPERADORES
+TOKEN : {
+  < OR : "||" > |
+  < AND : "&&" > |
+  < OR_B : "|" > |
+  < AND_B : "&" > |
+  < IGUAL : "==" > |
+  < N_IGUAL : "!=" > |
+  < MENOR : "<" > |
+  < MAYOR : ">" > |
+  < MENOR_EQ : "<=" > |
+  < MAYOR_EQ : ">=" > |
+  < ADD : "+" > |
+  < SUB : "-" > |
+  < MULT : "*" > |
+  < DIV : "/" > |
+  < MOD : "%" > |
+  < PLUS_PLUS : "++" > |
+  < SUB_SUB : "--" > |
+  < NOT : "!" > |
+  < ADD_E : "+=" > |
+  < SUB_E : "-=" > |
+  < MULT_E : "*=" > |
+  < DIV_E : "/=" > |
+  < MOD_E : "%=" > |
+  < AND_E : "&=" > |
+  < OR_E : "|=" > |
+  < EQUALS : "=" > |
+  < DESP_D : ">>" > |
+  < DESP_I : "<<" > |
+  < DESP_DNS : ">>>" > |
+  < XOR : "^" > |
+  < COMP : "~" >
+}
+
+//IDENTIFICADOR
+TOKEN : {
+	< IDENTIFICADOR : ( "_" ( <LETRA> | <DIGITO> | "_" | "$" )* )
+	| 	( <LETRA> ( <LETRA> | <DIGITO> | "_" | "$" )* ) 
+	| 	( "$" ( <LETRA> | <DIGITO> | "_" | "$" )* )
+	>
+}
+
+TOKEN : {
+	< IDENTIFICADOR_ERROR_1 : ( <LETRA> ( ~[ "0"-"9","a"-"z", "A"-"Z", " ", ".", "\"",".", ";",
+			",", "=", "%", "+", "-", "*", "/", "(", ")", "[", "]" ] )* ) > { System.out.println("Identificador mal formado.");}
+}
+
+
+SimpleNode compilar():
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  [ <PACKAGE> identificador() <PYC> ]
+  ( <IMPORT> identificador() [ <PUNTO> <MULT> ] <PYC> )*
+  ( declaracion_tipo() )*
+  <EOF>
+  {return jjtThis;}
+}
+
+
+void identificador() :
+{
+  Token t;
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> <IDENTIFICADOR> )*
+  {
+    System.out.println("Identificador "+t.toString());
+    Atributos atribs = new Atributos(t.toString(), "nada");
+    gestorTS.insertar(t.toString(), atribs);
+    if (usaInterfaz){
+      InterfazPlg.escribirIdentificadores(t.toString());
+    }
+
+	jjtThis.value = t.image;
+    //System.out.println("identificador "+t.image.toString());
+    //System.out.println("identificador "+t.kind);
+  }
+}
+
+void literal() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  literal_integer() #LiteralInteger | literal_float() #LiteralFloat | literal_caracter() #LiteralCaracter | literal_string() #LiteralString | literal_boolean() #LiteralBoolean | literal_null() #LiteralNull
+}
+
+void literal_integer() #void: 
+{
+if (usaInterfaz)
+
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_INTEGER>
+}
+
+void literal_float() #void: 
+{
+if (usaInterfaz)
+
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_FLOAT>
+}
+
+void literal_caracter() #void: 
+{
+if (usaInterfaz)
+
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_CARACTER>
+}
+
+void literal_string() #void: 
+{
+if (usaInterfaz)
+
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_STRING>
+}
+
+void literal_boolean() #void: 
+{
+if (usaInterfaz)
+
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_BOOLEAN>
+}
+
+void literal_null() #void: 
+{
+if (usaInterfaz)
+    InterfazPlg.escribirAvisos();
+}
+{
+    <LITERAL_NULL>
+}
+
+void tipo() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*
+}
+
+void tipo_primitivo() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  	(<BOOLEAN> { jjtThis.nodeType = "boolean";})
+    | <CHAR>
+    | <SHORT>
+    | (<INT> { jjtThis.nodeType = "int";})
+    | <LONG>
+    | <FLOAT>
+    | <DOUBLE>
+}
+
+void declaracion_tipo() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD( ( <ABSTRACT> | <FINAL> | <PUBLIC> )* <CLASS> ) declaracion_clase()
+|
+  declaracion_interface()
+|
+  <PYC>
+}
+
+void tipo_metodo() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  tipo() | <VOID>
+}
+
+void lista_de_tipos() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  identificador()
+  ( <COMA> identificador()
+  )*
+}
+
+void declaracion_clase() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  ( <ABSTRACT> | <FINAL> | <PUBLIC> )*
+  <CLASS> <IDENTIFICADOR> [ <EXTENDS> identificador() ] [ <IMPLEMENTS> lista_de_tipos() ]
+  <LLAVE_A> ( declaracion_cuerpo_clase() )* <LLAVE_C>
+}
+
+void declaracion_cuerpo_clase() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD(2)
+  inicializador_static()
+|
+  LOOKAHEAD( [ <PUBLIC> | <PROTECTED> | <PRIVATE> ] identificador() <PAR_A> )
+  declaracion_constructora()
+|
+  LOOKAHEAD( declaracionR_metodo() )
+  declaracion_metodo()
+|
+  campo_declaracion()
+}
+
+void declaracionR_metodo() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <ABSTRACT> | <FINAL> | <SYNCHRONIZED> )*
+  tipo_metodo() <IDENTIFICADOR> <PAR_A>
+}
+
+void declaracion_interface() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  ( <ABSTRACT> | <PUBLIC> )*
+  <INTERFACE> <IDENTIFICADOR> [ <EXTENDS> lista_de_tipos() ]
+  <LLAVE_A> ( declaracion_miembro_interface() )* <LLAVE_C>
+}
+
+void declaracion_miembro_interface() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD( declaracionR_metodo() ) declaracion_metodo()
+|
+  campo_declaracion()
+}
+
+void campo_declaracion() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <FINAL> | <VOLATILE> )*
+  tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC> { jjtThis.pilaTipos.clear(); }}
+
+void declarador_variable() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  declarador_variable_id() [ <EQUALS> iniciar_variable() ]
+}
+
+void declarador_variable_id() :
+{
+  Token t;
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  t = <IDENTIFICADOR> { jjtThis.name = t.image; } ( <COR_A> <COR_C> )*
+}
+
+void iniciar_variable() :
+{}
+{
+  <LLAVE_A> [ iniciar_variable() ( LOOKAHEAD(2) <COMA> iniciar_variable() )* ] [ <COMA> ] <LLAVE_C>
+|
+  expresion()
+}
+
+void declaracion_metodo() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <ABSTRACT> | <FINAL> | <SYNCHRONIZED> )*
+  tipo_metodo() declarador_metodo() [ <THROWS> lista_de_tipos() ]
+  ( bloque() | <PYC> )
+}
+
+void declarador_metodo() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <IDENTIFICADOR> parametros_formales() ( <COR_A> <COR_C> )*
+}
+
+void parametros_formales() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <PAR_A> [ parametro_formal() ( <COMA> parametro_formal() )* ] <PAR_C>
+}
+
+void parametro_formal() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  tipo() declarador_variable_id()
+}
+
+void declaracion_constructora() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  [ <PUBLIC> | <PROTECTED> | <PRIVATE> ]
+  <IDENTIFICADOR> parametros_formales() [ <THROWS> lista_de_tipos() ]
+  <LLAVE_A> [ LOOKAHEAD(2) const_explic() ] ( sentencia_bloque() )* <LLAVE_C>
+}
+
+void const_explic() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <THIS> argumentos() <PYC>
+|
+  <SUPER> argumentos() <PYC>
+}
+
+void inicializador_static() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <STATIC> bloque()
+}
+
+void expresion() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD( expresion_primaria() operador_asignacion() )
+  asignacion()
+|
+  expresion_cond()
+}
+
+void asignacion() #asignacion(2):
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_primaria() operador_asignacion() expresion()
+}
+
+void operador_asignacion() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <EQUALS> | <MULT_E> | <DIV_E> | <MOD_E> | <ADD_E> | <SUB_E> | <AND_E> | <OR_E>
+}
+
+void expresion_cond() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_cond_or() [ <PREG> expresion() <PYP> expresion_cond() ]
+}
+
+void expresion_cond_or() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_cond_and() ( <OR> expresion_cond_and() #Or(2) )*
+}
+
+void expresion_cond_and() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_or_bin() ( <AND> expresion_or_bin() #And(2) )*
+}
+
+void expresion_or_bin() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_xor() ( <OR_B> expresion_xor()  #BOr(2))*
+}
+
+void expresion_xor() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_and_bin() ( <XOR> expresion_and_bin() #XOr(2))*
+}
+
+void expresion_and_bin() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_equal() ( <AND_B> expresion_equal() #BAnd(2))*
+}
+
+void expresion_equal() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_instanceof() ( ( <IGUAL> expresion_instanceof() #Igual(2)
+  							| <N_IGUAL> expresion_instanceof() #NIgual(2)
+  							)
+  						)*
+}
+
+void expresion_instanceof() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_relacional() [ <INSTANCEOF> tipo() ]
+}
+
+void expresion_relacional() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_shift() ( ( <MENOR> expresion_shift() #Menor(2)
+  						| <MAYOR> expresion_shift() #Mayor(2)
+  						| <MENOR_EQ> expresion_shift() #MenorEq(2)
+  						| <MAYOR_EQ> expresion_shift() #MayorEq(2)
+  						)
+  					)*
+}
+
+void expresion_shift() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_add() ( ( <DESP_I> expresion_add() #DespI(2)
+  					| <DESP_D> expresion_add() #DespD(2)
+  					| <DESP_DNS> expresion_add() #DespDNS(2)
+  					)
+  				)*
+}
+
+void expresion_add() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_mult() ( ( <ADD> expresion_mult() #Add(2)
+					 | <SUB> expresion_mult() #Sub(2)
+					 )
+  				)*
+}
+
+void expresion_mult() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_unaria() ( ( <MULT> expresion_unaria() #Mult(2)
+  						| <DIV> expresion_unaria() #Div(2)
+  						| <MOD> expresion_unaria() #Mod(2)
+  						)
+  					)*
+}
+
+void expresion_unaria() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  (   <ADD> expresion_unaria() #UnaryAdd
+  	| <SUB> expresion_unaria() #UnarySub
+  ) 
+|
+  expresion_pre_inc()
+|
+  expresion_pre_dec()
+|
+  expresion_unaria_dif()
+}
+
+void expresion_pre_inc() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <PLUS_PLUS> expresion_primaria() #PlusPlus
+}
+
+void expresion_pre_dec() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <SUB_SUB> expresion_primaria() #SubSub
+}
+
+void expresion_unaria_dif() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  (   <COMP> expresion_unaria() #Comp
+  	| <NOT> expresion_unaria() #Not
+  ) 
+|
+  LOOKAHEAD( look_cast() )
+  expresion_cast()
+|
+  expresion_post()
+}
+
+void look_cast() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD(2)
+  <PAR_A> tipo_primitivo()
+|
+  LOOKAHEAD(<PAR_A> identificador() <COR_A>)
+  <PAR_A> identificador() <COR_A> <COR_C>
+|
+  <PAR_A> identificador() <PAR_C> ( <COMP> | <NOT> | <PAR_A> | <IDENTIFICADOR> | <THIS> | <SUPER> | <NEW> | literal() )
+}
+
+void expresion_post() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_primaria() [ <PLUS_PLUS> | <SUB_SUB> ]
+}
+
+void expresion_cast() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD(2)
+  <PAR_A> tipo_primitivo() ( <COR_A> <COR_C> )* <PAR_C> expresion_unaria()
+|
+  <PAR_A> identificador() ( <COR_A> <COR_C> )* <PAR_C> expresion_unaria_dif()
+}
+
+void expresion_primaria() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  prefijo_primario() ( sufijo_primario() )*
+}
+
+void prefijo_primario() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  literal()
+|
+  identificador()
+|
+  <THIS>
+|
+  <SUPER> <PUNTO> <IDENTIFICADOR>
+|
+  <PAR_A> expresion() <PAR_C>
+|
+  expresion_asignacion()
+}
+
+void sufijo_primario() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <COR_A> expresion() <COR_C>
+|
+  <PUNTO> <IDENTIFICADOR>
+|
+  argumentos()
+}
+
+void argumentos() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <PAR_A> [ lista_argumentos() ] <PAR_C>
+}
+
+void lista_argumentos() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion() ( <COMA> expresion() )*
+}
+
+void expresion_asignacion() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD(2)
+  <NEW> tipo_primitivo() dimensiones_array()
+|
+  <NEW> identificador() ( argumentos() | dimensiones_array() )
+}
+
+void dimensiones_array() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  ( LOOKAHEAD(2) <COR_A> expresion() <COR_C> )+ ( LOOKAHEAD(2) <COR_A> <COR_C> )*
+}
+
+void sentencia() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD(2)
+  sentencia_etiqueta()
+|
+  bloque()
+|
+  sentencia_vacia()
+|
+  expresion_sentencia() <PYC>
+|
+  sentencia_switch()
+|
+  sentencia_if()
+|
+  sentencia_while()
+|
+  sentencia_do()
+|
+  sentencia_for()
+|
+  sentencia_break()
+|
+  sentencia_continue()
+|
+  sentencia_return()
+|
+  sentencia_throw()
+|
+  sentencia_synchronized()
+|
+  sentencia_try()
+}
+
+void sentencia_etiqueta() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <IDENTIFICADOR> <PYP> sentencia()
+}
+
+void bloque() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  { gestorTS.nuevoAmbito(); }
+  <LLAVE_A> ( sentencia_bloque() )* <LLAVE_C>
+  { gestorTS.cierraAmbito();  }
+}
+
+void sentencia_bloque() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD(tipo() <IDENTIFICADOR>)
+  declaracion_variable_local() <PYC>
+|
+  sentencia()
+}
+
+void declaracion_variable_local() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  tipo() declarador_variable() ( <COMA> declarador_variable() )*
+}
+
+void sentencia_vacia() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <PYC>
+}
+
+void expresion_sentencia() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_pre_inc()
+|
+  expresion_pre_dec()
+|
+  LOOKAHEAD( expresion_primaria() operador_asignacion() )
+  asignacion()
+|
+  expresion_post()
+}
+
+void sentencia_switch() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <SWITCH> <PAR_A> expresion() <PAR_C> <LLAVE_A>
+    ( etiqueta_switch() ( sentencia_bloque() )* )*
+  <LLAVE_C>
+}
+
+void etiqueta_switch() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <CASE> expresion() <PYP>
+|
+  <DEFAULT_PLG> <PYP>
+}
+
+void sentencia_if() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <IF> <PAR_A> expresion() <PAR_C> sentencia() [ LOOKAHEAD(1) <ELSE> sentencia() ]
+}
+
+void sentencia_while() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <WHILE> <PAR_A> expresion() <PAR_C> sentencia()
+}
+
+void sentencia_do() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <DO> sentencia() <WHILE> <PAR_A> expresion() <PAR_C> <PYC>
+}
+
+void sentencia_for() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <FOR> <PAR_A> [ inicio_for() ] <PYC> [ expresion() ] <PYC> [ actualizar_for() ] <PAR_C> sentencia()
+}
+
+void lista_expresion_sentencia() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  expresion_sentencia() ( <COMA> expresion_sentencia() )*
+}
+
+void inicio_for() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD( tipo() <IDENTIFICADOR> )
+  declaracion_variable_local()
+|
+  lista_expresion_sentencia()
+}
+
+void actualizar_for() #void:
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  lista_expresion_sentencia()
+}
+
+void sentencia_break() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <BREAK> [ <IDENTIFICADOR> ] <PYC>
+}
+
+void sentencia_continue() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <CONTINUE> [ <IDENTIFICADOR> ] <PYC>
+}
+
+void sentencia_return() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <RETURN> [ expresion() ] <PYC>
+}
+
+void sentencia_throw() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <THROW> expresion() <PYC>
+}
+
+void sentencia_synchronized() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <SYNCHRONIZED> <PAR_A> expresion() <PAR_C> bloque()
+}
+
+void sentencia_try() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <TRY> bloque()
+  ( <CATCH> <PAR_A> parametro_formal() <PAR_C> bloque() )*
+  [ <FINALLY> bloque() ]
+}
