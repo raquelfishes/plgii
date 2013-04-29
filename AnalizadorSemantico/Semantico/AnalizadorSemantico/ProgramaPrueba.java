@@ -1,8 +1,8 @@
 public class Prueba {
-	int i,k;
+	int k;
 	boolean b;
 	
 	void main(){
-		int paco;
+		k = 3 + 'f';
 	}
 }

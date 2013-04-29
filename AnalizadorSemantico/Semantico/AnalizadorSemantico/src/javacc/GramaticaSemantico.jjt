@@ -193,8 +193,6 @@ TOKEN :
 {
   < LITERAL_INTEGER:  (<DIGITO>)+ >
 |
-  < LITERAL_INTEGER_ERROR: (<DIGITO>)+ (~["0"-"9", "\"",".", ";", ",", "=", "%", "+", "-", "*", "/", "(", ")", "[", "]"])+ > { System.out.println("Constante numérica mal formada.");}
-|
   < LITERAL_FLOAT: ( (<DIGITO>)+ <PUNTO> (<DIGITO>)+ ) >
 |
   < LITERAL_CARACTER: ( "'" ~[  "\'" ] "'" ) >
@@ -320,17 +318,25 @@ void literal() #void:
   }
 }
 {
-  literal_integer() #LiteralInteger | literal_float() #LiteralFloat | literal_caracter() #LiteralCaracter | literal_string() #LiteralString | literal_boolean() #LiteralBoolean | literal_null() #LiteralNull
+  literal_integer() | literal_float() #LiteralFloat | literal_caracter() #LiteralCaracter | literal_string() #LiteralString | literal_boolean() #LiteralBoolean | literal_null() #LiteralNull
 }
 
-void literal_integer() #void: 
+void literal_integer()/* #void*/: 
 {
-if (usaInterfaz)
-
-    InterfazPlg.escribirAvisos();
+  	Token t;
+	if (usaInterfaz)
+    	InterfazPlg.escribirAvisos();
+    	
 }
 {
-    <LITERAL_INTEGER>
+
+(
+  t=<LITERAL_INTEGER>
+    {
+       jjtThis.val = Integer.parseInt(t.image);
+    }
+ )
+
 }
 
 void literal_float() #void: 
@@ -670,7 +676,7 @@ void asignacion() #asignacion(2):
   expresion_primaria() operador_asignacion() expresion()
 }
 
-void operador_asignacion() :
+void operador_asignacion() #void :
 {
   if (usaInterfaz)
   {
@@ -678,7 +684,25 @@ void operador_asignacion() :
   }
 }
 {
-  <EQUALS> | <MULT_E> | <DIV_E> | <MOD_E> | <ADD_E> | <SUB_E> | <AND_E> | <OR_E>
+  op_equals() | op_mult_e() | <DIV_E> | <MOD_E> | op_add_e() | <SUB_E> | <AND_E> | <OR_E>
+}
+
+void op_equals() :
+{}{
+  <EQUALS>}
+
+void op_mult_e() :
+{
+}
+{
+  <MULT_E>
+}
+
+void op_add_e() :
+{
+}
+{
+  <ADD_E>
 }
 
 void expresion_cond() #void:
