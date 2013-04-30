@@ -25,7 +25,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@ege
   public static CGestorTS gestorTS;
   public static boolean usaInterfaz = false;
   
-  public static void main ( String args [ ] ) {
+  public static void main ( String args [] ) {
 
       //Inicializaci\u00f3n del analizador
       Compilador compilador;
@@ -358,6 +358,7 @@ void identificador() :
     }
 
 	jjtn000.value = t.image;
+	jjtn000.nodeType = t.image;
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
   }/*@bgen(jjtree)*/

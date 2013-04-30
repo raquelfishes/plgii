@@ -21,7 +21,7 @@ public class Compilador {
   public static CGestorTS gestorTS;
   public static boolean usaInterfaz = false;
   
-  public static void main ( String args [ ] ) {
+  public static void main ( String args [] ) {
 
       //Inicialización del analizador
       Compilador compilador;
@@ -307,6 +307,7 @@ void identificador() :
     }
 
 	jjtThis.value = t.image;
+	jjtThis.nodeType = t.image;
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
   }

@@ -4,12 +4,20 @@ package javacc;
 
 public
 class Nodoidentificador extends SimpleNode {
+	
   public Nodoidentificador(int id) {
     super(id);
   }
 
   public Nodoidentificador(Compilador p, int id) {
     super(p, id);
+  }
+  
+  public void interpret()
+  {
+	  System.out.println("PEW PEW: "+nodeType);
+	 pilaTipos.push(nodeType);
+
   }
 
 }
