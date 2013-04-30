@@ -9,7 +9,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
   protected static JJTCompiladorState jjtree = new JJTCompiladorState();public static CGestorTS gestorTS;
   public static boolean usaInterfaz = false;
 
-  public static void main ( String args [ ] ) {
+  public static void main ( String args [] ) {
 
       //Inicialización del analizador
       Compilador compilador;
@@ -190,6 +190,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
     }
 
         jjtn000.value = t.image;
+        jjtn000.nodeType = t.image;
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
 

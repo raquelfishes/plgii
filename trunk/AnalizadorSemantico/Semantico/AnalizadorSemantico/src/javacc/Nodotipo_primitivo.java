@@ -18,11 +18,6 @@ class Nodotipo_primitivo extends SimpleNode {
 	  System.out.println("HOLA HOLA: "+nodeType);
 	  
 	  pilaTipos.push(nodeType);
-	  
-     int i, k = jjtGetNumChildren();
-
-     for (i = 0; i < k; i++)
-        jjtGetChild(i).interpret();
      
   }
 }
