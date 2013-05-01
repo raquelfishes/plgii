@@ -11,6 +11,18 @@ class Nodoiniciar_variable extends SimpleNode {
   public Nodoiniciar_variable(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+	 //Atributos atribs = new Atributos(name, pilaTipos.peek());
+	 //Compilador.gestorTS.insertar(name, atribs); 
+	 
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=b372fd2dc78ac2c28c277bad7ad411ee (do not edit this line) */

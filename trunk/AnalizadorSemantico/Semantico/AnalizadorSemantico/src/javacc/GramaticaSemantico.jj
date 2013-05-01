@@ -523,7 +523,7 @@ void literal()      :
 /*@egen*/             
 }
 
-void literal_integer()/* #void*/: 
+void literal_integer()                 : 
 {/*@bgen(jjtree) literal_integer */
         Nodoliteral_integer jjtn000 = new Nodoliteral_integer(JJTLITERAL_INTEGER);
         boolean jjtc000 = true;

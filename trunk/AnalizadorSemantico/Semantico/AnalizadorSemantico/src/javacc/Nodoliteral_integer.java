@@ -12,6 +12,13 @@ class Nodoliteral_integer extends SimpleNode {
   public Nodoliteral_integer(Compilador p, int id) {
     super(p, id);
   }
+  
+  
+  public void interpret()
+  {
+	 
+     stack[++top] = new Integer(val);
+  }
 
 }
 /* JavaCC - OriginalChecksum=d7a7c6a3cc6511ec62f97ddbf436d874 (do not edit this line) */
