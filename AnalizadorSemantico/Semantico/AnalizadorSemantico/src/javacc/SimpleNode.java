@@ -83,11 +83,25 @@ class SimpleNode extends XNode implements Node {
   }
   
   public void comprobacionNumerica(){
-	  if( ! (	(jjtGetChild(0) instanceof NodoLiteralInteger || jjtGetChild(0) instanceof NodoLiteralFloat) && 
-			  	(jjtGetChild(1) instanceof NodoLiteralInteger || jjtGetChild(1) instanceof NodoLiteralFloat))	){
+	  
+	  if(esTipoOperacionNumerica(children[0]))
+		  children[0].interpret();
+	  
+	  if( ! (	(esTipoNumerico(children[0])) && 
+			  	(esTipoNumerico(children[1]))	) ){
 		  
 		  System.out.println("Error semántico: Los operadores no son de tipo numérico");
 	  }
+	  
+  }
+  
+  private boolean esTipoOperacionNumerica(Node nodo){
+	  return (nodo instanceof NodoAdd) || (nodo instanceof NodoSub) || (nodo instanceof NodoMult) ||(nodo instanceof NodoDiv); 
+  }
+  
+  private boolean esTipoNumerico(Node nodo){
+	  
+	  return (nodo instanceof NodoLiteralInteger) || (nodo instanceof NodoLiteralFloat) || (nodo instanceof NodoAdd) || (nodo instanceof NodoSub) || (nodo instanceof NodoMult) ||(nodo instanceof NodoDiv); 
   }
 }
 
