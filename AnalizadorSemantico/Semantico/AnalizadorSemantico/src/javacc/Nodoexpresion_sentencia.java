@@ -12,5 +12,14 @@ class Nodoexpresion_sentencia extends SimpleNode {
     super(p, id);
   }
 
+  public void interpret()
+  {
+	 
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 }
 /* JavaCC - OriginalChecksum=c15900e9d97f65c9cd21cc4e1de5d772 (do not edit this line) */

@@ -12,5 +12,13 @@ class NodoIgual extends SimpleNode {
     super(p, id);
   }
 
+  public void interpret()
+  {	 
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 }
 /* JavaCC - OriginalChecksum=34b1d8ac2b966d68084f4ddaa23444bb (do not edit this line) */
