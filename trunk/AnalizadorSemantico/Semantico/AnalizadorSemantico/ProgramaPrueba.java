@@ -5,7 +5,8 @@ public class Prueba {
 	void main(){
 		boolean b;
 		int s = 3.0 + "3.1";
-		int s2 = 4 + 5;
+		int sm = 4 + 5 + 6 * 7;
+		int smm = 4 - 'f' + 6 * 7;
 		int m = 3 * 'f';
 		int d = 5/"6";
 		Gato gardfield;
