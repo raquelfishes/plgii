@@ -317,10 +317,11 @@ void literal() #void:
   }
 }
 {
-  literal_integer() | literal_float() #LiteralFloat | literal_caracter() #LiteralCaracter | literal_string() #LiteralString | literal_boolean() #LiteralBoolean | literal_null() #LiteralNull
+  literal_integer()#LiteralInteger | literal_float() #LiteralFloat | literal_caracter() #LiteralCaracter | literal_string() #LiteralString | literal_boolean() #LiteralBoolean | literal_null() #LiteralNull
 }
 
-void literal_integer() #literal_integer: 
+
+void literal_integer() #void: 
 {
   	Token t;
 	if (usaInterfaz)
@@ -330,10 +331,11 @@ void literal_integer() #literal_integer:
 {
 
 (
-  t=<LITERAL_INTEGER>
+  <LITERAL_INTEGER>
+  /*t=<LITERAL_INTEGER>
     {
        jjtThis.val = Integer.parseInt(t.image);
-    }
+    }*/
  )
 
 }

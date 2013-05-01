@@ -6,12 +6,12 @@ public interface CompiladorTreeConstants
   public int JJTCOMPILAR = 0;
   public int JJTIDENTIFICADOR = 1;
   public int JJTVOID = 2;
-  public int JJTLITERALFLOAT = 3;
-  public int JJTLITERALCARACTER = 4;
-  public int JJTLITERALSTRING = 5;
-  public int JJTLITERALBOOLEAN = 6;
-  public int JJTLITERALNULL = 7;
-  public int JJTLITERAL_INTEGER = 8;
+  public int JJTLITERALINTEGER = 3;
+  public int JJTLITERALFLOAT = 4;
+  public int JJTLITERALCARACTER = 5;
+  public int JJTLITERALSTRING = 6;
+  public int JJTLITERALBOOLEAN = 7;
+  public int JJTLITERALNULL = 8;
   public int JJTTIPO = 9;
   public int JJTTIPO_PRIMITIVO = 10;
   public int JJTCAMPO_DECLARACION = 11;
@@ -67,12 +67,12 @@ public interface CompiladorTreeConstants
     "compilar",
     "identificador",
     "void",
+    "LiteralInteger",
     "LiteralFloat",
     "LiteralCaracter",
     "LiteralString",
     "LiteralBoolean",
     "LiteralNull",
-    "literal_integer",
     "tipo",
     "tipo_primitivo",
     "campo_declaracion",
@@ -124,4 +124,4 @@ public interface CompiladorTreeConstants
     "sentencia_try",
   };
 }
-/* JavaCC - OriginalChecksum=0f8fe8dc6c504f7499dabf1ee87b9d4d (do not edit this line) */
+/* JavaCC - OriginalChecksum=8d12adaf23ebe6d8e95c9eab2a70951f (do not edit this line) */
