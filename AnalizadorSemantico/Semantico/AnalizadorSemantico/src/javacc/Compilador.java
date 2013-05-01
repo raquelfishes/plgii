@@ -1852,7 +1852,7 @@ if (usaInterfaz)
     label_24:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case IGUAL:
+      case IGUAL_IGUAL:
       case N_IGUAL:
         ;
         break;
@@ -1861,33 +1861,33 @@ if (usaInterfaz)
         break label_24;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case IGUAL:
-        jj_consume_token(IGUAL);
-                                       NodoIgual jjtn001 = new NodoIgual(JJTIGUAL);
-                                       boolean jjtc001 = true;
-                                       jjtree.openNodeScope(jjtn001);
-                                       jjtn001.jjtSetFirstToken(getToken(1));
+      case IGUAL_IGUAL:
+        jj_consume_token(IGUAL_IGUAL);
+                                             NodoIgualIgual jjtn001 = new NodoIgualIgual(JJTIGUALIGUAL);
+                                             boolean jjtc001 = true;
+                                             jjtree.openNodeScope(jjtn001);
+                                             jjtn001.jjtSetFirstToken(getToken(1));
         try {
           expresion_instanceof();
         } catch (Throwable jjte001) {
-                                       if (jjtc001) {
-                                         jjtree.clearNodeScope(jjtn001);
-                                         jjtc001 = false;
-                                       } else {
-                                         jjtree.popNode();
-                                       }
-                                       if (jjte001 instanceof RuntimeException) {
-                                         {if (true) throw (RuntimeException)jjte001;}
-                                       }
-                                       if (jjte001 instanceof ParseException) {
-                                         {if (true) throw (ParseException)jjte001;}
-                                       }
-                                       {if (true) throw (Error)jjte001;}
+                                             if (jjtc001) {
+                                               jjtree.clearNodeScope(jjtn001);
+                                               jjtc001 = false;
+                                             } else {
+                                               jjtree.popNode();
+                                             }
+                                             if (jjte001 instanceof RuntimeException) {
+                                               {if (true) throw (RuntimeException)jjte001;}
+                                             }
+                                             if (jjte001 instanceof ParseException) {
+                                               {if (true) throw (ParseException)jjte001;}
+                                             }
+                                             {if (true) throw (Error)jjte001;}
         } finally {
-                                       if (jjtc001) {
-                                         jjtree.closeNodeScope(jjtn001,  2);
-                                         jjtn001.jjtSetLastToken(getToken(0));
-                                       }
+                                             if (jjtc001) {
+                                               jjtree.closeNodeScope(jjtn001,  2);
+                                               jjtn001.jjtSetLastToken(getToken(0));
+                                             }
         }
         break;
       case N_IGUAL:
@@ -5157,7 +5157,7 @@ if (usaInterfaz)
   }
 
   static private boolean jj_3R_129() {
-    if (jj_scan_token(IGUAL)) return true;
+    if (jj_scan_token(IGUAL_IGUAL)) return true;
     if (jj_3R_121()) return true;
     return false;
   }

@@ -231,7 +231,7 @@ TOKEN : {
   < AND : "&&" > |
   < OR_B : "|" > |
   < AND_B : "&" > |
-  < IGUAL : "==" > |
+  < IGUAL_IGUAL : "==" > |
   < N_IGUAL : "!=" > |
   < MENOR : "<" > |
   < MAYOR : ">" > |
@@ -1400,36 +1400,36 @@ void expresion_equal()      :
   }
 }
 {
-  expresion_instanceof() ( ( <IGUAL>/*@bgen(jjtree) #Igual( 2) */
-                                     {
-                                       NodoIgual jjtn001 = new NodoIgual(JJTIGUAL);
-                                       boolean jjtc001 = true;
-                                       jjtree.openNodeScope(jjtn001);
-                                       jjtn001.jjtSetFirstToken(getToken(1));
-                                     }
-                                     try {
+  expresion_instanceof() ( ( <IGUAL_IGUAL>/*@bgen(jjtree) #IgualIgual( 2) */
+                                           {
+                                             NodoIgualIgual jjtn001 = new NodoIgualIgual(JJTIGUALIGUAL);
+                                             boolean jjtc001 = true;
+                                             jjtree.openNodeScope(jjtn001);
+                                             jjtn001.jjtSetFirstToken(getToken(1));
+                                           }
+                                           try {
 /*@egen*/ expresion_instanceof()/*@bgen(jjtree)*/
-                                     } catch (Throwable jjte001) {
-                                       if (jjtc001) {
-                                         jjtree.clearNodeScope(jjtn001);
-                                         jjtc001 = false;
-                                       } else {
-                                         jjtree.popNode();
-                                       }
-                                       if (jjte001 instanceof RuntimeException) {
-                                         throw (RuntimeException)jjte001;
-                                       }
-                                       if (jjte001 instanceof ParseException) {
-                                         throw (ParseException)jjte001;
-                                       }
-                                       throw (Error)jjte001;
-                                     } finally {
-                                       if (jjtc001) {
-                                         jjtree.closeNodeScope(jjtn001,  2);
-                                         jjtn001.jjtSetLastToken(getToken(0));
-                                       }
-                                     }
-/*@egen*/          
+                                           } catch (Throwable jjte001) {
+                                             if (jjtc001) {
+                                               jjtree.clearNodeScope(jjtn001);
+                                               jjtc001 = false;
+                                             } else {
+                                               jjtree.popNode();
+                                             }
+                                             if (jjte001 instanceof RuntimeException) {
+                                               throw (RuntimeException)jjte001;
+                                             }
+                                             if (jjte001 instanceof ParseException) {
+                                               throw (ParseException)jjte001;
+                                             }
+                                             throw (Error)jjte001;
+                                           } finally {
+                                             if (jjtc001) {
+                                               jjtree.closeNodeScope(jjtn001,  2);
+                                               jjtn001.jjtSetLastToken(getToken(0));
+                                             }
+                                           }
+/*@egen*/               
   							| <N_IGUAL>/*@bgen(jjtree) #NIgual( 2) */
                                                                     {
                                                                       NodoNIgual jjtn002 = new NodoNIgual(JJTNIGUAL);

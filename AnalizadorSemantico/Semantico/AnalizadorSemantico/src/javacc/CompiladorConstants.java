@@ -151,7 +151,7 @@ public interface CompiladorConstants {
   /** RegularExpression Id. */
   int AND_B = 78;
   /** RegularExpression Id. */
-  int IGUAL = 79;
+  int IGUAL_IGUAL = 79;
   /** RegularExpression Id. */
   int N_IGUAL = 80;
   /** RegularExpression Id. */

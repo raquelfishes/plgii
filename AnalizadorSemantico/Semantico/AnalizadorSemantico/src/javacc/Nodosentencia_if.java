@@ -11,6 +11,11 @@ class Nodosentencia_if extends SimpleNode {
   public Nodosentencia_if(Compilador p, int id) {
     super(p, id);
   }
+  
+  @Override
+  public void interpret(){
+	  children[0].interpret();
+  }
 
 }
 /* JavaCC - OriginalChecksum=37e4e7aa1e782902f2498461d1839656 (do not edit this line) */
