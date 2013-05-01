@@ -11,6 +11,17 @@ class NodoSub extends SimpleNode {
   public NodoSub(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  { 
+	 
+	 super.comprobacionNumerica(); 
+		  
+	  
+//    stack[--top] = new Integer(((Integer)stack[top]).intValue() +
+//    ((Integer)stack[top + 1]).intValue());
+	  
+  }
 
 }
 /* JavaCC - OriginalChecksum=1e4879d1d2eccaec6e6dd4ac6a405f9d (do not edit this line) */

@@ -15,14 +15,7 @@ class NodoDiv extends SimpleNode {
   public void interpret()
   { 
 	 
-	  
-	  if( ! (	(jjtGetChild(0) instanceof NodoLiteralInteger || jjtGetChild(0) instanceof NodoLiteralFloat) && 
-			  	(jjtGetChild(1) instanceof NodoLiteralInteger || jjtGetChild(1) instanceof NodoLiteralFloat))	){
-		  
-		  System.out.println("Error semántico: Los operadores no son de tipo numérico");
-	  }
-	  
-		  
+	  super.comprobacionNumerica(); 
 	  
 //    stack[--top] = new Integer(((Integer)stack[top]).intValue() +
 //    ((Integer)stack[top + 1]).intValue());
