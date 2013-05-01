@@ -2,6 +2,8 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=true,NODE_PREFIX=Nodo,NODE_EXTENDS=XNode,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package javacc;
 
+import tabla.simbolos.Atributos;
+
 public
 class SimpleNode extends XNode implements Node {
 
@@ -89,7 +91,7 @@ class SimpleNode extends XNode implements Node {
 	  
 	  if(esTipoOperacionNumerica(children[1]))
 		  children[1].interpret();
-	  
+
 	  
 	  if( ! (	(esTipoNumerico(children[0])) && 
 			  	(esTipoNumerico(children[1]))	) ){
@@ -105,7 +107,25 @@ class SimpleNode extends XNode implements Node {
   
   private boolean esTipoNumerico(Node nodo){
 	  
+	  if(nodo instanceof Nodoidentificador){
+		  Object s = ((SimpleNode)children[1]).getValor();
+		  if(s!=null){
+			  boolean esta = Compilador.gestorTS.estaLexema(s.toString());
+			  if(esta){
+				  Atributos at = Compilador.gestorTS.getAtributos(s.toString());
+				  String tipo = at.getTipo();
+				  if(tipo.equals("int") || tipo.equals("float")){
+					  return true;
+				  }
+			  }
+		  }
+	  }
+	  
 	  return (nodo instanceof NodoLiteralInteger) || (nodo instanceof NodoLiteralFloat) || (nodo instanceof NodoAdd) || (nodo instanceof NodoSub) || (nodo instanceof NodoMult) ||(nodo instanceof NodoDiv); 
+  }
+  
+  public Object getValor(){
+	  return value;
   }
 }
 

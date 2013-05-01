@@ -402,12 +402,12 @@ void tipo_primitivo() :
 }
 {
   	(<BOOLEAN> { jjtThis.nodeType = "boolean"; jjtThis.pilaTipos.push("boolean");})
-    | <CHAR>
-    | <SHORT>
+    | <CHAR> { jjtThis.nodeType = "char"; jjtThis.pilaTipos.push("char");}
+    | <SHORT> { jjtThis.nodeType = "short"; jjtThis.pilaTipos.push("short");}
     | (<INT> { jjtThis.nodeType = "int"; jjtThis.pilaTipos.push("int");})
-    | <LONG>
-    | <FLOAT>
-    | <DOUBLE>
+    | <LONG> { jjtThis.nodeType = "long"; jjtThis.pilaTipos.push("long");}
+    | <FLOAT> { jjtThis.nodeType = "float"; jjtThis.pilaTipos.push("float");}
+    | <DOUBLE> { jjtThis.nodeType = "double"; jjtThis.pilaTipos.push("double");}
 }
 
 void declaracion_tipo() #void:
