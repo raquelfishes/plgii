@@ -374,190 +374,201 @@ void literal()      :
     InterfazPlg.escribirAvisos();
   }
 }
-{
-  literal_integer() |/*@bgen(jjtree) LiteralFloat */
-                      {
-                        NodoLiteralFloat jjtn001 = new NodoLiteralFloat(JJTLITERALFLOAT);
-                        boolean jjtc001 = true;
-                        jjtree.openNodeScope(jjtn001);
-                        jjtn001.jjtSetFirstToken(getToken(1));
-                      }
-                      try {
+{/*@bgen(jjtree) LiteralInteger */
+  {
+    NodoLiteralInteger jjtn001 = new NodoLiteralInteger(JJTLITERALINTEGER);
+    boolean jjtc001 = true;
+    jjtree.openNodeScope(jjtn001);
+    jjtn001.jjtSetFirstToken(getToken(1));
+  }
+  try {
+/*@egen*/
+  literal_integer()/*@bgen(jjtree)*/
+  } catch (Throwable jjte001) {
+    if (jjtc001) {
+      jjtree.clearNodeScope(jjtn001);
+      jjtc001 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte001 instanceof RuntimeException) {
+      throw (RuntimeException)jjte001;
+    }
+    if (jjte001 instanceof ParseException) {
+      throw (ParseException)jjte001;
+    }
+    throw (Error)jjte001;
+  } finally {
+    if (jjtc001) {
+      jjtree.closeNodeScope(jjtn001, true);
+      jjtn001.jjtSetLastToken(getToken(0));
+    }
+  }
+/*@egen*/                |/*@bgen(jjtree) LiteralFloat */
+                                     {
+                                       NodoLiteralFloat jjtn002 = new NodoLiteralFloat(JJTLITERALFLOAT);
+                                       boolean jjtc002 = true;
+                                       jjtree.openNodeScope(jjtn002);
+                                       jjtn002.jjtSetFirstToken(getToken(1));
+                                     }
+                                     try {
 /*@egen*/ literal_float()/*@bgen(jjtree)*/
-                      } catch (Throwable jjte001) {
-                        if (jjtc001) {
-                          jjtree.clearNodeScope(jjtn001);
-                          jjtc001 = false;
-                        } else {
-                          jjtree.popNode();
-                        }
-                        if (jjte001 instanceof RuntimeException) {
-                          throw (RuntimeException)jjte001;
-                        }
-                        if (jjte001 instanceof ParseException) {
-                          throw (ParseException)jjte001;
-                        }
-                        throw (Error)jjte001;
-                      } finally {
-                        if (jjtc001) {
-                          jjtree.closeNodeScope(jjtn001, true);
-                          jjtn001.jjtSetLastToken(getToken(0));
-                        }
-                      }
+                                     } catch (Throwable jjte002) {
+                                       if (jjtc002) {
+                                         jjtree.clearNodeScope(jjtn002);
+                                         jjtc002 = false;
+                                       } else {
+                                         jjtree.popNode();
+                                       }
+                                       if (jjte002 instanceof RuntimeException) {
+                                         throw (RuntimeException)jjte002;
+                                       }
+                                       if (jjte002 instanceof ParseException) {
+                                         throw (ParseException)jjte002;
+                                       }
+                                       throw (Error)jjte002;
+                                     } finally {
+                                       if (jjtc002) {
+                                         jjtree.closeNodeScope(jjtn002, true);
+                                         jjtn002.jjtSetLastToken(getToken(0));
+                                       }
+                                     }
 /*@egen*/               |/*@bgen(jjtree) LiteralCaracter */
-                                                      {
-                                                        NodoLiteralCaracter jjtn002 = new NodoLiteralCaracter(JJTLITERALCARACTER);
-                                                        boolean jjtc002 = true;
-                                                        jjtree.openNodeScope(jjtn002);
-                                                        jjtn002.jjtSetFirstToken(getToken(1));
-                                                      }
-                                                      try {
+                                                                     {
+                                                                       NodoLiteralCaracter jjtn003 = new NodoLiteralCaracter(JJTLITERALCARACTER);
+                                                                       boolean jjtc003 = true;
+                                                                       jjtree.openNodeScope(jjtn003);
+                                                                       jjtn003.jjtSetFirstToken(getToken(1));
+                                                                     }
+                                                                     try {
 /*@egen*/ literal_caracter()/*@bgen(jjtree)*/
-                                                      } catch (Throwable jjte002) {
-                                                        if (jjtc002) {
-                                                          jjtree.clearNodeScope(jjtn002);
-                                                          jjtc002 = false;
-                                                        } else {
-                                                          jjtree.popNode();
-                                                        }
-                                                        if (jjte002 instanceof RuntimeException) {
-                                                          throw (RuntimeException)jjte002;
-                                                        }
-                                                        if (jjte002 instanceof ParseException) {
-                                                          throw (ParseException)jjte002;
-                                                        }
-                                                        throw (Error)jjte002;
-                                                      } finally {
-                                                        if (jjtc002) {
-                                                          jjtree.closeNodeScope(jjtn002, true);
-                                                          jjtn002.jjtSetLastToken(getToken(0));
-                                                        }
-                                                      }
+                                                                     } catch (Throwable jjte003) {
+                                                                       if (jjtc003) {
+                                                                         jjtree.clearNodeScope(jjtn003);
+                                                                         jjtc003 = false;
+                                                                       } else {
+                                                                         jjtree.popNode();
+                                                                       }
+                                                                       if (jjte003 instanceof RuntimeException) {
+                                                                         throw (RuntimeException)jjte003;
+                                                                       }
+                                                                       if (jjte003 instanceof ParseException) {
+                                                                         throw (ParseException)jjte003;
+                                                                       }
+                                                                       throw (Error)jjte003;
+                                                                     } finally {
+                                                                       if (jjtc003) {
+                                                                         jjtree.closeNodeScope(jjtn003, true);
+                                                                         jjtn003.jjtSetLastToken(getToken(0));
+                                                                       }
+                                                                     }
 /*@egen*/                  |/*@bgen(jjtree) LiteralString */
-                                                                                            {
-                                                                                              NodoLiteralString jjtn003 = new NodoLiteralString(JJTLITERALSTRING);
-                                                                                              boolean jjtc003 = true;
-                                                                                              jjtree.openNodeScope(jjtn003);
-                                                                                              jjtn003.jjtSetFirstToken(getToken(1));
-                                                                                            }
-                                                                                            try {
+                                                                                                           {
+                                                                                                             NodoLiteralString jjtn004 = new NodoLiteralString(JJTLITERALSTRING);
+                                                                                                             boolean jjtc004 = true;
+                                                                                                             jjtree.openNodeScope(jjtn004);
+                                                                                                             jjtn004.jjtSetFirstToken(getToken(1));
+                                                                                                           }
+                                                                                                           try {
 /*@egen*/ literal_string()/*@bgen(jjtree)*/
-                                                                                            } catch (Throwable jjte003) {
-                                                                                              if (jjtc003) {
-                                                                                                jjtree.clearNodeScope(jjtn003);
-                                                                                                jjtc003 = false;
-                                                                                              } else {
-                                                                                                jjtree.popNode();
-                                                                                              }
-                                                                                              if (jjte003 instanceof RuntimeException) {
-                                                                                                throw (RuntimeException)jjte003;
-                                                                                              }
-                                                                                              if (jjte003 instanceof ParseException) {
-                                                                                                throw (ParseException)jjte003;
-                                                                                              }
-                                                                                              throw (Error)jjte003;
-                                                                                            } finally {
-                                                                                              if (jjtc003) {
-                                                                                                jjtree.closeNodeScope(jjtn003, true);
-                                                                                                jjtn003.jjtSetLastToken(getToken(0));
-                                                                                              }
-                                                                                            }
+                                                                                                           } catch (Throwable jjte004) {
+                                                                                                             if (jjtc004) {
+                                                                                                               jjtree.clearNodeScope(jjtn004);
+                                                                                                               jjtc004 = false;
+                                                                                                             } else {
+                                                                                                               jjtree.popNode();
+                                                                                                             }
+                                                                                                             if (jjte004 instanceof RuntimeException) {
+                                                                                                               throw (RuntimeException)jjte004;
+                                                                                                             }
+                                                                                                             if (jjte004 instanceof ParseException) {
+                                                                                                               throw (ParseException)jjte004;
+                                                                                                             }
+                                                                                                             throw (Error)jjte004;
+                                                                                                           } finally {
+                                                                                                             if (jjtc004) {
+                                                                                                               jjtree.closeNodeScope(jjtn004, true);
+                                                                                                               jjtn004.jjtSetLastToken(getToken(0));
+                                                                                                             }
+                                                                                                           }
 /*@egen*/                |/*@bgen(jjtree) LiteralBoolean */
-                                                                                                                              {
-                                                                                                                                NodoLiteralBoolean jjtn004 = new NodoLiteralBoolean(JJTLITERALBOOLEAN);
-                                                                                                                                boolean jjtc004 = true;
-                                                                                                                                jjtree.openNodeScope(jjtn004);
-                                                                                                                                jjtn004.jjtSetFirstToken(getToken(1));
-                                                                                                                              }
-                                                                                                                              try {
+                                                                                                                                             {
+                                                                                                                                               NodoLiteralBoolean jjtn005 = new NodoLiteralBoolean(JJTLITERALBOOLEAN);
+                                                                                                                                               boolean jjtc005 = true;
+                                                                                                                                               jjtree.openNodeScope(jjtn005);
+                                                                                                                                               jjtn005.jjtSetFirstToken(getToken(1));
+                                                                                                                                             }
+                                                                                                                                             try {
 /*@egen*/ literal_boolean()/*@bgen(jjtree)*/
-                                                                                                                              } catch (Throwable jjte004) {
-                                                                                                                                if (jjtc004) {
-                                                                                                                                  jjtree.clearNodeScope(jjtn004);
-                                                                                                                                  jjtc004 = false;
-                                                                                                                                } else {
-                                                                                                                                  jjtree.popNode();
-                                                                                                                                }
-                                                                                                                                if (jjte004 instanceof RuntimeException) {
-                                                                                                                                  throw (RuntimeException)jjte004;
-                                                                                                                                }
-                                                                                                                                if (jjte004 instanceof ParseException) {
-                                                                                                                                  throw (ParseException)jjte004;
-                                                                                                                                }
-                                                                                                                                throw (Error)jjte004;
-                                                                                                                              } finally {
-                                                                                                                                if (jjtc004) {
-                                                                                                                                  jjtree.closeNodeScope(jjtn004, true);
-                                                                                                                                  jjtn004.jjtSetLastToken(getToken(0));
-                                                                                                                                }
-                                                                                                                              }
+                                                                                                                                             } catch (Throwable jjte005) {
+                                                                                                                                               if (jjtc005) {
+                                                                                                                                                 jjtree.clearNodeScope(jjtn005);
+                                                                                                                                                 jjtc005 = false;
+                                                                                                                                               } else {
+                                                                                                                                                 jjtree.popNode();
+                                                                                                                                               }
+                                                                                                                                               if (jjte005 instanceof RuntimeException) {
+                                                                                                                                                 throw (RuntimeException)jjte005;
+                                                                                                                                               }
+                                                                                                                                               if (jjte005 instanceof ParseException) {
+                                                                                                                                                 throw (ParseException)jjte005;
+                                                                                                                                               }
+                                                                                                                                               throw (Error)jjte005;
+                                                                                                                                             } finally {
+                                                                                                                                               if (jjtc005) {
+                                                                                                                                                 jjtree.closeNodeScope(jjtn005, true);
+                                                                                                                                                 jjtn005.jjtSetLastToken(getToken(0));
+                                                                                                                                               }
+                                                                                                                                             }
 /*@egen*/                 |/*@bgen(jjtree) LiteralNull */
-                                                                                                                                                                  {
-                                                                                                                                                                    NodoLiteralNull jjtn005 = new NodoLiteralNull(JJTLITERALNULL);
-                                                                                                                                                                    boolean jjtc005 = true;
-                                                                                                                                                                    jjtree.openNodeScope(jjtn005);
-                                                                                                                                                                    jjtn005.jjtSetFirstToken(getToken(1));
-                                                                                                                                                                  }
-                                                                                                                                                                  try {
+                                                                                                                                                                                 {
+                                                                                                                                                                                   NodoLiteralNull jjtn006 = new NodoLiteralNull(JJTLITERALNULL);
+                                                                                                                                                                                   boolean jjtc006 = true;
+                                                                                                                                                                                   jjtree.openNodeScope(jjtn006);
+                                                                                                                                                                                   jjtn006.jjtSetFirstToken(getToken(1));
+                                                                                                                                                                                 }
+                                                                                                                                                                                 try {
 /*@egen*/ literal_null()/*@bgen(jjtree)*/
-                                                                                                                                                                  } catch (Throwable jjte005) {
-                                                                                                                                                                    if (jjtc005) {
-                                                                                                                                                                      jjtree.clearNodeScope(jjtn005);
-                                                                                                                                                                      jjtc005 = false;
-                                                                                                                                                                    } else {
-                                                                                                                                                                      jjtree.popNode();
-                                                                                                                                                                    }
-                                                                                                                                                                    if (jjte005 instanceof RuntimeException) {
-                                                                                                                                                                      throw (RuntimeException)jjte005;
-                                                                                                                                                                    }
-                                                                                                                                                                    if (jjte005 instanceof ParseException) {
-                                                                                                                                                                      throw (ParseException)jjte005;
-                                                                                                                                                                    }
-                                                                                                                                                                    throw (Error)jjte005;
-                                                                                                                                                                  } finally {
-                                                                                                                                                                    if (jjtc005) {
-                                                                                                                                                                      jjtree.closeNodeScope(jjtn005, true);
-                                                                                                                                                                      jjtn005.jjtSetLastToken(getToken(0));
-                                                                                                                                                                    }
-                                                                                                                                                                  }
+                                                                                                                                                                                 } catch (Throwable jjte006) {
+                                                                                                                                                                                   if (jjtc006) {
+                                                                                                                                                                                     jjtree.clearNodeScope(jjtn006);
+                                                                                                                                                                                     jjtc006 = false;
+                                                                                                                                                                                   } else {
+                                                                                                                                                                                     jjtree.popNode();
+                                                                                                                                                                                   }
+                                                                                                                                                                                   if (jjte006 instanceof RuntimeException) {
+                                                                                                                                                                                     throw (RuntimeException)jjte006;
+                                                                                                                                                                                   }
+                                                                                                                                                                                   if (jjte006 instanceof ParseException) {
+                                                                                                                                                                                     throw (ParseException)jjte006;
+                                                                                                                                                                                   }
+                                                                                                                                                                                   throw (Error)jjte006;
+                                                                                                                                                                                 } finally {
+                                                                                                                                                                                   if (jjtc006) {
+                                                                                                                                                                                     jjtree.closeNodeScope(jjtn006, true);
+                                                                                                                                                                                     jjtn006.jjtSetLastToken(getToken(0));
+                                                                                                                                                                                   }
+                                                                                                                                                                                 }
 /*@egen*/             
 }
 
-void literal_integer()                 : 
-{/*@bgen(jjtree) literal_integer */
-        Nodoliteral_integer jjtn000 = new Nodoliteral_integer(JJTLITERAL_INTEGER);
-        boolean jjtc000 = true;
-        jjtree.openNodeScope(jjtn000);
-        jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/
+
+void literal_integer()      : 
+{
   	Token t;
 	if (usaInterfaz)
     	InterfazPlg.escribirAvisos();
     	
 }
-{/*@bgen(jjtree) literal_integer */
-try {
-/*@egen*/
+{
 
 (
-  t=<LITERAL_INTEGER>/*@bgen(jjtree)*/
+  <LITERAL_INTEGER>
+  /*t=<LITERAL_INTEGER>
     {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-/*@egen*/
-    {
-       jjtn000.val = Integer.parseInt(t.image);
-    }
- )/*@bgen(jjtree)*/
-} finally {
-  if (jjtc000) {
-    jjtree.closeNodeScope(jjtn000, true);
-    jjtn000.jjtSetLastToken(getToken(0));
-  }
-}
-/*@egen*/
+       jjtThis.val = Integer.parseInt(t.image);
+    }*/
+ )
 
 }
 

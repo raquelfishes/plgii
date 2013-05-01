@@ -13,17 +13,20 @@ class NodoAdd extends SimpleNode {
   }
   
   public void interpret()
-  {
+  { 
+	 
 	  
-	  try{
-	     jjtGetChild(0).interpret();
-	     jjtGetChild(1).interpret();
+	  if( ! (	(jjtGetChild(0) instanceof NodoLiteralInteger || jjtGetChild(0) instanceof NodoLiteralFloat) && 
+			  	(jjtGetChild(1) instanceof NodoLiteralInteger || jjtGetChild(1) instanceof NodoLiteralFloat))	){
+		  
+		  System.out.println("Error semántico: Los operadores no son de tipo numérico");
 	  }
-	  catch(Exception e){
-		  System.out.println("Error semántico.");
-	  }
-//     stack[--top] = new Integer(((Integer)stack[top]).intValue() +
-//                                ((Integer)stack[top + 1]).intValue());
+	  
+		  
+	  
+//    stack[--top] = new Integer(((Integer)stack[top]).intValue() +
+//    ((Integer)stack[top + 1]).intValue());
+	  
   }
 }
 /* JavaCC - OriginalChecksum=d234078e2db31d4bbeb5371e3fc9611c (do not edit this line) */

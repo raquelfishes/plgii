@@ -4,7 +4,7 @@ public class Prueba {
 	
 	void main(){
 		boolean b;
-		int s = 3 + 'f';
+		int s = 3.0 + "3.1";
 		Gato gardfield;
 		
 		i = k = 3;
