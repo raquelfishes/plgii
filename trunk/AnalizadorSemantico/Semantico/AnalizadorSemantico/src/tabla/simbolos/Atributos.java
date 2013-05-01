@@ -9,4 +9,8 @@ public class Atributos
         	this.lexema = lexema;
         	this.tipo = tipo;
         }
+        
+        public String getTipo(){
+        	return tipo;
+        }
 }

@@ -675,8 +675,20 @@ void tipo_primitivo() :
                      jjtn000.jjtSetLastToken(getToken(0));
                    }
 /*@egen*/ { jjtn000.nodeType = "boolean"; jjtn000.pilaTipos.push("boolean");})
-    | <CHAR>
-    | <SHORT>
+    | <CHAR>/*@bgen(jjtree)*/
+             {
+               jjtree.closeNodeScope(jjtn000, true);
+               jjtc000 = false;
+               jjtn000.jjtSetLastToken(getToken(0));
+             }
+/*@egen*/ { jjtn000.nodeType = "char"; jjtn000.pilaTipos.push("char");}
+    | <SHORT>/*@bgen(jjtree)*/
+              {
+                jjtree.closeNodeScope(jjtn000, true);
+                jjtc000 = false;
+                jjtn000.jjtSetLastToken(getToken(0));
+              }
+/*@egen*/ { jjtn000.nodeType = "short"; jjtn000.pilaTipos.push("short");}
     | (<INT>/*@bgen(jjtree)*/
              {
                jjtree.closeNodeScope(jjtn000, true);
@@ -684,9 +696,27 @@ void tipo_primitivo() :
                jjtn000.jjtSetLastToken(getToken(0));
              }
 /*@egen*/ { jjtn000.nodeType = "int"; jjtn000.pilaTipos.push("int");})
-    | <LONG>
-    | <FLOAT>
+    | <LONG>/*@bgen(jjtree)*/
+             {
+               jjtree.closeNodeScope(jjtn000, true);
+               jjtc000 = false;
+               jjtn000.jjtSetLastToken(getToken(0));
+             }
+/*@egen*/ { jjtn000.nodeType = "long"; jjtn000.pilaTipos.push("long");}
+    | <FLOAT>/*@bgen(jjtree)*/
+              {
+                jjtree.closeNodeScope(jjtn000, true);
+                jjtc000 = false;
+                jjtn000.jjtSetLastToken(getToken(0));
+              }
+/*@egen*/ { jjtn000.nodeType = "float"; jjtn000.pilaTipos.push("float");}
     | <DOUBLE>/*@bgen(jjtree)*/
+               {
+                 jjtree.closeNodeScope(jjtn000, true);
+                 jjtc000 = false;
+                 jjtn000.jjtSetLastToken(getToken(0));
+               }
+/*@egen*/ { jjtn000.nodeType = "double"; jjtn000.pilaTipos.push("double");}/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
