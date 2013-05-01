@@ -11,6 +11,23 @@ class NodoMult extends SimpleNode {
   public NodoMult(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  { 
+	 
+	  
+	  if( ! (	(jjtGetChild(0) instanceof NodoLiteralInteger || jjtGetChild(0) instanceof NodoLiteralFloat) && 
+			  	(jjtGetChild(1) instanceof NodoLiteralInteger || jjtGetChild(1) instanceof NodoLiteralFloat))	){
+		  
+		  System.out.println("Error semántico: Los operadores no son de tipo numérico");
+	  }
+	  
+		  
+	  
+//    stack[--top] = new Integer(((Integer)stack[top]).intValue() +
+//    ((Integer)stack[top + 1]).intValue());
+	  
+  }
 
 }
 /* JavaCC - OriginalChecksum=a7a29c340d63503b65aa35b004023e81 (do not edit this line) */
