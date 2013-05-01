@@ -299,9 +299,7 @@ void identificador() :
 {
   t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> <IDENTIFICADOR> )*
   {
-    System.out.println("Identificador "+t.toString());
-    Atributos atribs = new Atributos(t.toString(), "nada");
-    gestorTS.insertar(t.toString(), atribs);
+    jjtThis.pilaTipos.push(t.image);
     if (usaInterfaz){
       InterfazPlg.escribirIdentificadores(t.toString());
     }
@@ -402,10 +400,10 @@ void tipo_primitivo() :
   }
 }
 {
-  	(<BOOLEAN> { jjtThis.nodeType = "boolean";})
+  	(<BOOLEAN> { jjtThis.nodeType = "boolean"; jjtThis.pilaTipos.push("boolean");})
     | <CHAR>
     | <SHORT>
-    | (<INT> { jjtThis.nodeType = "int";})
+    | (<INT> { jjtThis.nodeType = "int"; jjtThis.pilaTipos.push("int");})
     | <LONG>
     | <FLOAT>
     | <DOUBLE>
@@ -552,7 +550,13 @@ void declarador_variable_id() :
   }
 }
 {
-  t = <IDENTIFICADOR> { jjtThis.name = t.image; } ( <COR_A> <COR_C> )*
+  t = <IDENTIFICADOR>
+  {
+    jjtThis.name = t.image; 
+	Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
+	Compilador.gestorTS.insertar(jjtThis.name, atribs);
+	System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
+  } ( <COR_A> <COR_C> )*
 }
 
 void iniciar_variable() :

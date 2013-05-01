@@ -18,8 +18,8 @@ class Nododeclarador_variable_id extends SimpleNode {
 
   public void interpret()
   {
-	 Atributos atribs = new Atributos(name, pilaTipos.peek());
-	 Compilador.gestorTS.insertar(name, atribs); 
+	 //Atributos atribs = new Atributos(name, pilaTipos.peek());
+	 //Compilador.gestorTS.insertar(name, atribs); 
 	 
      int i, k = jjtGetNumChildren();
 
