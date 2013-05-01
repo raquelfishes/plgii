@@ -11,6 +11,21 @@ class Nodoasignacion extends SimpleNode {
   public Nodoasignacion(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+	  // Interpretar sus 2 hijos, para obtener sus tipos
+	  jjtGetChild(0).interpret();
+	  jjtGetChild(1).interpret();
+
+	  if (((XNode)jjtGetChild(0)).nodeType == ((XNode)jjtGetChild(1)).nodeType){
+		  nodeType = ((XNode)jjtGetChild(0)).nodeType;
+	  }
+	  else {
+		  System.out.println("Error Asignación: Tipo izq " + ((XNode)jjtGetChild(0)).nodeType +
+				 " distinto de tipo der " + ((XNode)jjtGetChild(1)).nodeType);
+	  }
+  }
 
 }
 /* JavaCC - OriginalChecksum=90ac55abfb3ed5f52371f3ed38ec99c7 (do not edit this line) */

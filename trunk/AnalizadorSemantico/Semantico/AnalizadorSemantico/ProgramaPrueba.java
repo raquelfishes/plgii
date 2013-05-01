@@ -6,5 +6,8 @@ public class Prueba {
 		boolean b;
 		int s = 3 + 'f';
 		Gato gardfield;
+		
+		i = k = 3;
+		b = (i==1);
 	}
 }

@@ -1101,23 +1101,9 @@ void operador_asignacion()       :
   op_equals() | op_mult_e() | <DIV_E> | <MOD_E> | op_add_e() | <SUB_E> | <AND_E> | <OR_E>
 }
 
-void op_equals() :
-{/*@bgen(jjtree) op_equals */
-  Nodoop_equals jjtn000 = new Nodoop_equals(JJTOP_EQUALS);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/}{/*@bgen(jjtree) op_equals */
-  try {
-/*@egen*/
-  <EQUALS>/*@bgen(jjtree)*/
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-  }
-/*@egen*/}
+void op_equals()      :
+{}{
+  <EQUALS>}
 
 void op_mult_e() :
 {/*@bgen(jjtree) op_mult_e */

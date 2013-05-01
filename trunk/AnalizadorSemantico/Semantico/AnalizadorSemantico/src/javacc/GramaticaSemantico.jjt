@@ -692,7 +692,7 @@ void operador_asignacion() #void :
   op_equals() | op_mult_e() | <DIV_E> | <MOD_E> | op_add_e() | <SUB_E> | <AND_E> | <OR_E>
 }
 
-void op_equals() :
+void op_equals() #void:
 {}{
   <EQUALS>}
 
