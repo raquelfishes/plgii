@@ -87,6 +87,10 @@ class SimpleNode extends XNode implements Node {
 	  if(esTipoOperacionNumerica(children[0]))
 		  children[0].interpret();
 	  
+	  if(esTipoOperacionNumerica(children[1]))
+		  children[1].interpret();
+	  
+	  
 	  if( ! (	(esTipoNumerico(children[0])) && 
 			  	(esTipoNumerico(children[1]))	) ){
 		  
