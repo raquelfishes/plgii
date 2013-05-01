@@ -561,14 +561,7 @@ void literal_integer()      :
     	
 }
 {
-
-(
-  <LITERAL_INTEGER>
-  /*t=<LITERAL_INTEGER>
-    {
-       jjtThis.val = Integer.parseInt(t.image);
-    }*/
- )
+	<LITERAL_INTEGER>
 
 }
 
