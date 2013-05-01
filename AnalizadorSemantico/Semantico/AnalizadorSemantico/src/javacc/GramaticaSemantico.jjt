@@ -320,7 +320,7 @@ void literal() #void:
   literal_integer() | literal_float() #LiteralFloat | literal_caracter() #LiteralCaracter | literal_string() #LiteralString | literal_boolean() #LiteralBoolean | literal_null() #LiteralNull
 }
 
-void literal_integer()/* #void*/: 
+void literal_integer() #literal_integer: 
 {
   	Token t;
 	if (usaInterfaz)

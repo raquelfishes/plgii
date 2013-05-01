@@ -11,6 +11,19 @@ class NodoAdd extends SimpleNode {
   public NodoAdd(Compilador p, int id) {
     super(p, id);
   }
-
+  
+  public void interpret()
+  {
+	  
+	  try{
+	     jjtGetChild(0).interpret();
+	     jjtGetChild(1).interpret();
+	  }
+	  catch(Exception e){
+		  System.out.println("Error semántico.");
+	  }
+//     stack[--top] = new Integer(((Integer)stack[top]).intValue() +
+//                                ((Integer)stack[top + 1]).intValue());
+  }
 }
 /* JavaCC - OriginalChecksum=d234078e2db31d4bbeb5371e3fc9611c (do not edit this line) */
