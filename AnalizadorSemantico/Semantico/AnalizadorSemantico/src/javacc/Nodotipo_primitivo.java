@@ -15,9 +15,9 @@ class Nodotipo_primitivo extends SimpleNode {
   
   public void interpret()
   {
-	  System.out.println("HOLA HOLA: "+nodeType);
+	  //System.out.println("HOLA HOLA: "+nodeType);
 	  
-	  pilaTipos.push(nodeType);
+	  //pilaTipos.push(nodeType);
      
   }
 }

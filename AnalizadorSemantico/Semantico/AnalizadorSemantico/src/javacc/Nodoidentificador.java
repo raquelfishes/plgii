@@ -15,8 +15,8 @@ class Nodoidentificador extends SimpleNode {
   
   public void interpret()
   {
-	  System.out.println("PEW PEW: "+nodeType);
-	 pilaTipos.push(nodeType);
+	  //System.out.println("PEW PEW: "+nodeType);
+	 ///pilaTipos.push(nodeType);
 
   }
 

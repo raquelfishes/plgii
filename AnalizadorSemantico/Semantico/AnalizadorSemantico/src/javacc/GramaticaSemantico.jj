@@ -350,9 +350,7 @@ void identificador() :
   }
 /*@egen*/
   {
-    System.out.println("Identificador "+t.toString());
-    Atributos atribs = new Atributos(t.toString(), "nada");
-    gestorTS.insertar(t.toString(), atribs);
+    jjtn000.pilaTipos.push(t.image);
     if (usaInterfaz){
       InterfazPlg.escribirIdentificadores(t.toString());
     }
@@ -675,7 +673,7 @@ void tipo_primitivo() :
                      jjtc000 = false;
                      jjtn000.jjtSetLastToken(getToken(0));
                    }
-/*@egen*/ { jjtn000.nodeType = "boolean";})
+/*@egen*/ { jjtn000.nodeType = "boolean"; jjtn000.pilaTipos.push("boolean");})
     | <CHAR>
     | <SHORT>
     | (<INT>/*@bgen(jjtree)*/
@@ -684,7 +682,7 @@ void tipo_primitivo() :
                jjtc000 = false;
                jjtn000.jjtSetLastToken(getToken(0));
              }
-/*@egen*/ { jjtn000.nodeType = "int";})
+/*@egen*/ { jjtn000.nodeType = "int"; jjtn000.pilaTipos.push("int");})
     | <LONG>
     | <FLOAT>
     | <DOUBLE>/*@bgen(jjtree)*/
@@ -907,7 +905,13 @@ void declarador_variable_id() :
 {/*@bgen(jjtree) declarador_variable_id */
   try {
 /*@egen*/
-  t = <IDENTIFICADOR> { jjtn000.name = t.image; } ( <COR_A> <COR_C> )*/*@bgen(jjtree)*/
+  t = <IDENTIFICADOR>
+  {
+    jjtn000.name = t.image; 
+	Atributos atribs = new Atributos(jjtn000.name, jjtn000.pilaTipos.peek());
+	Compilador.gestorTS.insertar(jjtn000.name, atribs);
+	System.out.println("Identificador: "+ jjtn000.name + " con tipo "+jjtn000.pilaTipos.peek());
+  } ( <COR_A> <COR_C> )*/*@bgen(jjtree)*/
   } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
