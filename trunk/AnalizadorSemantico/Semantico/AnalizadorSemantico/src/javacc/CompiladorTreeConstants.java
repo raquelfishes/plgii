@@ -26,7 +26,7 @@ public interface CompiladorTreeConstants
   public int JJTBOR = 20;
   public int JJTXOR = 21;
   public int JJTBAND = 22;
-  public int JJTIGUAL = 23;
+  public int JJTIGUALIGUAL = 23;
   public int JJTNIGUAL = 24;
   public int JJTMENOR = 25;
   public int JJTMAYOR = 26;
@@ -87,7 +87,7 @@ public interface CompiladorTreeConstants
     "BOr",
     "XOr",
     "BAnd",
-    "Igual",
+    "IgualIgual",
     "NIgual",
     "Menor",
     "Mayor",
@@ -124,4 +124,4 @@ public interface CompiladorTreeConstants
     "sentencia_try",
   };
 }
-/* JavaCC - OriginalChecksum=8d12adaf23ebe6d8e95c9eab2a70951f (do not edit this line) */
+/* JavaCC - OriginalChecksum=f0710586be155b85fed77d41bf2e3261 (do not edit this line) */

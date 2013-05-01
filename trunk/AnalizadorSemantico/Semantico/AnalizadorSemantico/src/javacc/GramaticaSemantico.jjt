@@ -227,7 +227,7 @@ TOKEN : {
   < AND : "&&" > |
   < OR_B : "|" > |
   < AND_B : "&" > |
-  < IGUAL : "==" > |
+  < IGUAL_IGUAL : "==" > |
   < N_IGUAL : "!=" > |
   < MENOR : "<" > |
   < MAYOR : ">" > |
@@ -779,7 +779,7 @@ void expresion_equal() #void:
   }
 }
 {
-  expresion_instanceof() ( ( <IGUAL> expresion_instanceof() #Igual(2)
+  expresion_instanceof() ( ( <IGUAL_IGUAL> expresion_instanceof() #IgualIgual(2)
   							| <N_IGUAL> expresion_instanceof() #NIgual(2)
   							)
   						)*
