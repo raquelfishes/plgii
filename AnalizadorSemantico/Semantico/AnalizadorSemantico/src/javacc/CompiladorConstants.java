@@ -206,8 +206,6 @@ public interface CompiladorConstants {
   int COMP = 105;
   /** RegularExpression Id. */
   int IDENTIFICADOR = 106;
-  /** RegularExpression Id. */
-  int IDENTIFICADOR_ERROR_1 = 107;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -323,7 +321,6 @@ public interface CompiladorConstants {
     "\"^\"",
     "\"~\"",
     "<IDENTIFICADOR>",
-    "<IDENTIFICADOR_ERROR_1>",
   };
 
 }
