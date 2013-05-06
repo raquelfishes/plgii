@@ -283,22 +283,24 @@ SimpleNode compilar():
 
 void identificador() :
 {
-  Token t;
+  Token t, t1 = null;
+  String restoTipo = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> <IDENTIFICADOR> )*
+  t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> t1=<IDENTIFICADOR> {restoTipo += "." + t1.image;} )*
   {
-    jjtThis.pilaTipos.push(t.image);
     if (usaInterfaz){
       InterfazPlg.escribirIdentificadores(t.toString());
     }
 
-	jjtThis.value = t.image;
-	jjtThis.nodeType = t.image;
+	jjtThis.value = t.image + restoTipo;
+	jjtThis.nodeType = t.image + restoTipo;
+
+	jjtThis.pilaTipos.push(jjtThis.nodeType);
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
   }
@@ -524,7 +526,7 @@ void campo_declaracion() :
 }
 {
   ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <FINAL> | <VOLATILE> )*
-  tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC> { jjtThis.pilaTipos.clear(); }}
+  tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC>}
 
 void declarador_variable() :
 {
@@ -981,7 +983,7 @@ void prefijo_primario() #void:
 |
   <PAR_A> expresion() <PAR_C>
 |
-  expresion_asignacion()
+  expresion_asignacion_array()
 }
 
 void sufijo_primario() #void:
@@ -1021,7 +1023,7 @@ void lista_argumentos() #void:
   expresion() ( <COMA> expresion() )*
 }
 
-void expresion_asignacion() :
+void expresion_asignacion_array() :
 {
   if (usaInterfaz)
   {
@@ -1135,7 +1137,7 @@ void declaracion_variable_local() #void:
   tipo() declarador_variable() ( <COMA> declarador_variable() )*
 }
 
-void sentencia_vacia() :
+void sentencia_vacia() #void:
 {
   if (usaInterfaz)
   {

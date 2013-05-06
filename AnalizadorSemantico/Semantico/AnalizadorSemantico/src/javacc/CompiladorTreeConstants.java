@@ -46,21 +46,20 @@ public interface CompiladorTreeConstants
   public int JJTSUBSUB = 40;
   public int JJTCOMP = 41;
   public int JJTNOT = 42;
-  public int JJTEXPRESION_ASIGNACION = 43;
-  public int JJTSENTENCIA_VACIA = 44;
-  public int JJTEXPRESION_SENTENCIA = 45;
-  public int JJTSENTENCIA_SWITCH = 46;
-  public int JJTETIQUETA_SWITCH = 47;
-  public int JJTSENTENCIA_IF = 48;
-  public int JJTSENTENCIA_WHILE = 49;
-  public int JJTSENTENCIA_DO = 50;
-  public int JJTSENTENCIA_FOR = 51;
-  public int JJTSENTENCIA_BREAK = 52;
-  public int JJTSENTENCIA_CONTINUE = 53;
-  public int JJTSENTENCIA_RETURN = 54;
-  public int JJTSENTENCIA_THROW = 55;
-  public int JJTSENTENCIA_SYNCHRONIZED = 56;
-  public int JJTSENTENCIA_TRY = 57;
+  public int JJTEXPRESION_ASIGNACION_ARRAY = 43;
+  public int JJTEXPRESION_SENTENCIA = 44;
+  public int JJTSENTENCIA_SWITCH = 45;
+  public int JJTETIQUETA_SWITCH = 46;
+  public int JJTSENTENCIA_IF = 47;
+  public int JJTSENTENCIA_WHILE = 48;
+  public int JJTSENTENCIA_DO = 49;
+  public int JJTSENTENCIA_FOR = 50;
+  public int JJTSENTENCIA_BREAK = 51;
+  public int JJTSENTENCIA_CONTINUE = 52;
+  public int JJTSENTENCIA_RETURN = 53;
+  public int JJTSENTENCIA_THROW = 54;
+  public int JJTSENTENCIA_SYNCHRONIZED = 55;
+  public int JJTSENTENCIA_TRY = 56;
 
 
   public String[] jjtNodeName = {
@@ -107,8 +106,7 @@ public interface CompiladorTreeConstants
     "SubSub",
     "Comp",
     "Not",
-    "expresion_asignacion",
-    "sentencia_vacia",
+    "expresion_asignacion_array",
     "expresion_sentencia",
     "sentencia_switch",
     "etiqueta_switch",
@@ -124,4 +122,4 @@ public interface CompiladorTreeConstants
     "sentencia_try",
   };
 }
-/* JavaCC - OriginalChecksum=f0710586be155b85fed77d41bf2e3261 (do not edit this line) */
+/* JavaCC - OriginalChecksum=dcd307d83eb9bb93b8c49e7bfbf9afa2 (do not edit this line) */

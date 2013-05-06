@@ -326,7 +326,8 @@ void identificador() :
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
-  Token t;
+  Token t, t1 = null;
+  String restoTipo = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -335,7 +336,7 @@ void identificador() :
 {/*@bgen(jjtree) identificador */
   try {
 /*@egen*/
-  t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> <IDENTIFICADOR> )*/*@bgen(jjtree)*/
+  t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> t1=<IDENTIFICADOR> {restoTipo += "." + t1.image;} )*/*@bgen(jjtree)*/
   {
     jjtree.closeNodeScope(jjtn000, true);
     jjtc000 = false;
@@ -343,13 +344,14 @@ void identificador() :
   }
 /*@egen*/
   {
-    jjtn000.pilaTipos.push(t.image);
     if (usaInterfaz){
       InterfazPlg.escribirIdentificadores(t.toString());
     }
 
-	jjtn000.value = t.image;
-	jjtn000.nodeType = t.image;
+	jjtn000.value = t.image + restoTipo;
+	jjtn000.nodeType = t.image + restoTipo;
+
+	jjtn000.pilaTipos.push(jjtn000.nodeType);
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
   }/*@bgen(jjtree)*/
@@ -848,12 +850,6 @@ void campo_declaracion() :
 /*@egen*/
   ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <FINAL> | <VOLATILE> )*
   tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC>/*@bgen(jjtree)*/
-                                                                       {
-                                                                         jjtree.closeNodeScope(jjtn000, true);
-                                                                         jjtc000 = false;
-                                                                         jjtn000.jjtSetLastToken(getToken(0));
-                                                                       }
-/*@egen*/ { jjtn000.pilaTipos.clear(); }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -2182,7 +2178,7 @@ void prefijo_primario()      :
 |
   <PAR_A> expresion() <PAR_C>
 |
-  expresion_asignacion()
+  expresion_asignacion_array()
 }
 
 void sufijo_primario()      :
@@ -2222,9 +2218,9 @@ void lista_argumentos()      :
   expresion() ( <COMA> expresion() )*
 }
 
-void expresion_asignacion() :
-{/*@bgen(jjtree) expresion_asignacion */
-  Nodoexpresion_asignacion jjtn000 = new Nodoexpresion_asignacion(JJTEXPRESION_ASIGNACION);
+void expresion_asignacion_array() :
+{/*@bgen(jjtree) expresion_asignacion_array */
+  Nodoexpresion_asignacion_array jjtn000 = new Nodoexpresion_asignacion_array(JJTEXPRESION_ASIGNACION_ARRAY);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
@@ -2234,7 +2230,7 @@ void expresion_asignacion() :
     InterfazPlg.escribirAvisos();
   }
 }
-{/*@bgen(jjtree) expresion_asignacion */
+{/*@bgen(jjtree) expresion_asignacion_array */
   try {
 /*@egen*/
   LOOKAHEAD(2)
@@ -2364,29 +2360,15 @@ void declaracion_variable_local()      :
   tipo() declarador_variable() ( <COMA> declarador_variable() )*
 }
 
-void sentencia_vacia() :
-{/*@bgen(jjtree) sentencia_vacia */
-  Nodosentencia_vacia jjtn000 = new Nodosentencia_vacia(JJTSENTENCIA_VACIA);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/
+void sentencia_vacia()      :
+{
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
-{/*@bgen(jjtree) sentencia_vacia */
-  try {
-/*@egen*/
-  <PYC>/*@bgen(jjtree)*/
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-  }
-/*@egen*/
+{
+  <PYC>
 }
 
 void expresion_sentencia() :

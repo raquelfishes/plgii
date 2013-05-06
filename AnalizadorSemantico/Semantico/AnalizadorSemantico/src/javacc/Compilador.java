@@ -162,7 +162,8 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
   Nodoidentificador jjtn000 = new Nodoidentificador(JJTIDENTIFICADOR);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));Token t;
+  jjtn000.jjtSetFirstToken(getToken(1));Token t, t1 = null;
+  String restoTipo = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -177,18 +178,20 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
           break label_3;
         }
         jj_consume_token(PUNTO);
-        jj_consume_token(IDENTIFICADOR);
+        t1 = jj_consume_token(IDENTIFICADOR);
+                                                                 restoTipo += "." + t1.image;
       }
     jjtree.closeNodeScope(jjtn000, true);
     jjtc000 = false;
     jjtn000.jjtSetLastToken(getToken(0));
-    jjtn000.pilaTipos.push(t.image);
     if (usaInterfaz){
       InterfazPlg.escribirIdentificadores(t.toString());
     }
 
-        jjtn000.value = t.image;
-        jjtn000.nodeType = t.image;
+        jjtn000.value = t.image + restoTipo;
+        jjtn000.nodeType = t.image + restoTipo;
+
+        jjtn000.pilaTipos.push(jjtn000.nodeType);
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
 
@@ -977,10 +980,6 @@ if (usaInterfaz)
         declarador_variable();
       }
       jj_consume_token(PYC);
-                                                                         jjtree.closeNodeScope(jjtn000, true);
-                                                                         jjtc000 = false;
-                                                                         jjtn000.jjtSetLastToken(getToken(0));
-                                                                         jjtn000.pilaTipos.clear();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -2866,7 +2865,7 @@ if (usaInterfaz)
       jj_consume_token(PAR_C);
       break;
     case NEW:
-      expresion_asignacion();
+      expresion_asignacion_array();
       break;
     default:
       jj_la1[76] = jj_gen;
@@ -2954,9 +2953,9 @@ if (usaInterfaz)
     }
   }
 
-  static final public void expresion_asignacion() throws ParseException {
- /*@bgen(jjtree) expresion_asignacion */
-  Nodoexpresion_asignacion jjtn000 = new Nodoexpresion_asignacion(JJTEXPRESION_ASIGNACION);
+  static final public void expresion_asignacion_array() throws ParseException {
+ /*@bgen(jjtree) expresion_asignacion_array */
+  Nodoexpresion_asignacion_array jjtn000 = new Nodoexpresion_asignacion_array(JJTEXPRESION_ASIGNACION_ARRAY);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));if (usaInterfaz)
@@ -3248,22 +3247,11 @@ if (usaInterfaz)
   }
 
   static final public void sentencia_vacia() throws ParseException {
- /*@bgen(jjtree) sentencia_vacia */
-  Nodosentencia_vacia jjtn000 = new Nodosentencia_vacia(JJTSENTENCIA_VACIA);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));if (usaInterfaz)
+  if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
-    try {
-      jj_consume_token(PYC);
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-    }
+    jj_consume_token(PYC);
   }
 
   static final public void expresion_sentencia() throws ParseException {
@@ -4256,12 +4244,6 @@ if (usaInterfaz)
     return false;
   }
 
-  static private boolean jj_3_1() {
-    if (jj_scan_token(PUNTO)) return true;
-    if (jj_scan_token(IDENTIFICADOR)) return true;
-    return false;
-  }
-
   static private boolean jj_3R_93() {
     Token xsp;
     xsp = jj_scanpos;
@@ -4286,6 +4268,12 @@ if (usaInterfaz)
 
   static private boolean jj_3R_99() {
     if (jj_scan_token(58)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1() {
+    if (jj_scan_token(PUNTO)) return true;
+    if (jj_scan_token(IDENTIFICADOR)) return true;
     return false;
   }
 
