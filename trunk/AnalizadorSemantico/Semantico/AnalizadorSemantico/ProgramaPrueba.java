@@ -12,7 +12,7 @@ public class Prueba {
 //		int v = 3 + a;
 //		int m = 3 * 'f';
 //		int d = 5/"6";
-		Gato gardfield;
+		Gato.Cosmico gardfield;
 		
 		i = k = 3;
 		b = (i==1);

@@ -22,6 +22,7 @@ class Nododeclarador_variable_id extends SimpleNode {
 	 //Compilador.gestorTS.insertar(name, atribs); 
 	 
      int i, k = jjtGetNumChildren();
+     
 
      for (i = 0; i < k; i++)
         jjtGetChild(i).interpret();
