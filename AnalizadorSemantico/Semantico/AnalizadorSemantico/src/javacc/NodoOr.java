@@ -12,5 +12,10 @@ class NodoOr extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public void interpret()
+  { 
+	  super.comprobacionBooleana();
+  }
 }
 /* JavaCC - OriginalChecksum=59110293b7ef56c56cef18777a63637e (do not edit this line) */

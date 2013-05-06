@@ -12,5 +12,10 @@ class NodoBOr extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public void interpret()
+  { 
+	  super.comprobacionBooleana();
+  }
 }
 /* JavaCC - OriginalChecksum=3ff9accd9b383844a5de933f8c867236 (do not edit this line) */

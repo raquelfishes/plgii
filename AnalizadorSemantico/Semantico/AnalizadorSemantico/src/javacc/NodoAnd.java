@@ -11,6 +11,12 @@ class NodoAnd extends SimpleNode {
   public NodoAnd(Compilador p, int id) {
     super(p, id);
   }
+  
+  @Override
+  public void interpret()
+  { 
+	  super.comprobacionBooleana();
+  }
 
 }
 /* JavaCC - OriginalChecksum=d0b8a5c83c68b8997fc6132908c537ed (do not edit this line) */

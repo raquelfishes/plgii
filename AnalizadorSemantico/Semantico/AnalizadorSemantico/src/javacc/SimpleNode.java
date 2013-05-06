@@ -127,6 +127,47 @@ class SimpleNode extends XNode implements Node {
   public Object getValor(){
 	  return value;
   }
+  
+  //FIXME PARAMETRIZAR!!
+ public void comprobacionBooleana(){
+	  
+	  if(esTipoOperacionBooleana(children[0]))
+		  children[0].interpret();
+	  
+	  if(esTipoOperacionBooleana(children[1]))
+		  children[1].interpret();
+
+	  
+	  if( ! (	(esTipoBoolean(children[0])) && 
+			  	(esTipoBoolean(children[1]))	) ){
+		  
+		  System.out.println("Error semántico: Los operadores no son de tipo boolean");
+	  }
+	  
+  }
+ 
+ private boolean esTipoOperacionBooleana(Node nodo){
+	  return (nodo instanceof NodoAnd) || (nodo instanceof NodoOr) || (nodo instanceof NodoBAnd) ||(nodo instanceof NodoBOr); 
+ }
+ 
+ private boolean esTipoBoolean(Node nodo){
+	  
+	  if(nodo instanceof Nodoidentificador){
+		  Object s = ((SimpleNode)children[1]).getValor();
+		  if(s!=null){
+			  boolean esta = Compilador.gestorTS.estaLexema(s.toString());
+			  if(esta){
+				  Atributos at = Compilador.gestorTS.getAtributos(s.toString());
+				  String tipo = at.getTipo();
+				  if(tipo.equals("boolean")){
+					  return true;
+				  }
+			  }
+		  }
+	  }
+	  
+	  return (nodo instanceof NodoLiteralBoolean) || esTipoOperacionBooleana(nodo); 
+ }
 }
 
 /* JavaCC - OriginalChecksum=f69512949a6aa4d6f617ae870809b883 (do not edit this line) */

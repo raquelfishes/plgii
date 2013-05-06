@@ -183,8 +183,8 @@ TOKEN : {
 		|  <VOID :"void">
 		|  <VOLATILE :"volatile">
 		|  <WHILE :"while">
-		|  <TRUE :"true">
-		|  <FALSE :"false">
+		/*|  <TRUE :"true">  Si esto se descomenta expresiones como b = true || false; dan errores sintacticos... estupidísimo.
+		|  <FALSE :"false">*/
 }
 
 

@@ -105,107 +105,103 @@ public interface CompiladorConstants {
   /** RegularExpression Id. */
   int WHILE = 55;
   /** RegularExpression Id. */
-  int TRUE = 56;
+  int LITERAL_INTEGER = 56;
   /** RegularExpression Id. */
-  int FALSE = 57;
+  int LITERAL_FLOAT = 57;
   /** RegularExpression Id. */
-  int LITERAL_INTEGER = 58;
+  int LITERAL_CARACTER = 58;
   /** RegularExpression Id. */
-  int LITERAL_FLOAT = 59;
+  int LITERAL_STRING = 59;
   /** RegularExpression Id. */
-  int LITERAL_CARACTER = 60;
+  int LITERAL_BOOLEAN = 60;
   /** RegularExpression Id. */
-  int LITERAL_STRING = 61;
+  int LITERAL_NULL = 61;
   /** RegularExpression Id. */
-  int LITERAL_BOOLEAN = 62;
+  int PAR_A = 62;
   /** RegularExpression Id. */
-  int LITERAL_NULL = 63;
+  int PAR_C = 63;
   /** RegularExpression Id. */
-  int PAR_A = 64;
+  int LLAVE_A = 64;
   /** RegularExpression Id. */
-  int PAR_C = 65;
+  int LLAVE_C = 65;
   /** RegularExpression Id. */
-  int LLAVE_A = 66;
+  int COR_A = 66;
   /** RegularExpression Id. */
-  int LLAVE_C = 67;
+  int COR_C = 67;
   /** RegularExpression Id. */
-  int COR_A = 68;
+  int PYC = 68;
   /** RegularExpression Id. */
-  int COR_C = 69;
+  int COMA = 69;
   /** RegularExpression Id. */
-  int PYC = 70;
+  int PUNTO = 70;
   /** RegularExpression Id. */
-  int COMA = 71;
+  int PYP = 71;
   /** RegularExpression Id. */
-  int PUNTO = 72;
+  int PREG = 72;
   /** RegularExpression Id. */
-  int PYP = 73;
+  int OR = 73;
   /** RegularExpression Id. */
-  int PREG = 74;
+  int AND = 74;
   /** RegularExpression Id. */
-  int OR = 75;
+  int OR_B = 75;
   /** RegularExpression Id. */
-  int AND = 76;
+  int AND_B = 76;
   /** RegularExpression Id. */
-  int OR_B = 77;
+  int IGUAL_IGUAL = 77;
   /** RegularExpression Id. */
-  int AND_B = 78;
+  int N_IGUAL = 78;
   /** RegularExpression Id. */
-  int IGUAL_IGUAL = 79;
+  int MENOR = 79;
   /** RegularExpression Id. */
-  int N_IGUAL = 80;
+  int MAYOR = 80;
   /** RegularExpression Id. */
-  int MENOR = 81;
+  int MENOR_EQ = 81;
   /** RegularExpression Id. */
-  int MAYOR = 82;
+  int MAYOR_EQ = 82;
   /** RegularExpression Id. */
-  int MENOR_EQ = 83;
+  int ADD = 83;
   /** RegularExpression Id. */
-  int MAYOR_EQ = 84;
+  int SUB = 84;
   /** RegularExpression Id. */
-  int ADD = 85;
+  int MULT = 85;
   /** RegularExpression Id. */
-  int SUB = 86;
+  int DIV = 86;
   /** RegularExpression Id. */
-  int MULT = 87;
+  int MOD = 87;
   /** RegularExpression Id. */
-  int DIV = 88;
+  int PLUS_PLUS = 88;
   /** RegularExpression Id. */
-  int MOD = 89;
+  int SUB_SUB = 89;
   /** RegularExpression Id. */
-  int PLUS_PLUS = 90;
+  int NOT = 90;
   /** RegularExpression Id. */
-  int SUB_SUB = 91;
+  int ADD_E = 91;
   /** RegularExpression Id. */
-  int NOT = 92;
+  int SUB_E = 92;
   /** RegularExpression Id. */
-  int ADD_E = 93;
+  int MULT_E = 93;
   /** RegularExpression Id. */
-  int SUB_E = 94;
+  int DIV_E = 94;
   /** RegularExpression Id. */
-  int MULT_E = 95;
+  int MOD_E = 95;
   /** RegularExpression Id. */
-  int DIV_E = 96;
+  int AND_E = 96;
   /** RegularExpression Id. */
-  int MOD_E = 97;
+  int OR_E = 97;
   /** RegularExpression Id. */
-  int AND_E = 98;
+  int EQUALS = 98;
   /** RegularExpression Id. */
-  int OR_E = 99;
+  int DESP_D = 99;
   /** RegularExpression Id. */
-  int EQUALS = 100;
+  int DESP_I = 100;
   /** RegularExpression Id. */
-  int DESP_D = 101;
+  int DESP_DNS = 101;
   /** RegularExpression Id. */
-  int DESP_I = 102;
+  int XOR = 102;
   /** RegularExpression Id. */
-  int DESP_DNS = 103;
+  int COMP = 103;
   /** RegularExpression Id. */
-  int XOR = 104;
-  /** RegularExpression Id. */
-  int COMP = 105;
-  /** RegularExpression Id. */
-  int IDENTIFICADOR = 106;
+  int IDENTIFICADOR = 104;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -270,8 +266,6 @@ public interface CompiladorConstants {
     "\"void\"",
     "\"volatile\"",
     "\"while\"",
-    "\"true\"",
-    "\"false\"",
     "<LITERAL_INTEGER>",
     "<LITERAL_FLOAT>",
     "<LITERAL_CARACTER>",

@@ -12,5 +12,10 @@ class NodoBAnd extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public void interpret()
+  { 
+	  super.comprobacionBooleana();
+  }
 }
 /* JavaCC - OriginalChecksum=d7b5e43ec777f2fdf34e999a1ea53d78 (do not edit this line) */
