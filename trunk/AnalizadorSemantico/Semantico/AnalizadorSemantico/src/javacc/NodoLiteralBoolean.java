@@ -12,5 +12,9 @@ class NodoLiteralBoolean extends SimpleNode {
     super(p, id);
   }
 
+  public void interpret()
+  { 
+	  
+  }
 }
 /* JavaCC - OriginalChecksum=dc5d0333e87510e46d963e86b3bb2f9f (do not edit this line) */

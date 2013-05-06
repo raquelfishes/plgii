@@ -11,6 +11,14 @@ class NodoNIgual extends SimpleNode {
   public NodoNIgual(Compilador p, int id) {
     super(p, id);
   }
+  
+  
+  public void interpret()
+  {      
+	  
+	 //super.comprobacionBooleana();
+	
+  }
 
 }
 /* JavaCC - OriginalChecksum=c7b5acda0e0ecc98ad730d3e34a95f48 (do not edit this line) */
