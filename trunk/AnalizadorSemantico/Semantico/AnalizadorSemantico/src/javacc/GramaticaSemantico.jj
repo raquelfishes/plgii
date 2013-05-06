@@ -268,11 +268,6 @@ TOKEN : {
 	>
 }
 
-TOKEN : {
-	< IDENTIFICADOR_ERROR_1 : ( <LETRA> ( ~[ "0"-"9","a"-"z", "A"-"Z", " ", ".", "\"",".", ";",
-			",", "=", "%", "+", "-", "*", "/", "(", ")", "[", "]" ] )* ) > { System.out.println("Identificador mal formado.");}
-}
-
 
 SimpleNode compilar():
 {/*@bgen(jjtree) compilar */

@@ -11,6 +11,11 @@ class NodoMenor extends SimpleNode {
   public NodoMenor(Compilador p, int id) {
     super(p, id);
   }
+  
+  @Override
+  public void interpret(){
+	  
+  }
 
 }
 /* JavaCC - OriginalChecksum=e5dff7b91bd162109823f2a8b5e5a8ea (do not edit this line) */

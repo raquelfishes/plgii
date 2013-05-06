@@ -4150,6 +4150,22 @@ if (usaInterfaz)
     finally { jj_save(19, xla); }
   }
 
+  static private boolean jj_3R_114() {
+    if (jj_3R_117()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_122()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  static private boolean jj_3R_118() {
+    if (jj_scan_token(AND)) return true;
+    if (jj_3R_111()) return true;
+    return false;
+  }
+
   static private boolean jj_3_18() {
     if (jj_3R_54()) return true;
     if (jj_scan_token(IDENTIFICADOR)) return true;
@@ -5328,22 +5344,6 @@ if (usaInterfaz)
     return false;
   }
 
-  static private boolean jj_3R_114() {
-    if (jj_3R_117()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3R_122()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  static private boolean jj_3R_118() {
-    if (jj_scan_token(AND)) return true;
-    if (jj_3R_111()) return true;
-    return false;
-  }
-
   static private boolean jj_initialized_once = false;
   /** Generated Token Manager. */
   static public CompiladorTokenManager token_source;
@@ -5587,7 +5587,7 @@ if (usaInterfaz)
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[108];
+    boolean[] la1tokens = new boolean[107];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -5610,7 +5610,7 @@ if (usaInterfaz)
         }
       }
     }
-    for (int i = 0; i < 108; i++) {
+    for (int i = 0; i < 107; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

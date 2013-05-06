@@ -17,6 +17,11 @@ public class Prueba {
 		i = k = 3;
 		b = (i==1);
 		
+		if( a< 3){
+		
+		}
+			
+		
 //		if(a==2){
 //			
 //		}
