@@ -4,7 +4,7 @@ public class Prueba {
 	int a;
 	
 	void main(){
-//		boolean b;
+		boolean b;
 //		int s = 3.0 + "3.1";
 //		int sm = 4 + 5 + 6 * 7;
 //		int smm = 4 - 'f' + 6 * 7;
@@ -13,6 +13,8 @@ public class Prueba {
 //		int m = 3 * 'f';
 //		int d = 5/"6";
 		Gato.Cosmico gardfield;
+		Gato susie;
+		susie = gardfield;
 		b = true || 3;
 		i = k = 3;
 		b = (i==1);
