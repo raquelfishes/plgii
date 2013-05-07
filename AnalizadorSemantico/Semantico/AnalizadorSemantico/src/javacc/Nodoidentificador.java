@@ -14,10 +14,10 @@ class Nodoidentificador extends SimpleNode {
   }
   
   public void interpret()
-  {
-	  //System.out.println("PEW PEW: "+nodeType);
-	 ///pilaTipos.push(nodeType);
-
+  {  
+	  if (parent instanceof Nodotipo){
+		  ((Nodotipo) parent).value = value;
+	  }
   }
 
 }

@@ -48,7 +48,6 @@ public class XNode
   /** Stack for calculations. */
   protected static Object[] stack = new Object[1024];
   protected static int top = -1;
-  protected static Stack<String> pilaTipos= new Stack<String>();
   
   /** @throws UnsupportedOperationException if called */
   public void interpret()

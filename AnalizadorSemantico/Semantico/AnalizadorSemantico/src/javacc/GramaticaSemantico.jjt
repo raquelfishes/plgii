@@ -298,9 +298,8 @@ void identificador() :
     }
 
 	jjtThis.value = t.image + restoTipo;
-	jjtThis.nodeType = t.image + restoTipo;
 
-	jjtThis.pilaTipos.push(jjtThis.nodeType);
+	//jjtThis.pilaTipos.push(jjtThis.nodeType);
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
   }
@@ -398,13 +397,13 @@ void tipo_primitivo() :
   }
 }
 {
-  	(<BOOLEAN> { jjtThis.nodeType = "boolean"; jjtThis.pilaTipos.push("boolean");})
-    | <CHAR> { jjtThis.nodeType = "char"; jjtThis.pilaTipos.push("char");}
-    | <SHORT> { jjtThis.nodeType = "short"; jjtThis.pilaTipos.push("short");}
-    | (<INT> { jjtThis.nodeType = "int"; jjtThis.pilaTipos.push("int");})
-    | <LONG> { jjtThis.nodeType = "long"; jjtThis.pilaTipos.push("long");}
-    | <FLOAT> { jjtThis.nodeType = "float"; jjtThis.pilaTipos.push("float");}
-    | <DOUBLE> { jjtThis.nodeType = "double"; jjtThis.pilaTipos.push("double");}
+  	(<BOOLEAN> { jjtThis.value = "boolean";})
+    | <CHAR> { jjtThis.value = "char";}
+    | <SHORT> { jjtThis.value = "short";}
+    | <INT> { jjtThis.value = "int";}
+    | <LONG> { jjtThis.value = "long";}
+    | <FLOAT> { jjtThis.value = "float";}
+    | <DOUBLE> { jjtThis.value = "double";}
 }
 
 void declaracion_tipo() #void:
@@ -528,7 +527,7 @@ void campo_declaracion() :
   ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <FINAL> | <VOLATILE> )*
   tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC>}
 
-void declarador_variable() :
+void declarador_variable() #void:
 {
   if (usaInterfaz)
   {
@@ -550,10 +549,10 @@ void declarador_variable_id() :
 {
   t = <IDENTIFICADOR>
   {
-    jjtThis.name = t.image; 
-	Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
-	Compilador.gestorTS.insertar(jjtThis.name, atribs);
-	System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
+    jjtThis.value = t.image;
+	//Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
+	//Compilador.gestorTS.insertar(jjtThis.name, atribs);
+	//System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
   } ( <COR_A> <COR_C> )*
 }
 
@@ -1126,7 +1125,7 @@ void sentencia_bloque() #void:
   sentencia()
 }
 
-void declaracion_variable_local() #void:
+void declaracion_variable_local() :
 {
   if (usaInterfaz)
   {
