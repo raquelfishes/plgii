@@ -39,7 +39,7 @@ import java.util.Stack;
  */
 public class XNode
 {
-	protected String nodeType;
+	//protected String nodeType;
 	
   /** Symbol table */
   protected static java.util.Hashtable<String, Object> symtab = new java.util.Hashtable<String, Object>();

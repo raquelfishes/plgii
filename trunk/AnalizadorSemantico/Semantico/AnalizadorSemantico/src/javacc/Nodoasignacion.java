@@ -2,6 +2,8 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=true,NODE_PREFIX=Nodo,NODE_EXTENDS=XNode,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package javacc;
 
+import tabla.simbolos.Atributos;
+
 public
 class Nodoasignacion extends SimpleNode {
   public Nodoasignacion(int id) {
@@ -12,19 +14,42 @@ class Nodoasignacion extends SimpleNode {
     super(p, id);
   }
   
-  public void interpret()
-  {
-	  // Interpretar sus 2 hijos, para obtener sus tipos
-	  jjtGetChild(0).interpret();
-	  jjtGetChild(1).interpret();
-
-	  if (((XNode)jjtGetChild(0)).nodeType == ((XNode)jjtGetChild(1)).nodeType){
-		  nodeType = ((XNode)jjtGetChild(0)).nodeType;
+  public void interpret() {
+	  SimpleNode n1 = null, n2 = null;
+	  Atributos a1 = null, a2 = null;
+	  
+	  n1 = (SimpleNode) jjtGetChild(0);
+	  n2 = (SimpleNode) jjtGetChild(1);
+	  
+	  // Interpretar sus 2 hijos, para comprobar sus tipos
+	  n1.interpret();
+	  n2.interpret();
+	  
+	  if (n1 instanceof Nodoidentificador){
+		  System.out.println("Asignacion con identificador");
+		  a1 = Compilador.gestorTS.getAtributos((String)n1.value);
+		  if (a1 == null){
+			  throw new RuntimeException("Error semántico: el identificador "+
+					  (String)n1.value+" no existe en este ámbito o es un tipo.");
+		  }
 	  }
-	  else {
-		  System.out.println("Error Asignación: Tipo izq " + ((XNode)jjtGetChild(0)).nodeType +
-				 " distinto de tipo der " + ((XNode)jjtGetChild(1)).nodeType);
+	  
+	  if (n2 instanceof Nodoidentificador){
+		  System.out.println("Asignacion con identificador");
+		  a2 = Compilador.gestorTS.getAtributos((String)n2.value);
+		  if (a2 == null){
+			  throw new RuntimeException("Error semántico: el identificador "+
+					  (String)n2.value+" no existe en este ámbito  o es un tipo.");
+		  }
 	  }
+	  
+	  if (a1 != null && a2 != null){
+		  if (a1.getTipo() != a2.getTipo()){
+			  throw new RuntimeException("Error semántico: no puede asignarse "+
+					  (String)n2.value+" a "+(String)n1.value+" al tener distintos tipos.");
+		  }
+	  }
+	  
   }
 
 }
