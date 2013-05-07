@@ -189,9 +189,8 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
     }
 
         jjtn000.value = t.image + restoTipo;
-        jjtn000.nodeType = t.image + restoTipo;
 
-        jjtn000.pilaTipos.push(jjtn000.nodeType);
+        //jjtThis.pilaTipos.push(jjtThis.nodeType);
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
 
@@ -504,49 +503,49 @@ if (usaInterfaz)
                      jjtree.closeNodeScope(jjtn000, true);
                      jjtc000 = false;
                      jjtn000.jjtSetLastToken(getToken(0));
-                     jjtn000.nodeType = "boolean"; jjtn000.pilaTipos.push("boolean");
+                     jjtn000.value = "boolean";
         break;
       case CHAR:
         jj_consume_token(CHAR);
                jjtree.closeNodeScope(jjtn000, true);
                jjtc000 = false;
                jjtn000.jjtSetLastToken(getToken(0));
-               jjtn000.nodeType = "char"; jjtn000.pilaTipos.push("char");
+               jjtn000.value = "char";
         break;
       case SHORT:
         jj_consume_token(SHORT);
                 jjtree.closeNodeScope(jjtn000, true);
                 jjtc000 = false;
                 jjtn000.jjtSetLastToken(getToken(0));
-                jjtn000.nodeType = "short"; jjtn000.pilaTipos.push("short");
+                jjtn000.value = "short";
         break;
       case INT:
         jj_consume_token(INT);
-               jjtree.closeNodeScope(jjtn000, true);
-               jjtc000 = false;
-               jjtn000.jjtSetLastToken(getToken(0));
-               jjtn000.nodeType = "int"; jjtn000.pilaTipos.push("int");
+              jjtree.closeNodeScope(jjtn000, true);
+              jjtc000 = false;
+              jjtn000.jjtSetLastToken(getToken(0));
+              jjtn000.value = "int";
         break;
       case LONG:
         jj_consume_token(LONG);
                jjtree.closeNodeScope(jjtn000, true);
                jjtc000 = false;
                jjtn000.jjtSetLastToken(getToken(0));
-               jjtn000.nodeType = "long"; jjtn000.pilaTipos.push("long");
+               jjtn000.value = "long";
         break;
       case FLOAT:
         jj_consume_token(FLOAT);
                 jjtree.closeNodeScope(jjtn000, true);
                 jjtc000 = false;
                 jjtn000.jjtSetLastToken(getToken(0));
-                jjtn000.nodeType = "float"; jjtn000.pilaTipos.push("float");
+                jjtn000.value = "float";
         break;
       case DOUBLE:
         jj_consume_token(DOUBLE);
                  jjtree.closeNodeScope(jjtn000, true);
                  jjtc000 = false;
                  jjtn000.jjtSetLastToken(getToken(0));
-                 jjtn000.nodeType = "double"; jjtn000.pilaTipos.push("double");
+                 jjtn000.value = "double";
         break;
       default:
         jj_la1[7] = jj_gen;
@@ -1003,44 +1002,19 @@ if (usaInterfaz)
   }
 
   static final public void declarador_variable() throws ParseException {
- /*@bgen(jjtree) declarador_variable */
-  Nododeclarador_variable jjtn000 = new Nododeclarador_variable(JJTDECLARADOR_VARIABLE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));if (usaInterfaz)
+  if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
-    try {
-      declarador_variable_id();
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case EQUALS:
-        jj_consume_token(EQUALS);
-        iniciar_variable();
-        break;
-      default:
-        jj_la1[27] = jj_gen;
-        ;
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
+    declarador_variable_id();
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case EQUALS:
+      jj_consume_token(EQUALS);
+      iniciar_variable();
+      break;
+    default:
+      jj_la1[27] = jj_gen;
+      ;
     }
   }
 
@@ -1056,10 +1030,11 @@ if (usaInterfaz)
   }
     try {
       t = jj_consume_token(IDENTIFICADOR);
-    jjtn000.name = t.image;
-        Atributos atribs = new Atributos(jjtn000.name, jjtn000.pilaTipos.peek());
-        Compilador.gestorTS.insertar(jjtn000.name, atribs);
-        System.out.println("Identificador: "+ jjtn000.name + " con tipo "+jjtn000.pilaTipos.peek());
+    jjtn000.value = t.image;
+        //Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
+        //Compilador.gestorTS.insertar(jjtThis.name, atribs);
+        //System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
+
       label_13:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -3225,24 +3200,49 @@ if (usaInterfaz)
   }
 
   static final public void declaracion_variable_local() throws ParseException {
-  if (usaInterfaz)
+ /*@bgen(jjtree) declaracion_variable_local */
+  Nododeclaracion_variable_local jjtn000 = new Nododeclaracion_variable_local(JJTDECLARACION_VARIABLE_LOCAL);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
-    tipo();
-    declarador_variable();
-    label_36:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case COMA:
-        ;
-        break;
-      default:
-        jj_la1[85] = jj_gen;
-        break label_36;
-      }
-      jj_consume_token(COMA);
+    try {
+      tipo();
       declarador_variable();
+      label_36:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case COMA:
+          ;
+          break;
+        default:
+          jj_la1[85] = jj_gen;
+          break label_36;
+        }
+        jj_consume_token(COMA);
+        declarador_variable();
+      }
+    } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      {if (true) throw (RuntimeException)jjte000;}
+    }
+    if (jjte000 instanceof ParseException) {
+      {if (true) throw (ParseException)jjte000;}
+    }
+    {if (true) throw (Error)jjte000;}
+    } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtn000.jjtSetLastToken(getToken(0));
+    }
     }
   }
 
@@ -4244,6 +4244,12 @@ if (usaInterfaz)
     return false;
   }
 
+  static private boolean jj_3_1() {
+    if (jj_scan_token(PUNTO)) return true;
+    if (jj_scan_token(IDENTIFICADOR)) return true;
+    return false;
+  }
+
   static private boolean jj_3R_93() {
     Token xsp;
     xsp = jj_scanpos;
@@ -4268,12 +4274,6 @@ if (usaInterfaz)
 
   static private boolean jj_3R_99() {
     if (jj_scan_token(56)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_1() {
-    if (jj_scan_token(PUNTO)) return true;
-    if (jj_scan_token(IDENTIFICADOR)) return true;
     return false;
   }
 

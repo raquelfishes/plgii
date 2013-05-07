@@ -18,15 +18,19 @@ class Nododeclarador_variable_id extends SimpleNode {
 
   public void interpret()
   {
-	 //Atributos atribs = new Atributos(name, pilaTipos.peek());
-	 //Compilador.gestorTS.insertar(name, atribs); 
-	 
-     int i, k = jjtGetNumChildren();
-     
-
-     for (i = 0; i < k; i++)
-        jjtGetChild(i).interpret();
-
+	  SimpleNode nTipo = null;
+	  if (parent instanceof Nodocampo_declaracion || parent instanceof Nododeclaracion_variable_local){
+		  nTipo = (Nodotipo)((SimpleNode)parent).children[0];
+		  if(nTipo != null){
+			  Atributos atribs = new Atributos((String)value, (String)nTipo.value);
+			  Compilador.gestorTS.insertar((String)value, atribs);
+			  System.out.println("Insertando identificador en TS: " + (String)value +
+					  " de tipo " + (String)nTipo.value);
+		  }
+		  else{
+			  throw new RuntimeException("Error obteniendo el tipo del identificador");
+		  }
+	  }
   }
 }
 /* JavaCC - OriginalChecksum=265a78532ed9fe4f80d1d6beac516403 (do not edit this line) */

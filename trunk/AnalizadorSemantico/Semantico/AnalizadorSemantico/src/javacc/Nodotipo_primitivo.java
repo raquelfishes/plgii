@@ -15,10 +15,9 @@ class Nodotipo_primitivo extends SimpleNode {
   
   public void interpret()
   {
-	  //System.out.println("HOLA HOLA: "+nodeType);
-	  
-	  //pilaTipos.push(nodeType);
-     
+     if (parent instanceof Nodotipo){
+    	 ((Nodotipo) parent).value = value;
+     }
   }
 }
 /* JavaCC - OriginalChecksum=0074db8580e70e07ce4eed2293d9de72 (do not edit this line) */
