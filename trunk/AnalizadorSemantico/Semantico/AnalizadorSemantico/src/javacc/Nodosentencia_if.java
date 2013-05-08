@@ -14,7 +14,11 @@ class Nodosentencia_if extends SimpleNode {
   
   @Override
   public void interpret(){
-	  children[0].interpret();
+	  
+	  int i, k = jjtGetNumChildren();
+
+	     for (i = 0; i < k; i++)
+	        jjtGetChild(i).interpret();
   }
 
 }

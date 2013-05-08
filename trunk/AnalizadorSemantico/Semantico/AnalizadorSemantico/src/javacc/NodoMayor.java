@@ -14,5 +14,9 @@ class NodoMayor extends SimpleNode {
     this.value = ConstantesTipos.BOOLEAN;
   }
 
+  public void interpret()
+  {      
+	 verificarComparacionValida();
+  }
 }
 /* JavaCC - OriginalChecksum=ac74468899c7b137d7d286dabda3019b (do not edit this line) */

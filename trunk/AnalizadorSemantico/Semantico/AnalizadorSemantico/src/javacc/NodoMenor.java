@@ -16,7 +16,7 @@ class NodoMenor extends SimpleNode {
   
   @Override
   public void interpret(){
-	  
+	  verificarComparacionValida();
   }
 
 }

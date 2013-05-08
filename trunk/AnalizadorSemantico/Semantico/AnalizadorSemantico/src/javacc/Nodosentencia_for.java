@@ -12,5 +12,11 @@ class Nodosentencia_for extends SimpleNode {
     super(p, id);
   }
 
+	public void interpret() {
+		int i, k = jjtGetNumChildren();
+
+		for (i = 0; i < k; i++)
+			jjtGetChild(i).interpret();
+	}
 }
 /* JavaCC - OriginalChecksum=0ab76c19c8bca2ef552d7992f060a3ab (do not edit this line) */

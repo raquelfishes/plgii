@@ -18,6 +18,8 @@ class Nododeclarador_variable_id extends SimpleNode {
 
   public void interpret()
   {
+	  
+	  
 	  SimpleNode nTipo = null;
 	  if (parent instanceof Nodocampo_declaracion || parent instanceof Nododeclaracion_variable_local){
 		  nTipo = (Nodotipo)((SimpleNode)parent).children[0];

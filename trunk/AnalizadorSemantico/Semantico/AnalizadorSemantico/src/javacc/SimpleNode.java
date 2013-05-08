@@ -84,6 +84,10 @@ class SimpleNode extends XNode implements Node {
     }
   }
   
+  public Object getValor(){
+	  return value;
+  }
+  
   public void comprobacionNumerica(){
 	  
 	  if(esTipoOperacionNumerica(children[0]))
@@ -125,9 +129,7 @@ class SimpleNode extends XNode implements Node {
 	  return (nodo instanceof NodoLiteralInteger) || (nodo instanceof NodoLiteralFloat) || esTipoOperacionNumerica(nodo); 
   }
   
-  public Object getValor(){
-	  return value;
-  }
+  
   
   //FIXME PARAMETRIZAR!!
  public void comprobacionBooleana(){
@@ -170,6 +172,51 @@ class SimpleNode extends XNode implements Node {
 	  }
 	  
 	  return (nodo instanceof NodoLiteralBoolean) || esTipoOperacionBooleana(nodo); 
+ }
+ 
+ public void verificarComparacionValida(){
+	 
+	 Node n1 = children[0];
+	 Node n2 = children[1];
+	 if(n1==null || n2==null){
+		 System.out.println("Error semántico: Los operadores no son del mismo tipo."); 
+		 return;
+	 }
+	 String tipo1="";
+	 if(n1 instanceof Nodoidentificador){
+		  Object s = ((SimpleNode)n1).getValor();
+		  if(s!=null){
+			  boolean esta = Compilador.gestorTS.estaLexema(s.toString());
+			  if(esta){
+				  Atributos at = Compilador.gestorTS.getAtributos(s.toString());
+				  tipo1 = at.getTipo();
+			  }
+		  }
+	 }
+	 else{
+		 tipo1 = ((SimpleNode)n1).value.toString();
+	 }
+	 
+	 
+	 
+	 String tipo2="";
+	 if(n2 instanceof Nodoidentificador){
+		  Object s = ((SimpleNode)n2).getValor();
+		  if(s!=null){
+			  boolean esta = Compilador.gestorTS.estaLexema(s.toString());
+			  if(esta){
+				  Atributos at = Compilador.gestorTS.getAtributos(s.toString());
+				  tipo2 = at.getTipo();
+			  }
+		  }
+	 }
+	 else{
+		 tipo2 = ((SimpleNode)n2).value.toString();
+	 }
+	  
+	  if(!ConstantesTipos.esCompatible(tipo1, tipo2)){
+		  System.out.println("Error semántico: Los operadores no son del mismo tipo."); 
+	  }
  }
 }
 
