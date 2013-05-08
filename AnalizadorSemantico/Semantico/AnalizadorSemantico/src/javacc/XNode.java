@@ -32,7 +32,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Stack;
 
 /**
  * Specialised node.

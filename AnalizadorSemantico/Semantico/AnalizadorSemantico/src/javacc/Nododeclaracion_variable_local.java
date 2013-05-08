@@ -2,8 +2,6 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=true,NODE_PREFIX=Nodo,NODE_EXTENDS=XNode,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package javacc;
 
-import tabla.simbolos.Atributos;
-
 public
 class Nododeclaracion_variable_local extends SimpleNode {
   public Nododeclaracion_variable_local(int id) {

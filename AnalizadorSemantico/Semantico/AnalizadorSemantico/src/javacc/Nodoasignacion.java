@@ -29,7 +29,7 @@ class Nodoasignacion extends SimpleNode {
 		  System.out.println("Asignacion con identificador");
 		  a1 = Compilador.gestorTS.getAtributos((String)n1.value);
 		  if (a1 == null){
-			  throw new RuntimeException("Error semántico: el identificador "+
+			  throw new RuntimeException("Error semántico ("+firstToken.beginLine+"): el identificador "+
 					  (String)n1.value+" no existe en este ámbito o es un tipo.");
 		  }
 	  }
@@ -38,19 +38,17 @@ class Nodoasignacion extends SimpleNode {
 		  System.out.println("Asignacion con identificador");
 		  a2 = Compilador.gestorTS.getAtributos((String)n2.value);
 		  if (a2 == null){
-			  throw new RuntimeException("Error semántico: el identificador "+
+			  throw new RuntimeException("Error semántico ("+firstToken.beginLine+"): el identificador "+
 					  (String)n2.value+" no existe en este ámbito  o es un tipo.");
 		  }
 	  }
 	  
 	  if (a1 != null && a2 != null){
 		  if (a1.getTipo() != a2.getTipo()){
-			  throw new RuntimeException("Error semántico: no puede asignarse "+
+			  throw new RuntimeException("Error semántico ("+firstToken.beginLine+") : no puede asignarse "+
 					  (String)n2.value+" a "+(String)n1.value+" al tener distintos tipos.");
 		  }
 	  }
-	  
-
   }
 
 }

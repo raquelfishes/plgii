@@ -17,24 +17,23 @@ class Nodoexpresion_instanceof extends SimpleNode {
 	  SimpleNode n1, n2;
 	  
 	  n1 = (SimpleNode) children[0];
-	  n2 = (SimpleNode) children[1];
+	  n2 = (SimpleNode) parent.jjtGetChild(0);
 	  
 	  n1.interpret();
-	  n2.interpret();
 	 
 	 if (n2 instanceof Nodoidentificador){
 		 if (Compilador.gestorTS.estaLexema((String)n2.value)){
-			 System.out.println("Error Semántico: instanceof debe referenciar un tipo no al identificador "+(String)n2.value);
+			 System.err.println("Error Semántico: instanceof debe referenciar un tipo no al identificador "+(String)n2.value);
 		 }
 	 }
 	 
 	 if (n1 instanceof Nodoidentificador){
 		 if (!Compilador.gestorTS.estaLexema((String)n1.value)){
-			 System.out.println("Error Semántico: instanceof, "+(String)n1.value+" no ha sido declarado");
+			 System.err.println("Error Semántico: instanceof, "+(String)n1.value+" no ha sido declarado");
 		 }
 	 }
 	 else{
-		 System.out.println("Error Semántico: el primer operando de instanceof debe ser un identificador, "+(String)n1.value+
+		 System.err.println("Error Semántico: el primer operando de instanceof debe ser un identificador, "+(String)n1.value+
 				 " es incorrecto.");
 	 }
 
