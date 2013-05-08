@@ -781,7 +781,7 @@ void expresion_equal() #void:
   						)*
 }
 
-void expresion_instanceof()#void:
+void expresion_instanceof() #void:
 {
   if (usaInterfaz)
   {
@@ -789,7 +789,7 @@ void expresion_instanceof()#void:
   }
 }
 {
-  expresion_relacional() [ <INSTANCEOF> tipo() ]
+  expresion_relacional() [ <INSTANCEOF> tipo() #expresion_instanceof]
 }
 
 void expresion_relacional() #void:

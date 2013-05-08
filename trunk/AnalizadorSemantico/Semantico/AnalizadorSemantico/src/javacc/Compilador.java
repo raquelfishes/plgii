@@ -1893,7 +1893,32 @@ void op_add_e() :
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case INSTANCEOF:
       jj_consume_token(INSTANCEOF);
-      tipo();
+                                          Nodoexpresion_instanceof jjtn001 = new Nodoexpresion_instanceof(JJTEXPRESION_INSTANCEOF);
+                                          boolean jjtc001 = true;
+                                          jjtree.openNodeScope(jjtn001);
+                                          jjtn001.jjtSetFirstToken(getToken(1));
+      try {
+        tipo();
+      } catch (Throwable jjte001) {
+                                          if (jjtc001) {
+                                            jjtree.clearNodeScope(jjtn001);
+                                            jjtc001 = false;
+                                          } else {
+                                            jjtree.popNode();
+                                          }
+                                          if (jjte001 instanceof RuntimeException) {
+                                            {if (true) throw (RuntimeException)jjte001;}
+                                          }
+                                          if (jjte001 instanceof ParseException) {
+                                            {if (true) throw (ParseException)jjte001;}
+                                          }
+                                          {if (true) throw (Error)jjte001;}
+      } finally {
+                                          if (jjtc001) {
+                                            jjtree.closeNodeScope(jjtn001, true);
+                                            jjtn001.jjtSetLastToken(getToken(0));
+                                          }
+      }
       break;
     default:
       jj_la1[54] = jj_gen;
