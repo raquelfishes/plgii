@@ -102,7 +102,8 @@ class SimpleNode extends XNode implements Node {
   }
   
   private boolean esTipoOperacionNumerica(Node nodo){
-	  return (nodo instanceof NodoAdd) || (nodo instanceof NodoSub) || (nodo instanceof NodoMult) ||(nodo instanceof NodoDiv); 
+	  return (nodo instanceof NodoAdd) || (nodo instanceof NodoSub) || (nodo instanceof NodoMult) ||(nodo instanceof NodoDiv) ||
+			 (nodo instanceof NodoMod); 
   }
   
   private boolean esTipoNumerico(Node nodo){
@@ -121,7 +122,7 @@ class SimpleNode extends XNode implements Node {
 		  }
 	  }
 	  
-	  return (nodo instanceof NodoLiteralInteger) || (nodo instanceof NodoLiteralFloat) || (nodo instanceof NodoAdd) || (nodo instanceof NodoSub) || (nodo instanceof NodoMult) ||(nodo instanceof NodoDiv); 
+	  return (nodo instanceof NodoLiteralInteger) || (nodo instanceof NodoLiteralFloat) || esTipoOperacionNumerica(nodo); 
   }
   
   public Object getValor(){
@@ -147,7 +148,9 @@ class SimpleNode extends XNode implements Node {
   }
  
  private boolean esTipoOperacionBooleana(Node nodo){
-	  return (nodo instanceof NodoAnd) || (nodo instanceof NodoOr) || (nodo instanceof NodoBAnd) ||(nodo instanceof NodoBOr); 
+	  return (nodo instanceof NodoAnd) || (nodo instanceof NodoOr) || (nodo instanceof NodoBAnd) || (nodo instanceof NodoBOr) || 
+			 (nodo instanceof NodoIgualIgual) || (nodo instanceof NodoMayor) || (nodo instanceof NodoMayorEq) || 
+			 (nodo instanceof NodoMenor) || (nodo instanceof NodoMenorEq) || (nodo instanceof NodoNIgual) || (nodo instanceof NodoNot); 
  }
  
  private boolean esTipoBoolean(Node nodo){
