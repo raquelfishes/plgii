@@ -28,10 +28,7 @@ package javacc;
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.util.LinkedList;
 
 /**
  * Specialised node.
@@ -40,35 +37,25 @@ public class XNode
 {
 	//protected String nodeType;
 	
-  /** Symbol table */
+  // Tabla de símbolos
   protected static java.util.Hashtable<String, Object> symtab = new java.util.Hashtable<String, Object>();
  
-  
-  /** Stack for calculations. */
-  protected static Object[] stack = new Object[1024];
-  protected static int top = -1;
+  public static LinkedList<String> errSemanticos = new LinkedList<String>();
   
   /** @throws UnsupportedOperationException if called */
   public void interpret()
   {
-     throw new UnsupportedOperationException(); // It better not come here.
+     throw new UnsupportedOperationException(); // Por defecto lanza excepción
   }
-
-  protected static Writer out = new PrintWriter(System.out);
-  protected static Reader in = new InputStreamReader(System.in);
-
-  /**
-   * @param in the input to set
-   */
-  public static void setIn(Reader in) {
-    XNode.in = in;
+  
+  public static void addErrSemantico(int linea, String errMsg){
+	  errSemanticos.add("Error semántico ("+linea+") : "+ errMsg+".");
   }
-
-  /**
-   * @param out the output to set
-   */
-  public static void setOut(Writer out) {
-	  XNode.out = out;
+  
+  public static void listErrSemantico(){
+	  while (!errSemanticos.isEmpty()){
+		  System.err.println(errSemanticos.remove());
+	  }
   }
 
 }

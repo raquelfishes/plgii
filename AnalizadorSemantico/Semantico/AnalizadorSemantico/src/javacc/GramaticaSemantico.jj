@@ -1398,7 +1398,7 @@ void expresion_equal()      :
   						)*
 }
 
-void expresion_instanceof()     :
+void expresion_instanceof()      :
 {
   if (usaInterfaz)
   {
@@ -1406,7 +1406,36 @@ void expresion_instanceof()     :
   }
 }
 {
-  expresion_relacional() [ <INSTANCEOF> tipo() ]
+  expresion_relacional() [ <INSTANCEOF>/*@bgen(jjtree) expresion_instanceof */
+                                        {
+                                          Nodoexpresion_instanceof jjtn001 = new Nodoexpresion_instanceof(JJTEXPRESION_INSTANCEOF);
+                                          boolean jjtc001 = true;
+                                          jjtree.openNodeScope(jjtn001);
+                                          jjtn001.jjtSetFirstToken(getToken(1));
+                                        }
+                                        try {
+/*@egen*/ tipo()/*@bgen(jjtree)*/
+                                        } catch (Throwable jjte001) {
+                                          if (jjtc001) {
+                                            jjtree.clearNodeScope(jjtn001);
+                                            jjtc001 = false;
+                                          } else {
+                                            jjtree.popNode();
+                                          }
+                                          if (jjte001 instanceof RuntimeException) {
+                                            throw (RuntimeException)jjte001;
+                                          }
+                                          if (jjte001 instanceof ParseException) {
+                                            throw (ParseException)jjte001;
+                                          }
+                                          throw (Error)jjte001;
+                                        } finally {
+                                          if (jjtc001) {
+                                            jjtree.closeNodeScope(jjtn001, true);
+                                            jjtn001.jjtSetLastToken(getToken(0));
+                                          }
+                                        }
+/*@egen*/                      ]
 }
 
 void expresion_relacional()      :

@@ -100,7 +100,10 @@ class SimpleNode extends XNode implements Node {
 	  if( ! (	(esTipoNumerico(children[0])) && 
 			  	(esTipoNumerico(children[1]))	) ){
 		  
-		  System.out.println("Error semántico: Los operadores no son de tipo numérico");
+		  addErrSemantico(firstToken.beginLine, "los operadores " 
+				  + (String)((SimpleNode)children[0]).value + " y "
+				  + (String)((SimpleNode)children[1]).value +
+				  " no son de tipo numérico");
 	  }
 	  
   }
@@ -144,7 +147,10 @@ class SimpleNode extends XNode implements Node {
 	  if( ! (	(esTipoBoolean(children[0])) && 
 			  	(esTipoBoolean(children[1]))	) ){
 		  
-		  System.out.println("Error semántico: Los operadores no son de tipo boolean");
+		  addErrSemantico(firstToken.beginLine, "los operadores " 
+				  + (String)((SimpleNode)children[0]).value + " y "
+				  + (String)((SimpleNode)children[1]).value +
+				  " no son de tipo boolean");
 	  }
 	  
   }
@@ -179,7 +185,7 @@ class SimpleNode extends XNode implements Node {
 	 Node n1 = children[0];
 	 Node n2 = children[1];
 	 if(n1==null || n2==null){
-		 System.out.println("Error semántico: Los operadores no son del mismo tipo."); 
+		 addErrSemantico(firstToken.beginLine, "los operadores no son del mismo tipo");
 		 return;
 	 }
 	 String tipo1="";
@@ -215,7 +221,10 @@ class SimpleNode extends XNode implements Node {
 	 }
 	  
 	  if(!ConstantesTipos.esCompatible(tipo1, tipo2)){
-		  System.out.println("Error semántico: Los operadores no son del mismo tipo."); 
+		  addErrSemantico(firstToken.beginLine, "los operadores " 
+				  + (String)((SimpleNode)children[0]).value + " y "
+				  + (String)((SimpleNode)children[1]).value +
+				  " no son del mismo tipo");
 	  }
  }
 }
