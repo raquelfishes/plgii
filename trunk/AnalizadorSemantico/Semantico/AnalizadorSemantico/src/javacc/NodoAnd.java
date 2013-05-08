@@ -6,10 +6,12 @@ public
 class NodoAnd extends SimpleNode {
   public NodoAnd(int id) {
     super(id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
 
   public NodoAnd(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
   
   @Override
