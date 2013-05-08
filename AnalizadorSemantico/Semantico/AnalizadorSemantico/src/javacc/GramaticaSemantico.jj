@@ -1398,43 +1398,15 @@ void expresion_equal()      :
   						)*
 }
 
-void expresion_instanceof():
-{/*@bgen(jjtree) expresion_instanceof */
-  Nodoexpresion_instanceof jjtn000 = new Nodoexpresion_instanceof(JJTEXPRESION_INSTANCEOF);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/
+void expresion_instanceof()     :
+{
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
-{/*@bgen(jjtree) expresion_instanceof */
-  try {
-/*@egen*/
-  expresion_relacional() [ <INSTANCEOF> tipo() ]/*@bgen(jjtree)*/
-  } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      throw (RuntimeException)jjte000;
-    }
-    if (jjte000 instanceof ParseException) {
-      throw (ParseException)jjte000;
-    }
-    throw (Error)jjte000;
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-  }
-/*@egen*/
+{
+  expresion_relacional() [ <INSTANCEOF> tipo() ]
 }
 
 void expresion_relacional()      :
