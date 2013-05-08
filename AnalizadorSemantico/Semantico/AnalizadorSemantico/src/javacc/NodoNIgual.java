@@ -6,10 +6,12 @@ public
 class NodoNIgual extends SimpleNode {
   public NodoNIgual(int id) {
     super(id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
 
   public NodoNIgual(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
   
   

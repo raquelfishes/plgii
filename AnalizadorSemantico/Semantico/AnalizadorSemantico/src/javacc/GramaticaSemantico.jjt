@@ -397,13 +397,13 @@ void tipo_primitivo() :
   }
 }
 {
-  	(<BOOLEAN> { jjtThis.value = "boolean";})
-    | <CHAR> { jjtThis.value = "char";}
-    | <SHORT> { jjtThis.value = "short";}
-    | <INT> { jjtThis.value = "int";}
-    | <LONG> { jjtThis.value = "long";}
-    | <FLOAT> { jjtThis.value = "float";}
-    | <DOUBLE> { jjtThis.value = "double";}
+  	(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})
+    | <CHAR> { jjtThis.value = ConstantesTipos.CHAR;}
+    | <SHORT> { jjtThis.value = ConstantesTipos.SHORT;}
+    | <INT> { jjtThis.value = ConstantesTipos.INT;}
+    | <LONG> { jjtThis.value = ConstantesTipos.LONG;}
+    | <FLOAT> { jjtThis.value = ConstantesTipos.FLOAT;}
+    | <DOUBLE> { jjtThis.value = ConstantesTipos.DOUBLE;}
 }
 
 void declaracion_tipo() #void:
@@ -680,9 +680,9 @@ void operador_asignacion() #void :
   }
 }
 {
-  op_equals() | op_mult_e() | <DIV_E> | <MOD_E> | op_add_e() | <SUB_E> | <AND_E> | <OR_E>
+  <EQUALS> | <MULT_E> | <DIV_E> | <MOD_E> | <ADD_E> | <SUB_E> | <AND_E> | <OR_E>
 }
-
+/*
 void op_equals() #void:
 {}{
   <EQUALS>}
@@ -700,7 +700,7 @@ void op_add_e() :
 {
   <ADD_E>
 }
-
+*/
 void expresion_cond() #void:
 {
   if (usaInterfaz)

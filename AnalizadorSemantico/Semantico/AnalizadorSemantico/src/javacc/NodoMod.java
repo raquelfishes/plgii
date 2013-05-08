@@ -6,10 +6,12 @@ public
 class NodoMod extends SimpleNode {
   public NodoMod(int id) {
     super(id);
+    this.value = ConstantesTipos.INT;
   }
 
   public NodoMod(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.INT;
   }
 
 }

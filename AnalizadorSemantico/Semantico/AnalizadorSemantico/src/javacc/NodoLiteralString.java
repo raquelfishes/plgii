@@ -6,10 +6,13 @@ public
 class NodoLiteralString extends SimpleNode {
   public NodoLiteralString(int id) {
     super(id);
+    this.value = ConstantesTipos.STRING;
   }
 
   public NodoLiteralString(Compilador p, int id) {
     super(p, id);
+    
+    this.value = ConstantesTipos.STRING;
   }
 
 }

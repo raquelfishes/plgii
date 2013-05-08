@@ -6,10 +6,12 @@ public
 class NodoAdd extends SimpleNode {
   public NodoAdd(int id) {
     super(id);
+    value = ConstantesTipos.INT; 
   }
 
   public NodoAdd(Compilador p, int id) {
     super(p, id);
+    value = ConstantesTipos.INT;
   }
   
   public void interpret()

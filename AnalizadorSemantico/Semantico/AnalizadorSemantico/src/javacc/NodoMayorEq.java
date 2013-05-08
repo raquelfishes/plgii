@@ -6,10 +6,12 @@ public
 class NodoMayorEq extends SimpleNode {
   public NodoMayorEq(int id) {
     super(id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
 
   public NodoMayorEq(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
 
 }

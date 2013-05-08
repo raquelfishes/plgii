@@ -6,10 +6,12 @@ public
 class NodoXOr extends SimpleNode {
   public NodoXOr(int id) {
     super(id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
 
   public NodoXOr(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
 
 }

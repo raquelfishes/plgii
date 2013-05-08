@@ -6,10 +6,12 @@ public
 class NodoLiteralBoolean extends SimpleNode {
   public NodoLiteralBoolean(int id) {
     super(id);
+    value = ConstantesTipos.BOOLEAN;
   }
 
   public NodoLiteralBoolean(Compilador p, int id) {
     super(p, id);
+    value = ConstantesTipos.BOOLEAN;
   }
 
   public void interpret()
