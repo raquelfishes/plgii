@@ -6,10 +6,12 @@ public
 class NodoOr extends SimpleNode {
   public NodoOr(int id) {
     super(id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
 
   public NodoOr(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
 
   @Override

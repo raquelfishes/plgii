@@ -6,10 +6,12 @@ public
 class NodoLiteralFloat extends SimpleNode {
   public NodoLiteralFloat(int id) {
     super(id);
+    value = ConstantesTipos.FLOAT;
   }
 
   public NodoLiteralFloat(Compilador p, int id) {
     super(p, id);
+    value = ConstantesTipos.FLOAT;
   }
 
 }

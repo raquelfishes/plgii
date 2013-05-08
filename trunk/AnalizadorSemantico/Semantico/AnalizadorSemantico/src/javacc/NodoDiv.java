@@ -6,10 +6,12 @@ public
 class NodoDiv extends SimpleNode {
   public NodoDiv(int id) {
     super(id);
+    value = ConstantesTipos.INT;
   }
 
   public NodoDiv(Compilador p, int id) {
     super(p, id);
+    value = ConstantesTipos.INT;
   }
   
   public void interpret()

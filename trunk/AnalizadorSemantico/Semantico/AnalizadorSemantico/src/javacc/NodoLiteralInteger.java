@@ -6,10 +6,12 @@ public
 class NodoLiteralInteger extends SimpleNode {
   public NodoLiteralInteger(int id) {
     super(id);
+    value = ConstantesTipos.INTEGER;
   }
 
   public NodoLiteralInteger(Compilador p, int id) {
     super(p, id);
+    value = ConstantesTipos.INTEGER;
   }
   
   public void interpret()

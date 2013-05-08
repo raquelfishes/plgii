@@ -6,10 +6,12 @@ public
 class NodoMult extends SimpleNode {
   public NodoMult(int id) {
     super(id);
+    this.value = ConstantesTipos.INT;
   }
 
   public NodoMult(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.INT;
   }
   
   public void interpret()

@@ -50,6 +50,7 @@ class Nodoasignacion extends SimpleNode {
 		  }
 	  }
 	  
+
   }
 
 }

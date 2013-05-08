@@ -6,10 +6,12 @@ public
 class NodoLiteralCaracter extends SimpleNode {
   public NodoLiteralCaracter(int id) {
     super(id);
+    value = ConstantesTipos.CHAR;
   }
 
   public NodoLiteralCaracter(Compilador p, int id) {
     super(p, id);
+    value = ConstantesTipos.CHAR;
   }
 
 }

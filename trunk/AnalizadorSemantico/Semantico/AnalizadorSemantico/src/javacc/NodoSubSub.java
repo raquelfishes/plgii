@@ -6,6 +6,7 @@ public
 class NodoSubSub extends SimpleNode {
   public NodoSubSub(int id) {
     super(id);
+    this.value = ConstantesTipos.INT;
   }
 
   public NodoSubSub(Compilador p, int id) {

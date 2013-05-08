@@ -6,10 +6,12 @@ public
 class NodoLiteralNull extends SimpleNode {
   public NodoLiteralNull(int id) {
     super(id);
+    this.value = ConstantesTipos.NULL;
   }
 
   public NodoLiteralNull(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.NULL;
   }
 
 }

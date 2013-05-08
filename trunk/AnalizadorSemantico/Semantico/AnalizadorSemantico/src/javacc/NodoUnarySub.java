@@ -6,10 +6,12 @@ public
 class NodoUnarySub extends SimpleNode {
   public NodoUnarySub(int id) {
     super(id);
+    this.value = ConstantesTipos.INT;
   }
 
   public NodoUnarySub(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.INT;
   }
 
 }

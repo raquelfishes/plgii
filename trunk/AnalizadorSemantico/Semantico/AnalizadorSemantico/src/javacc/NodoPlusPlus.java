@@ -6,10 +6,12 @@ public
 class NodoPlusPlus extends SimpleNode {
   public NodoPlusPlus(int id) {
     super(id);
+    this.value = ConstantesTipos.INT;
   }
 
   public NodoPlusPlus(Compilador p, int id) {
     super(p, id);
+    this.value = ConstantesTipos.INT;
   }
 
 }

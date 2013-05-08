@@ -670,49 +670,49 @@ void tipo_primitivo() :
                      jjtc000 = false;
                      jjtn000.jjtSetLastToken(getToken(0));
                    }
-/*@egen*/ { jjtn000.value = "boolean";})
+/*@egen*/ { jjtn000.value = ConstantesTipos.BOOLEAN;})
     | <CHAR>/*@bgen(jjtree)*/
              {
                jjtree.closeNodeScope(jjtn000, true);
                jjtc000 = false;
                jjtn000.jjtSetLastToken(getToken(0));
              }
-/*@egen*/ { jjtn000.value = "char";}
+/*@egen*/ { jjtn000.value = ConstantesTipos.CHAR;}
     | <SHORT>/*@bgen(jjtree)*/
               {
                 jjtree.closeNodeScope(jjtn000, true);
                 jjtc000 = false;
                 jjtn000.jjtSetLastToken(getToken(0));
               }
-/*@egen*/ { jjtn000.value = "short";}
+/*@egen*/ { jjtn000.value = ConstantesTipos.SHORT;}
     | <INT>/*@bgen(jjtree)*/
             {
               jjtree.closeNodeScope(jjtn000, true);
               jjtc000 = false;
               jjtn000.jjtSetLastToken(getToken(0));
             }
-/*@egen*/ { jjtn000.value = "int";}
+/*@egen*/ { jjtn000.value = ConstantesTipos.INT;}
     | <LONG>/*@bgen(jjtree)*/
              {
                jjtree.closeNodeScope(jjtn000, true);
                jjtc000 = false;
                jjtn000.jjtSetLastToken(getToken(0));
              }
-/*@egen*/ { jjtn000.value = "long";}
+/*@egen*/ { jjtn000.value = ConstantesTipos.LONG;}
     | <FLOAT>/*@bgen(jjtree)*/
               {
                 jjtree.closeNodeScope(jjtn000, true);
                 jjtc000 = false;
                 jjtn000.jjtSetLastToken(getToken(0));
               }
-/*@egen*/ { jjtn000.value = "float";}
+/*@egen*/ { jjtn000.value = ConstantesTipos.FLOAT;}
     | <DOUBLE>/*@bgen(jjtree)*/
                {
                  jjtree.closeNodeScope(jjtn000, true);
                  jjtc000 = false;
                  jjtn000.jjtSetLastToken(getToken(0));
                }
-/*@egen*/ { jjtn000.value = "double";}/*@bgen(jjtree)*/
+/*@egen*/ { jjtn000.value = ConstantesTipos.DOUBLE;}/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
@@ -1094,55 +1094,27 @@ void operador_asignacion()       :
   }
 }
 {
-  op_equals() | op_mult_e() | <DIV_E> | <MOD_E> | op_add_e() | <SUB_E> | <AND_E> | <OR_E>
+  <EQUALS> | <MULT_E> | <DIV_E> | <MOD_E> | <ADD_E> | <SUB_E> | <AND_E> | <OR_E>
 }
-
-void op_equals()      :
+/*
+void op_equals() #void:
 {}{
   <EQUALS>}
 
 void op_mult_e() :
-{/*@bgen(jjtree) op_mult_e */
-  Nodoop_mult_e jjtn000 = new Nodoop_mult_e(JJTOP_MULT_E);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/
+{
 }
-{/*@bgen(jjtree) op_mult_e */
-  try {
-/*@egen*/
-  <MULT_E>/*@bgen(jjtree)*/
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-  }
-/*@egen*/
+{
+  <MULT_E>
 }
 
 void op_add_e() :
-{/*@bgen(jjtree) op_add_e */
-  Nodoop_add_e jjtn000 = new Nodoop_add_e(JJTOP_ADD_E);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/
+{
 }
-{/*@bgen(jjtree) op_add_e */
-  try {
-/*@egen*/
-  <ADD_E>/*@bgen(jjtree)*/
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
-  }
-/*@egen*/
+{
+  <ADD_E>
 }
-
+*/
 void expresion_cond()      :
 {
   if (usaInterfaz)

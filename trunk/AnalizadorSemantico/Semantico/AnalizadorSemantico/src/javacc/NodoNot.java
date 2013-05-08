@@ -6,11 +6,12 @@ public
 class NodoNot extends SimpleNode {
   public NodoNot(int id) {
     super(id);
+    this.value = ConstantesTipos.BOOLEAN;
   }
 
   public NodoNot(Compilador p, int id) {
     super(p, id);
   }
-
+  
 }
 /* JavaCC - OriginalChecksum=838833b5f524669a742eb913eaddf7f8 (do not edit this line) */
