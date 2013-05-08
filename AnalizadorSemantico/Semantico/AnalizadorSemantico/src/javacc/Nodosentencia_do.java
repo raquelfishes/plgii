@@ -11,6 +11,16 @@ class Nodosentencia_do extends SimpleNode {
   public Nodosentencia_do(Compilador p, int id) {
     super(p, id);
   }
+  
+  
+  @Override
+  public void interpret(){
+	  
+	  int i, k = jjtGetNumChildren();
+
+	     for (i = 0; i < k; i++)
+	        jjtGetChild(i).interpret();
+  }
 
 }
 /* JavaCC - OriginalChecksum=507b7c41c9f20034d008a7010924b022 (do not edit this line) */

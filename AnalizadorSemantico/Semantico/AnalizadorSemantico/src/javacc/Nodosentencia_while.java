@@ -11,6 +11,15 @@ class Nodosentencia_while extends SimpleNode {
   public Nodosentencia_while(Compilador p, int id) {
     super(p, id);
   }
+  
+  @Override
+  public void interpret(){
+	  
+	  int i, k = jjtGetNumChildren();
+
+	     for (i = 0; i < k; i++)
+	        jjtGetChild(i).interpret();
+  }
 
 }
 /* JavaCC - OriginalChecksum=bd5d0dc119c8ec380549ff5ed572868f (do not edit this line) */

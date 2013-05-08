@@ -17,7 +17,7 @@ class NodoIgualIgual extends SimpleNode {
   public void interpret()
   {      
 	  
-	 //super.comprobacionBooleana(); 
+	 verificarComparacionValida();
 	 
 	 
      int i, k = jjtGetNumChildren();

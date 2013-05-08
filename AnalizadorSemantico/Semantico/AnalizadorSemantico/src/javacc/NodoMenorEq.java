@@ -14,5 +14,9 @@ class NodoMenorEq extends SimpleNode {
     this.value = ConstantesTipos.BOOLEAN;
   }
 
+  @Override
+  public void interpret(){
+	  verificarComparacionValida();
+  }
 }
 /* JavaCC - OriginalChecksum=8c339f236bab847c993cf3ddfced5e8b (do not edit this line) */

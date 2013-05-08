@@ -18,7 +18,7 @@ class NodoNIgual extends SimpleNode {
   public void interpret()
   {      
 	  
-	 //super.comprobacionBooleana();
+	  verificarComparacionValida();
 	
   }
 

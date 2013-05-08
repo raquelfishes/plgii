@@ -18,10 +18,18 @@ public class Prueba {
 		//susie = gardfield;
 		b = true || 3;
 		i = k = 3;
-		b = (i==1);
+		b = (1<=i);
 		
-		if( a < 3){
+		if( a <= true){
 		
+		}
+		
+		for(int i=0; i<true; i++){
+			
+		}
+		
+		while(i==2){
+			
 		}
 		
 		
