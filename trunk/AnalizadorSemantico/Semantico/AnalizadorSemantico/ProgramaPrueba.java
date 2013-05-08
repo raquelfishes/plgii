@@ -13,9 +13,13 @@ public class Prueba {
 //		int v = 3 + a;
 //		int m = 3 * 'f';
 //		int d = 5/"6";
-		Gato.Cosmico gardfield;
-		Gato susie;
-		//susie = gardfield;
+		Gato.Cosmico doraemon;
+		Gato gardfield;
+	
+		if (doraemon instanceof Gato){
+			;
+		}
+
 		b = true || 3;
 		i = k = 3;
 		b = (1<=i);
@@ -31,6 +35,7 @@ public class Prueba {
 		while(i==2){
 			
 		}
+	
 		
 		
 //		if(a==2){
