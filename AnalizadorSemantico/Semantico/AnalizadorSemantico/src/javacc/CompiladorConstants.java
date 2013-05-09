@@ -41,167 +41,165 @@ public interface CompiladorConstants {
   /** RegularExpression Id. */
   int ELSE = 23;
   /** RegularExpression Id. */
-  int ENUM = 24;
+  int EXTENDS = 24;
   /** RegularExpression Id. */
-  int EXTENDS = 25;
+  int FINAL = 25;
   /** RegularExpression Id. */
-  int FINAL = 26;
+  int FINALLY = 26;
   /** RegularExpression Id. */
-  int FINALLY = 27;
+  int FLOAT = 27;
   /** RegularExpression Id. */
-  int FLOAT = 28;
+  int FOR = 28;
   /** RegularExpression Id. */
-  int FOR = 29;
+  int GOTO = 29;
   /** RegularExpression Id. */
-  int GOTO = 30;
+  int IF = 30;
   /** RegularExpression Id. */
-  int IF = 31;
+  int IMPLEMENTS = 31;
   /** RegularExpression Id. */
-  int IMPLEMENTS = 32;
+  int IMPORT = 32;
   /** RegularExpression Id. */
-  int IMPORT = 33;
+  int INSTANCEOF = 33;
   /** RegularExpression Id. */
-  int INSTANCEOF = 34;
+  int INT = 34;
   /** RegularExpression Id. */
-  int INT = 35;
+  int INTERFACE = 35;
   /** RegularExpression Id. */
-  int INTERFACE = 36;
+  int LONG = 36;
   /** RegularExpression Id. */
-  int LONG = 37;
+  int NEW = 37;
   /** RegularExpression Id. */
-  int NEW = 38;
+  int PACKAGE = 38;
   /** RegularExpression Id. */
-  int PACKAGE = 39;
+  int PRIVATE = 39;
   /** RegularExpression Id. */
-  int PRIVATE = 40;
+  int PROTECTED = 40;
   /** RegularExpression Id. */
-  int PROTECTED = 41;
+  int PUBLIC = 41;
   /** RegularExpression Id. */
-  int PUBLIC = 42;
+  int RETURN = 42;
   /** RegularExpression Id. */
-  int RETURN = 43;
+  int SHORT = 43;
   /** RegularExpression Id. */
-  int SHORT = 44;
+  int STATIC = 44;
   /** RegularExpression Id. */
-  int STATIC = 45;
+  int SUPER = 45;
   /** RegularExpression Id. */
-  int SUPER = 46;
+  int SWITCH = 46;
   /** RegularExpression Id. */
-  int SWITCH = 47;
+  int SYNCHRONIZED = 47;
   /** RegularExpression Id. */
-  int SYNCHRONIZED = 48;
+  int THIS = 48;
   /** RegularExpression Id. */
-  int THIS = 49;
+  int THROW = 49;
   /** RegularExpression Id. */
-  int THROW = 50;
+  int THROWS = 50;
   /** RegularExpression Id. */
-  int THROWS = 51;
+  int TRY = 51;
   /** RegularExpression Id. */
-  int TRY = 52;
+  int VOID = 52;
   /** RegularExpression Id. */
-  int VOID = 53;
+  int VOLATILE = 53;
   /** RegularExpression Id. */
-  int VOLATILE = 54;
+  int WHILE = 54;
   /** RegularExpression Id. */
-  int WHILE = 55;
+  int LITERAL_INTEGER = 55;
   /** RegularExpression Id. */
-  int LITERAL_INTEGER = 56;
+  int LITERAL_FLOAT = 56;
   /** RegularExpression Id. */
-  int LITERAL_FLOAT = 57;
+  int LITERAL_CARACTER = 57;
   /** RegularExpression Id. */
-  int LITERAL_CARACTER = 58;
+  int LITERAL_STRING = 58;
   /** RegularExpression Id. */
-  int LITERAL_STRING = 59;
+  int LITERAL_BOOLEAN = 59;
   /** RegularExpression Id. */
-  int LITERAL_BOOLEAN = 60;
+  int LITERAL_NULL = 60;
   /** RegularExpression Id. */
-  int LITERAL_NULL = 61;
+  int PAR_A = 61;
   /** RegularExpression Id. */
-  int PAR_A = 62;
+  int PAR_C = 62;
   /** RegularExpression Id. */
-  int PAR_C = 63;
+  int LLAVE_A = 63;
   /** RegularExpression Id. */
-  int LLAVE_A = 64;
+  int LLAVE_C = 64;
   /** RegularExpression Id. */
-  int LLAVE_C = 65;
+  int COR_A = 65;
   /** RegularExpression Id. */
-  int COR_A = 66;
+  int COR_C = 66;
   /** RegularExpression Id. */
-  int COR_C = 67;
+  int PYC = 67;
   /** RegularExpression Id. */
-  int PYC = 68;
+  int COMA = 68;
   /** RegularExpression Id. */
-  int COMA = 69;
+  int PUNTO = 69;
   /** RegularExpression Id. */
-  int PUNTO = 70;
+  int PYP = 70;
   /** RegularExpression Id. */
-  int PYP = 71;
+  int PREG = 71;
   /** RegularExpression Id. */
-  int PREG = 72;
+  int OR = 72;
   /** RegularExpression Id. */
-  int OR = 73;
+  int AND = 73;
   /** RegularExpression Id. */
-  int AND = 74;
+  int OR_B = 74;
   /** RegularExpression Id. */
-  int OR_B = 75;
+  int AND_B = 75;
   /** RegularExpression Id. */
-  int AND_B = 76;
+  int IGUAL_IGUAL = 76;
   /** RegularExpression Id. */
-  int IGUAL_IGUAL = 77;
+  int N_IGUAL = 77;
   /** RegularExpression Id. */
-  int N_IGUAL = 78;
+  int MENOR = 78;
   /** RegularExpression Id. */
-  int MENOR = 79;
+  int MAYOR = 79;
   /** RegularExpression Id. */
-  int MAYOR = 80;
+  int MENOR_EQ = 80;
   /** RegularExpression Id. */
-  int MENOR_EQ = 81;
+  int MAYOR_EQ = 81;
   /** RegularExpression Id. */
-  int MAYOR_EQ = 82;
+  int ADD = 82;
   /** RegularExpression Id. */
-  int ADD = 83;
+  int SUB = 83;
   /** RegularExpression Id. */
-  int SUB = 84;
+  int MULT = 84;
   /** RegularExpression Id. */
-  int MULT = 85;
+  int DIV = 85;
   /** RegularExpression Id. */
-  int DIV = 86;
+  int MOD = 86;
   /** RegularExpression Id. */
-  int MOD = 87;
+  int PLUS_PLUS = 87;
   /** RegularExpression Id. */
-  int PLUS_PLUS = 88;
+  int SUB_SUB = 88;
   /** RegularExpression Id. */
-  int SUB_SUB = 89;
+  int NOT = 89;
   /** RegularExpression Id. */
-  int NOT = 90;
+  int ADD_E = 90;
   /** RegularExpression Id. */
-  int ADD_E = 91;
+  int SUB_E = 91;
   /** RegularExpression Id. */
-  int SUB_E = 92;
+  int MULT_E = 92;
   /** RegularExpression Id. */
-  int MULT_E = 93;
+  int DIV_E = 93;
   /** RegularExpression Id. */
-  int DIV_E = 94;
+  int MOD_E = 94;
   /** RegularExpression Id. */
-  int MOD_E = 95;
+  int AND_E = 95;
   /** RegularExpression Id. */
-  int AND_E = 96;
+  int OR_E = 96;
   /** RegularExpression Id. */
-  int OR_E = 97;
+  int EQUALS = 97;
   /** RegularExpression Id. */
-  int EQUALS = 98;
+  int DESP_D = 98;
   /** RegularExpression Id. */
-  int DESP_D = 99;
+  int DESP_I = 99;
   /** RegularExpression Id. */
-  int DESP_I = 100;
+  int DESP_DNS = 100;
   /** RegularExpression Id. */
-  int DESP_DNS = 101;
+  int XOR = 101;
   /** RegularExpression Id. */
-  int XOR = 102;
+  int COMP = 102;
   /** RegularExpression Id. */
-  int COMP = 103;
-  /** RegularExpression Id. */
-  int IDENTIFICADOR = 104;
+  int IDENTIFICADOR = 103;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -234,7 +232,6 @@ public interface CompiladorConstants {
     "\"do\"",
     "\"double\"",
     "\"else\"",
-    "\"enum\"",
     "\"extends\"",
     "\"final\"",
     "\"finally\"",
