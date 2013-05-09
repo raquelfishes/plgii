@@ -325,7 +325,6 @@ void literal_integer() #void:
 }
 {
 	<LITERAL_INTEGER>
-
 }
 
 void literal_float() #void: 
@@ -420,7 +419,7 @@ void declaracion_tipo() #void:
   <PYC>
 }
 
-void tipo_metodo() #void:
+void tipo_metodo() :
 {
   if (usaInterfaz)
   {
@@ -563,7 +562,7 @@ void iniciar_variable() #void:
   expresion()
 }
 
-void declaracion_metodo() #void:
+void declaracion_metodo() :
 {
   if (usaInterfaz)
   {

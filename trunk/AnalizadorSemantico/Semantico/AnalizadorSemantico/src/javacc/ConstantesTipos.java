@@ -16,6 +16,9 @@ public class ConstantesTipos {
 	
 	public static boolean esCompatible(String t1, String t2){
 		
+		if (t1.equals(t2))
+			return true;
+		
 		if(	(t1.equals(INT) || t1.equals(INTEGER) || t1.equals(SHORT) || t1.equals(LONG) || t1.equals(FLOAT) || t1.equals(DOUBLE)) &&
 			(t2.equals(INT) || t2.equals(INTEGER) || t2.equals(SHORT) || t2.equals(LONG) || t2.equals(FLOAT) || t2.equals(DOUBLE))){
 			return true;
