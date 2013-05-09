@@ -151,7 +151,6 @@ TOKEN : {
 		|  <DO: "do">
 		|  <DOUBLE: "double">
 		|  <ELSE: "else">
-		|  <ENUM :"enum">
 		|  <EXTENDS :"extends">
 		|  <FINAL :"final">
 		|  <FINALLY :"finally">
@@ -556,7 +555,7 @@ void declarador_variable_id() :
   } ( <COR_A> <COR_C> )*
 }
 
-void iniciar_variable() :
+void iniciar_variable() #void:
 {}
 {
   <LLAVE_A> [ iniciar_variable() ( LOOKAHEAD(2) <COMA> iniciar_variable() )* ] [ <COMA> ] <LLAVE_C>
@@ -682,25 +681,7 @@ void operador_asignacion() #void :
 {
   <EQUALS> | <MULT_E> | <DIV_E> | <MOD_E> | <ADD_E> | <SUB_E> | <AND_E> | <OR_E>
 }
-/*
-void op_equals() #void:
-{}{
-  <EQUALS>}
 
-void op_mult_e() :
-{
-}
-{
-  <MULT_E>
-}
-
-void op_add_e() :
-{
-}
-{
-  <ADD_E>
-}
-*/
 void expresion_cond() #void:
 {
   if (usaInterfaz)
