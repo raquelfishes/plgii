@@ -1,0 +1,15 @@
+class Prueba  :
+tmp0:=100
+b:=tmp0
+main:
+tmp2:=0
+i:=tmp2
+tmp4:=i
+k:=tmp4
+tmp3:=i+1
+i:=tmp3
+tmp5:=3
+tmp6:=k*tmp5
+tmp7:=i+tmp6
+b:=tmp7
+return

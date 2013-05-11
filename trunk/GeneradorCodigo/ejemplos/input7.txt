@@ -1,0 +1,49 @@
+class Prueba  :
+tmp0:=100
+b:=tmp0
+main:
+tmp2:=25
+i:=tmp2
+tmp3:=0
+if (i=tmp3) goto +3
+tmp3:=0
+goto +2
+tmp3:=1
+if ( tmp3 = 0 ) goto case1
+tmp4:=11
+k:=tmp4
+case1:
+tmp5:=1
+if (i=tmp5) goto +3
+tmp5:=0
+goto +2
+tmp5:=1
+if ( tmp5 = 0 ) goto case2
+tmp6:=22
+k:=tmp6
+goto fin-if0
+case2:
+tmp7:=2
+if (i=tmp7) goto +3
+tmp7:=0
+goto +2
+tmp7:=1
+if ( tmp7 = 0 ) goto case3
+tmp8:=33
+k:=tmp8
+goto fin-if0
+case3:
+tmp9:=5
+if (i=tmp9) goto +3
+tmp9:=0
+goto +2
+tmp9:=1
+if ( tmp9 = 0 ) goto case4
+tmp10:=44
+k:=tmp10
+goto fin-if0
+case4:
+tmp11:=111
+k:=tmp11
+fin-if0:
+return

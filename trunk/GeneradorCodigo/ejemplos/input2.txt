@@ -1,0 +1,23 @@
+class Prueba  :
+tmp0:=100
+b:=tmp0
+main:
+tmp2:=0
+i:=tmp2
+tmp3:=10
+if (i<tmp3) goto +3
+tmp4:=0
+goto +2
+tmp4:=1
+bucle0:
+if ( tmp4 = 0 ) goto fin-bucle0
+tmp6:=5
+b-tmp6
+tmp7:=2
+tmp8:=b*tmp7
+k:=tmp8
+tmp5:=i+1
+i:=tmp5
+goto bucle0
+fin-bucle0:
+return
