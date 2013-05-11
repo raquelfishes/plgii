@@ -88,6 +88,10 @@ class SimpleNode extends XNode implements Node {
 	  return value;
   }
   
+  public void setValor(Object value){
+	  this.value = value;
+  }
+  
   public void comprobacionNumerica(){
 	  
 	  if(esTipoOperacionNumerica(children[0]))

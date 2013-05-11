@@ -318,7 +318,32 @@ SimpleNode compilar():
 }
 
 
+/* Descomentar si se quiere volver a la version antigua sin comprobacion sem\u00e1ntica de las funciones
 void identificador() :
+{
+  Token t, t1 = null;
+  String restoTipo = "";
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> t1=<IDENTIFICADOR> {restoTipo += "." + t1.image;} )*
+  {
+    if (usaInterfaz){
+      InterfazPlg.escribirIdentificadores(t.toString());
+    }
+
+	jjtThis.value = t.image + restoTipo;
+
+	//jjtThis.pilaTipos.push(jjtThis.nodeType);
+    //System.out.println("identificador "+t.image.toString());
+    //System.out.println("identificador "+t.kind);
+  }
+}*/
+
+Token identificador() :
 {/*@bgen(jjtree) identificador */
   Nodoidentificador jjtn000 = new Nodoidentificador(JJTIDENTIFICADOR);
   boolean jjtc000 = true;
@@ -352,6 +377,8 @@ void identificador() :
 	//jjtThis.pilaTipos.push(jjtThis.nodeType);
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
+
+    return t;
   }/*@bgen(jjtree)*/
   } finally {
     if (jjtc000) {
@@ -608,13 +635,28 @@ if (usaInterfaz)
     <LITERAL_NULL>
 }
 
+/*
 void tipo() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*
+}
+
+*/
+
+Token tipo() :
 {/*@bgen(jjtree) tipo */
   Nodotipo jjtn000 = new Nodotipo(JJTTIPO);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+  Token t = null;
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -623,7 +665,14 @@ void tipo() :
 {/*@bgen(jjtree) tipo */
   try {
 /*@egen*/
-  ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*/*@bgen(jjtree)*/
+  ( t =tipo_primitivo() | t =identificador() ) ( <COR_A> <COR_C> )*/*@bgen(jjtree)*/
+  {
+    jjtree.closeNodeScope(jjtn000, true);
+    jjtc000 = false;
+    jjtn000.jjtSetLastToken(getToken(0));
+  }
+/*@egen*/ //FIXME Aun no se bien como coger los corchetes(a lo mejor ni es necesario), preguntar a Ricky
+  {    return t;  }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -644,16 +693,37 @@ void tipo() :
       jjtn000.jjtSetLastToken(getToken(0));
     }
   }
-/*@egen*/
+/*@egen*/  
 }
 
+/* Descomentar si se quiere volver a la version antigua sin comprobacion sem\u00e1ntica de las funciones
 void tipo_primitivo() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  	(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})
+    | <CHAR> { jjtThis.value = ConstantesTipos.CHAR;}
+    | <SHORT> { jjtThis.value = ConstantesTipos.SHORT;}
+    | <INT> { jjtThis.value = ConstantesTipos.INT;}
+    | <LONG> { jjtThis.value = ConstantesTipos.LONG;}
+    | <FLOAT> { jjtThis.value = ConstantesTipos.FLOAT;}
+    | <DOUBLE> { jjtThis.value = ConstantesTipos.DOUBLE;}
+
+}
+*/
+
+Token tipo_primitivo() :
 {/*@bgen(jjtree) tipo_primitivo */
   Nodotipo_primitivo jjtn000 = new Nodotipo_primitivo(JJTTIPO_PRIMITIVO);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+  Token t=null;
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -662,63 +732,66 @@ void tipo_primitivo() :
 {/*@bgen(jjtree) tipo_primitivo */
         try {
 /*@egen*/
-  	(<BOOLEAN>/*@bgen(jjtree)*/
-                   {
-                     jjtree.closeNodeScope(jjtn000, true);
-                     jjtc000 = false;
-                     jjtn000.jjtSetLastToken(getToken(0));
-                   }
-/*@egen*/ { jjtn000.value = ConstantesTipos.BOOLEAN;})
-    | <CHAR>/*@bgen(jjtree)*/
-             {
-               jjtree.closeNodeScope(jjtn000, true);
-               jjtc000 = false;
-               jjtn000.jjtSetLastToken(getToken(0));
-             }
-/*@egen*/ { jjtn000.value = ConstantesTipos.CHAR;}
-    | <SHORT>/*@bgen(jjtree)*/
-              {
-                jjtree.closeNodeScope(jjtn000, true);
-                jjtc000 = false;
-                jjtn000.jjtSetLastToken(getToken(0));
-              }
-/*@egen*/ { jjtn000.value = ConstantesTipos.SHORT;}
-    | <INT>/*@bgen(jjtree)*/
-            {
-              jjtree.closeNodeScope(jjtn000, true);
-              jjtc000 = false;
-              jjtn000.jjtSetLastToken(getToken(0));
-            }
-/*@egen*/ { jjtn000.value = ConstantesTipos.INT;}
-    | <LONG>/*@bgen(jjtree)*/
-             {
-               jjtree.closeNodeScope(jjtn000, true);
-               jjtc000 = false;
-               jjtn000.jjtSetLastToken(getToken(0));
-             }
-/*@egen*/ { jjtn000.value = ConstantesTipos.LONG;}
-    | <FLOAT>/*@bgen(jjtree)*/
-              {
-                jjtree.closeNodeScope(jjtn000, true);
-                jjtc000 = false;
-                jjtn000.jjtSetLastToken(getToken(0));
-              }
-/*@egen*/ { jjtn000.value = ConstantesTipos.FLOAT;}
-    | <DOUBLE>/*@bgen(jjtree)*/
+  	//t =(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})<-- CAMBIO MIO(Ricardo el m\u00e1s guay), no entiendo que diferencia hay si le quitas los parentesis
+  	t =<BOOLEAN>/*@bgen(jjtree)*/
+                     {
+                       jjtree.closeNodeScope(jjtn000, true);
+                       jjtc000 = false;
+                       jjtn000.jjtSetLastToken(getToken(0));
+                     }
+/*@egen*/ { jjtn000.value = ConstantesTipos.BOOLEAN; return t;}
+    | t =<CHAR>/*@bgen(jjtree)*/
+                {
+                  jjtree.closeNodeScope(jjtn000, true);
+                  jjtc000 = false;
+                  jjtn000.jjtSetLastToken(getToken(0));
+                }
+/*@egen*/ { jjtn000.value = ConstantesTipos.CHAR; return t;}
+    | t =<SHORT>/*@bgen(jjtree)*/
+                 {
+                   jjtree.closeNodeScope(jjtn000, true);
+                   jjtc000 = false;
+                   jjtn000.jjtSetLastToken(getToken(0));
+                 }
+/*@egen*/ { jjtn000.value = ConstantesTipos.SHORT; return t;}
+    | t =<INT>/*@bgen(jjtree)*/
                {
                  jjtree.closeNodeScope(jjtn000, true);
                  jjtc000 = false;
                  jjtn000.jjtSetLastToken(getToken(0));
                }
-/*@egen*/ { jjtn000.value = ConstantesTipos.DOUBLE;}/*@bgen(jjtree)*/
+/*@egen*/ { jjtn000.value = ConstantesTipos.INT; return t;}
+    | t =<LONG>/*@bgen(jjtree)*/
+                {
+                  jjtree.closeNodeScope(jjtn000, true);
+                  jjtc000 = false;
+                  jjtn000.jjtSetLastToken(getToken(0));
+                }
+/*@egen*/ { jjtn000.value = ConstantesTipos.LONG; return t;}
+    | t =<FLOAT>/*@bgen(jjtree)*/
+                 {
+                   jjtree.closeNodeScope(jjtn000, true);
+                   jjtc000 = false;
+                   jjtn000.jjtSetLastToken(getToken(0));
+                 }
+/*@egen*/ { jjtn000.value = ConstantesTipos.FLOAT; return t;}
+    | t =<DOUBLE>/*@bgen(jjtree)*/
+                  {
+                    jjtree.closeNodeScope(jjtn000, true);
+                    jjtc000 = false;
+                    jjtn000.jjtSetLastToken(getToken(0));
+                  }
+/*@egen*/ { jjtn000.value = ConstantesTipos.DOUBLE; return t;}/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
             jjtn000.jjtSetLastToken(getToken(0));
           }
         }
-/*@egen*/
+/*@egen*/ 
+    
 }
+
 
 void declaracion_tipo()      :
 {
@@ -735,13 +808,27 @@ void declaracion_tipo()      :
   <PYC>
 }
 
+/*
 void tipo_metodo() :
+{
+  Token t;
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  tipo() | <VOID>
+}
+*/
+Token tipo_metodo() :
 {/*@bgen(jjtree) tipo_metodo */
   Nodotipo_metodo jjtn000 = new Nodotipo_metodo(JJTTIPO_METODO);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+  Token t=null;
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -750,7 +837,27 @@ void tipo_metodo() :
 {/*@bgen(jjtree) tipo_metodo */
   try {
 /*@egen*/
-  tipo() | <VOID>/*@bgen(jjtree)*/
+  t=tipo()/*@bgen(jjtree)*/
+          {
+            jjtree.closeNodeScope(jjtn000, true);
+            jjtc000 = false;
+            jjtn000.jjtSetLastToken(getToken(0));
+          }
+/*@egen*/{
+    jjtn000.value = t.image;
+    return t;
+  }
+  |
+  t=<VOID>/*@bgen(jjtree)*/
+          {
+            jjtree.closeNodeScope(jjtn000, true);
+            jjtc000 = false;
+            jjtn000.jjtSetLastToken(getToken(0));
+          }
+/*@egen*/{
+    jjtn000.value = t.image;
+    return t;
+  }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -771,8 +878,9 @@ void tipo_metodo() :
       jjtn000.jjtSetLastToken(getToken(0));
     }
   }
-/*@egen*/
+/*@egen*/
 }
+ 
 
 void lista_de_tipos()      :
 {

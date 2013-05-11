@@ -12,6 +12,7 @@ public class ConstantesTipos {
 	public static final String STRING = "String";
 	public static final String BOOLEAN = "boolean";
 	public static final String NULL = "null";
+	public static final String VOID = "void";
 	
 	
 	public static boolean esCompatible(String t1, String t2){

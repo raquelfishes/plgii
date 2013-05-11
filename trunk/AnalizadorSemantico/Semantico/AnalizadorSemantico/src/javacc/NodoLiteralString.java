@@ -14,6 +14,11 @@ class NodoLiteralString extends SimpleNode {
     
     this.value = ConstantesTipos.STRING;
   }
+  
+  public void interpret()
+  { 
+	  
+  }
 
 }
 /* JavaCC - OriginalChecksum=c3d830b7485c07c3193ac76285ce7242 (do not edit this line) */

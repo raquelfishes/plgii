@@ -14,5 +14,9 @@ class NodoLiteralCaracter extends SimpleNode {
     value = ConstantesTipos.CHAR;
   }
 
+  public void interpret()
+  { 
+	  
+  }
 }
 /* JavaCC - OriginalChecksum=95d60962a16aeb761fa534ba5d097739 (do not edit this line) */

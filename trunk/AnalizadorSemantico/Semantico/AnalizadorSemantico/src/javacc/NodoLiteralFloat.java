@@ -14,5 +14,9 @@ class NodoLiteralFloat extends SimpleNode {
     value = ConstantesTipos.FLOAT;
   }
 
+  public void interpret()
+  { 
+	  
+  }
 }
 /* JavaCC - OriginalChecksum=c0254fc4044fc9ad20ed1efcc72fcaab (do not edit this line) */
