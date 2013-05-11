@@ -11,6 +11,15 @@ class Nodosentencia_return extends SimpleNode {
   public Nodosentencia_return(Compilador p, int id) {
     super(p, id);
   }
+  
+  @Override
+  public void interpret(){
+	  
+	  int i, k = jjtGetNumChildren();
+
+	     for (i = 0; i < k; i++)
+	        jjtGetChild(i).interpret();
+  }
 
 }
 /* JavaCC - OriginalChecksum=38cbab4f3b995f337c6ccbf7e6b06854 (do not edit this line) */
