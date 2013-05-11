@@ -3,6 +3,23 @@ public class Prueba {
 	Persona paco;
 		
 	void main(){
-		Gato unArray[] = new Gato[5];
+		//Gato unArray[] = new Gato[5];
+		i = 2+3;
+		
+		boolean b = false || true;
+		
+		
+		
+	}
+	
+	
+	public int dameint(){
+		
+		return 3;
+		
+	}
+	
+	void procedimiento(){
+		
 	}
 }
