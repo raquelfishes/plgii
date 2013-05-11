@@ -13,6 +13,11 @@ class NodoLiteralNull extends SimpleNode {
     super(p, id);
     this.value = ConstantesTipos.NULL;
   }
+  
+  public void interpret()
+  { 
+	  
+  }
 
 }
 /* JavaCC - OriginalChecksum=f1f2371aab48511ebfda92516f42e82d (do not edit this line) */

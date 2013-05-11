@@ -280,6 +280,7 @@ SimpleNode compilar():
 }
 
 
+/* Descomentar si se quiere volver a la version antigua sin comprobacion semántica de las funciones
 void identificador() :
 {
   Token t, t1 = null;
@@ -301,6 +302,32 @@ void identificador() :
 	//jjtThis.pilaTipos.push(jjtThis.nodeType);
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
+  }
+}*/
+
+Token identificador() :
+{
+  Token t, t1 = null;
+  String restoTipo = "";
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> t1=<IDENTIFICADOR> {restoTipo += "." + t1.image;} )*
+  {
+    if (usaInterfaz){
+      InterfazPlg.escribirIdentificadores(t.toString());
+    }
+
+	jjtThis.value = t.image + restoTipo;
+
+	//jjtThis.pilaTipos.push(jjtThis.nodeType);
+    //System.out.println("identificador "+t.image.toString());
+    //System.out.println("identificador "+t.kind);
+
+    return t;
   }
 }
 
@@ -376,6 +403,7 @@ if (usaInterfaz)
     <LITERAL_NULL>
 }
 
+/*
 void tipo() :
 {
   if (usaInterfaz)
@@ -387,6 +415,22 @@ void tipo() :
   ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*
 }
 
+*/
+
+Token tipo() :
+{
+  Token t = null;
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  ( t =tipo_primitivo() | t =identificador() ) ( <COR_A> <COR_C> )* //FIXME Aun no se bien como coger los corchetes(a lo mejor ni es necesario), preguntar a Ricky
+  {    return t;  }  
+}
+
+/* Descomentar si se quiere volver a la version antigua sin comprobacion semántica de las funciones
 void tipo_primitivo() :
 {
   if (usaInterfaz)
@@ -402,7 +446,30 @@ void tipo_primitivo() :
     | <LONG> { jjtThis.value = ConstantesTipos.LONG;}
     | <FLOAT> { jjtThis.value = ConstantesTipos.FLOAT;}
     | <DOUBLE> { jjtThis.value = ConstantesTipos.DOUBLE;}
+
 }
+*/
+
+Token tipo_primitivo() :
+{
+  Token t=null;
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  	//t =(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})<-- CAMBIO MIO(Ricardo el más guay), no entiendo que diferencia hay si le quitas los parentesis
+  	t =<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN; return t;}
+    | t =<CHAR> { jjtThis.value = ConstantesTipos.CHAR; return t;}
+    | t =<SHORT> { jjtThis.value = ConstantesTipos.SHORT; return t;}
+    | t =<INT> { jjtThis.value = ConstantesTipos.INT; return t;}
+    | t =<LONG> { jjtThis.value = ConstantesTipos.LONG; return t;}
+    | t =<FLOAT> { jjtThis.value = ConstantesTipos.FLOAT; return t;}
+    | t =<DOUBLE> { jjtThis.value = ConstantesTipos.DOUBLE; return t;} 
+    
+}
+
 
 void declaracion_tipo() #void:
 {
@@ -419,8 +486,10 @@ void declaracion_tipo() #void:
   <PYC>
 }
 
+/*
 void tipo_metodo() :
 {
+  Token t;
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -429,6 +498,27 @@ void tipo_metodo() :
 {
   tipo() | <VOID>
 }
+*/
+Token tipo_metodo() :
+{
+  Token t=null;
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  t=tipo(){
+    jjtThis.value = t.image;
+    return t;
+  }
+  |
+  t=<VOID>{
+    jjtThis.value = t.image;
+    return t;
+  }
+}
+ 
 
 void lista_de_tipos() #void:
 {
