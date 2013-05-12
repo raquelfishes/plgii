@@ -44,7 +44,7 @@ public class CGestorTS implements IGestorTS {
 	@Override
 	public void nuevoAmbito(String nombreAmbito) {
 		
-		List<Ambito> listaAmbitosPadre = ambitoActual.dameListaAmbitosPadre();
+		List<Ambito> listaAmbitosPadre = new ArrayList<Ambito>(ambitoActual.dameListaAmbitosPadre());
 		listaAmbitosPadre.add(ambitoActual);
 		Ambito nuevoAmbito = new Ambito(nombreAmbito, listaAmbitosPadre);
 		ambitoActual.insertarAmbitoHijo(nuevoAmbito);

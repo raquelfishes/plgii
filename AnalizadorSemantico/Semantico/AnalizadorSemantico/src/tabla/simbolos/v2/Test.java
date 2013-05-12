@@ -69,6 +69,9 @@ public class Test {
 				gestor.cierraAmbito();
 			gestor.cierraAmbito();
 			
+			if(!gestor.esLexemaValido("b"))
+				System.err.println("b ya esta definida cazurro!");
+			
 			if(!gestor.esLexemaValido("entero"))
 				System.err.println("variableGlobal ya esta definida cazurro!");
 			
