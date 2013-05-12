@@ -86,7 +86,6 @@ public class CGestorTS implements IGestorTS {
 	}
 	
 	public void listarTodosLosLexemas(){
-		System.out.println("Me da pereza calcular las tabulaciones...");
 		listarTodosLosLexemasAux(ambitoGlobal, 0);
 	}
 	
@@ -94,13 +93,14 @@ public class CGestorTS implements IGestorTS {
 		
 		String tabulacion = calcularTabulacion(n_tab);
 		
-		System.out.println(ambito.getNombre()+"{");
-		imprimirLexemas(ambito);
+		System.out.println(tabulacion+ambito.getNombre()+"{");
+		imprimirLexemas(ambito, tabulacion);
 		List<Ambito> listaAmbitoHijos = ambito.dameListaAmbitosHijos();
 		
 		int numHijos = listaAmbitoHijos.size();
 		
 		if(numHijos==0){
+			System.out.println(tabulacion+"}"+ambito.getNombre());
 			return;
 		}
 		else{
@@ -108,14 +108,16 @@ public class CGestorTS implements IGestorTS {
 				listarTodosLosLexemasAux(ambitoHijo, n_tab+1);
 			}
 		}
-		System.out.println("}"+ambito.getNombre());
+		
+		System.out.println(tabulacion+"}"+ambito.getNombre());
+		
 	}
 	
 	
-	private void imprimirLexemas(Ambito a){
+	private void imprimirLexemas(Ambito a, String tabulacion){
 		Iterator<String> it = a.dameLexemas();
 		while(it.hasNext()){
-			System.out.println(it.next());
+			System.out.println(tabulacion+"\t"+it.next());
 		}
 	}
 	
