@@ -32,6 +32,8 @@ public class Test {
 		 * 					int variableGlobal;
 		 * 				}
 		 * 			}
+		 * 
+		 * 			int entero;
 		 * 		
 		 * 		}
 		 * 
@@ -66,6 +68,12 @@ public class Test {
 					gestor.insertar("variableGlobal", new Atributos("variableGlobal", "int"));
 				gestor.cierraAmbito();
 			gestor.cierraAmbito();
+			
+			if(!gestor.esLexemaValido("entero"))
+				System.err.println("variableGlobal ya esta definida cazurro!");
+			
+			gestor.insertar("entero", new Atributos("entero", "int"));
+			
 		gestor.cierraAmbito();
 		
 		
