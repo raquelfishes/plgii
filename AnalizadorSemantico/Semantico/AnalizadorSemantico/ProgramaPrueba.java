@@ -25,8 +25,8 @@ public class Prueba {
 	public int dameint(char c){
 		
 		return 3+"4";
-		
 	}
+
 	
 	public int dameint(char c,long l, String s){
 		

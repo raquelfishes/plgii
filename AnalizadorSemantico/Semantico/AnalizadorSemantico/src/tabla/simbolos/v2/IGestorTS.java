@@ -1,4 +1,4 @@
-package tabla.simbolos;
+package tabla.simbolos.v2;
 
 import java.util.LinkedList;
 
@@ -65,18 +65,18 @@ public interface IGestorTS {
 	 */
 	public Atributos getAtributos(String lexema);
 	
-	/**
-	 * Devuelve una lista con los atributos visibles desde el ámbito actual
-	 * @return LinkedList<Atributos>
-	 */
-	public LinkedList<Atributos> listarAmbitoActual();
-	
-	/**
-	 * Devuelve una lista con los atributos de todos los lexemas del programa.
-	 * No debe realizarse esta llamada hasta haber cerrado todos los ámbitos (fin del análisis)
-	 * @return LinkedList<Atributos> 
-	 */
-	public LinkedList<Atributos> listarTodos();
+//	/**
+//	 * Devuelve una lista con los atributos visibles desde el ámbito actual
+//	 * @return LinkedList<Atributos>
+//	 */
+//	public LinkedList<Atributos> listarAmbitoActual();
+//	
+//	/**
+//	 * Devuelve una lista con los atributos de todos los lexemas del programa.
+//	 * No debe realizarse esta llamada hasta haber cerrado todos los ámbitos (fin del análisis)
+//	 * @return LinkedList<Atributos> 
+//	 */
+//	public LinkedList<Atributos> listarTodos();
 	
 
 }
