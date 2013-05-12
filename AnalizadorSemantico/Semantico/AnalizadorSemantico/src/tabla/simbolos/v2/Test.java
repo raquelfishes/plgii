@@ -52,6 +52,10 @@ public class Test {
 		gestor.cierraAmbito();
 		
 		gestor.nuevoAmbito("ambito_dameInt");
+		
+			if(!gestor.esLexemaValido("x"))
+				System.err.println("x ya esta definida cazurro!");
+		
 			gestor.insertar("a", new Atributos("a", "int"));
 			gestor.nuevoAmbito("ambito_if");
 				gestor.insertar("b", new Atributos("b", "int"));
