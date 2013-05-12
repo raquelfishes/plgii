@@ -6,20 +6,27 @@ import java.util.List;
 
 public class Ambito {
 
+	private String nombre;
 	private TablaSimbolos tsLocal;
 	private List<Ambito> listaDeAmbitosPadres;
 	private List<Ambito> listaDeAmbitosHijos;
 	
-	public Ambito(List<Ambito> listaDePadresTS){
+	public Ambito(String nombre, List<Ambito> listaDePadresTS){
+		this.nombre = nombre;
 		this.listaDeAmbitosPadres = listaDePadresTS;
 		this.tsLocal = new TablaSimbolos();
 		this.listaDeAmbitosHijos = new ArrayList<Ambito>();
 	}
 	
-	public Ambito(){
+	public Ambito(String nombre){
+		this.nombre = nombre;
 		this.listaDeAmbitosPadres = new ArrayList<Ambito>();
 		tsLocal = new TablaSimbolos();
 		this.listaDeAmbitosHijos = new ArrayList<Ambito>();
+	}
+	
+	public String getNombre(){
+		return this.nombre;
 	}
 	
 	public void insertarAmbitoHijo(Ambito a){
@@ -56,6 +63,9 @@ public class Ambito {
 			if(tsPadre.dameTS().containsLexema(lexema)){
 				return tsPadre.dameTS().getAtributos(lexema);
 			}
+//			else{
+//				return tsPadre.dameAtributosDeLexema(lexema);
+//			}
 			
 		}
 
@@ -87,5 +97,9 @@ public class Ambito {
 	
 	public Iterator<String> dameLexemas(){
 		return tsLocal.getLexemas();
+	}
+	
+	public String toString(){
+		return nombre;
 	}
 }

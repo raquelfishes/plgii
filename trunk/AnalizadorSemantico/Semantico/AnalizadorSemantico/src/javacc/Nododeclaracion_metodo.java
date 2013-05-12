@@ -11,30 +11,6 @@ class Nododeclaracion_metodo extends SimpleNode {
   public Nododeclaracion_metodo(Compilador p, int id) {
     super(p, id);
   }
-  
-  	@Override
-	public void interpret() {
-
-		// Se supone que un metodo siempre estará compuesto por un tipo_metodo ,
-		// argumentos y finalmente una sentencia_return
-		int numHijos = jjtGetNumChildren();
-		int nodo_tipo_metodo = 0;
-		int nodo_sentencia_return = numHijos - 1;
-
-		// TipoMetodo, al terminar esta sentencia, este
-		// nodo(Nododeclaracion_metodo) ya tiene asignado su tipo
-		jjtGetChild(nodo_tipo_metodo).interpret();
-
-		// Los nodos que estan entre el primero(nodo_tipo_metodo)y el
-		// último(nodo_sentencia_return)
-		for (int i = nodo_tipo_metodo + 1; i < nodo_sentencia_return; i++)
-			jjtGetChild(i).interpret();
-
-		// Sentencia return
-		jjtGetChild(nodo_sentencia_return).interpret();
-
-	}
-  
 
 }
 /* JavaCC - OriginalChecksum=e7d93d282e1b0c942beb6dc404649ff7 (do not edit this line) */

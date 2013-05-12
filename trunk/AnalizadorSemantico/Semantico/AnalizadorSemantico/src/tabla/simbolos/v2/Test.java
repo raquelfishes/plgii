@@ -44,19 +44,23 @@ public class Test {
 		gestor.insertar("variableGlobal", new Atributos("variableGlobal", "int"));
 		
 		//Se le el metodo main y por tanto una "{"
-		gestor.nuevoAmbito();
+		gestor.nuevoAmbito("ambito_main");
 			gestor.insertar("x", new Atributos("x", "int"));
 			gestor.insertar("y", new Atributos("y", "int"));
 		gestor.cierraAmbito();
 		
-		gestor.nuevoAmbito();
+		gestor.nuevoAmbito("ambito_dameInt");
 			gestor.insertar("a", new Atributos("a", "int"));
-			gestor.nuevoAmbito();
+			gestor.nuevoAmbito("ambito_if");
 				gestor.insertar("b", new Atributos("b", "int"));
-				gestor.nuevoAmbito();
+				gestor.nuevoAmbito("ambito_while");
+				
+					if(!gestor.esLexemaValido("entero"))
+						System.err.println("variableGlobal ya esta definida cazurro!");
+				
 					gestor.insertar("entero", new Atributos("entero", "int"));
 					
-					if(gestor.estaLexema("variableGlobal"))
+					if(!gestor.esLexemaValido("variableGlobal"))
 						System.err.println("variableGlobal ya esta definida cazurro!");
 					
 					gestor.insertar("variableGlobal", new Atributos("variableGlobal", "int"));

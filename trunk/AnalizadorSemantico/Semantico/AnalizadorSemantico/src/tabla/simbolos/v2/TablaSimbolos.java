@@ -37,4 +37,19 @@ public class TablaSimbolos {
 		return ts.size();
 	}
 	
+	
+	public String toString(){
+		
+		String s ="{";
+		Iterator<String> it = getLexemas();
+		
+		while(it.hasNext()){
+			s+=it.next();
+		}
+		
+		s+="}";
+		
+		return s;
+		
+	}
 }

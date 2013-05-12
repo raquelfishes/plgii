@@ -16,7 +16,7 @@ public class CGestorTS implements IGestorTS {
 	public CGestorTS() {
 		ambitos = new ArrayList<Ambito>();
 		pilaAmbitosSuperiores = new LinkedList<Ambito>();
-		ambitoGlobal = new Ambito();		
+		ambitoGlobal = new Ambito("AmbitoClase");		
 		ambitoActual = ambitoGlobal;
 		
 	}
@@ -42,11 +42,11 @@ public class CGestorTS implements IGestorTS {
 	 * Este método debe ser llamado cuando al ejecutar el analizador se detecte una llave "{" 
 	 */
 	@Override
-	public void nuevoAmbito() {
+	public void nuevoAmbito(String nombreAmbito) {
 		
 		List<Ambito> listaAmbitosPadre = ambitoActual.dameListaAmbitosPadre();
 		listaAmbitosPadre.add(ambitoActual);
-		Ambito nuevoAmbito = new Ambito(listaAmbitosPadre);
+		Ambito nuevoAmbito = new Ambito(nombreAmbito, listaAmbitosPadre);
 		ambitoActual.insertarAmbitoHijo(nuevoAmbito);
 		apilaAmbito(ambitoActual);
 		ambitoActual = nuevoAmbito;
@@ -64,7 +64,7 @@ public class CGestorTS implements IGestorTS {
 	}
 
 	@Override
-	public boolean estaLexema(String lexema) {
+	public boolean esLexemaValido(String lexema) {
 		return ambitoActual.esLexemaValido(lexema);
 	}
 
@@ -74,12 +74,13 @@ public class CGestorTS implements IGestorTS {
 	}
 	
 	public void listarTodosLosLexemas(){
+		System.out.println("Me da pereza calcular las tabulaciones...");
 		listarTodosLosLexemasAux(ambitoGlobal);
 	}
 	
 	private void listarTodosLosLexemasAux(Ambito ambito){
 		
-		System.out.println("{");
+		System.out.println(ambito.getNombre()+"{");
 		imprimirLexemas(ambito);
 		List<Ambito> listaAmbitoHijos = ambito.dameListaAmbitosHijos();
 		
@@ -93,7 +94,7 @@ public class CGestorTS implements IGestorTS {
 				listarTodosLosLexemasAux(ambitoHijo);
 			}
 		}
-		System.out.println("}");
+		System.out.println("}"+ambito.getNombre());
 	}
 	
 	private void imprimirLexemas(Ambito a){

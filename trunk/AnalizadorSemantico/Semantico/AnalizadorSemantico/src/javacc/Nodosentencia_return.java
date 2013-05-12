@@ -11,36 +11,6 @@ class Nodosentencia_return extends SimpleNode {
   public Nodosentencia_return(Compilador p, int id) {
     super(p, id);
   }
-  
-  @Override
-  public void interpret(){
-	  
-//	  int i, k = jjtGetNumChildren();
-//
-//	     for (i = 0; i < k; i++)
-//	        jjtGetChild(i).interpret();
-	  
-	  //Puede tener uno o ningún hijo
-	  int numHijos = jjtGetNumChildren();
-	  
-	  if(numHijos==0){
-		  //Estoy 99% seguro de que no deberia comprobar nada
-	  }
-	  else{//numHijos==1
-		  
-		  SimpleNode padreNodoDeclaracionMetodo=null;
-		  if(this.parent!=null && this.parent instanceof SimpleNode)
-			  padreNodoDeclaracionMetodo = (SimpleNode)this.parent;
-		  
-		  jjtGetChild(0).interpret();
-		  
-		  String tipoMetodo = padreNodoDeclaracionMetodo.value.toString();
-		  boolean compatibilidad = ConstantesTipos.esCompatible(tipoMetodo, ((SimpleNode)jjtGetChild(0)).value.toString());
-		  if(!compatibilidad){
-			  addErrSemantico(firstToken.beginLine, "el tipo devuelto no es de tipo "+tipoMetodo);
-		  }
-	  }
-  }
 
 }
 /* JavaCC - OriginalChecksum=38cbab4f3b995f337c6ccbf7e6b06854 (do not edit this line) */
