@@ -26,7 +26,7 @@ public interface IGestorTS {
 	 * 
 	 * Los subAmbitos están pensados para las estructuras de control: if,else, while, for, etc.
 	 */
-	public void nuevoAmbito();
+	public void nuevoAmbito(String nombreAmbito);
 	
 	/**
 	 * Es importante cerrar el ámbito, porque así, al llamar de nuevo al método
@@ -55,7 +55,7 @@ public interface IGestorTS {
 	 * @param lexema
 	 * @return
 	 */
-	public boolean estaLexema(String lexema);
+	public boolean esLexemaValido(String lexema);
 	
 	
 	/**
