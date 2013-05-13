@@ -41,9 +41,25 @@ public class Traductor {
 			//Es asignación/operación
 			asignacionUOperacion(linea);
 		} else {
-			//No es asignación/operación (etiqueta, if, etc)
-			// . . .
+			//Es una etiqueta
+			if (linea.contains(":")){
+				esEtiqueta(linea);
+			} else {
+				
+				//No es asignación/operación ni etiqueta (if, for, etc)
+				// . . .
+			}
+			
 		}
+	}
+	
+	private void esEtiqueta(String linea) {
+		
+		if (linea.endsWith(":")) {
+			String lineaAux = linea.replaceAll(" ", "");
+	        output.add(lineaAux);
+	    }
+		// FIXME: en otro caso evaluar un posible error en la sintaxis.
 	}
 	
 	/**
