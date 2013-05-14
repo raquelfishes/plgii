@@ -13,13 +13,19 @@ options {
 PARSER_BEGIN(Compilador)
 package javacc;
 
+import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+
 import tabla.simbolos.v2.CGestorTS;
 import tabla.simbolos.v2.Atributos;
 import interfaz.InterfazPlg;
+import javacc.Simbolo;
 
 public class Compilador {
   public static CGestorTS gestorTS;
   public static boolean usaInterfaz = false;
+  public static java.io.DataOutputStream fichero;
   
   public static void main ( String args [] ) {
 
@@ -70,16 +76,59 @@ public class Compilador {
         System.out.println ("Compilador: Ha ocurrido un error.");
         System.out.println (e.getMessage());
       }
+      try {
+        fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ProgramaIntermedio.txt"));
+      }
+      catch(java.io.FileNotFoundException e){
+        System.out.println ("MAL, NO HAS CREADO EL FICHERO");
+        return;
+      }
+    }
+
+  public static void escribeFichero(String s)
+    {
+      try {
+        fichero.writeUTF(s);
+      }
+      catch(IOException e) {
+        System.out.println("No se ha escrito el fichero de código intermedio." + e.getMessage());
+      }
     }
 
 	public static void initGestorTS(){
 		//Inicialización Tabla de Símbolos y Gestor de Ámbitos
-	    gestorTS = new CGestorTS();
+	   gestorTS = new CGestorTS();
 	}
 
 	public Node rootNode() {
-    	return jjtree.rootNode();
-  	} 
+    return jjtree.rootNode();
+  }
+
+  public static int actualTmp=0, actualCase=0, actualIf=0, actualBucle=0, actualEtiq = 0;
+  public static String nuevaTemp(){
+    return "tmp"+(actualTmp++);
+  }
+  public static String nuevoCase(){
+      return "case"+(++actualCase);
+  }
+  public static String nuevoIf(){
+    return "if"+(actualIf);
+  }
+  public static String elseIf(){
+    return "else-if"+(actualIf);
+  }
+  public static String finIf(){
+    return "fin-if"+(actualIf++);
+  }
+  public static String nuevoBucle(){
+    return "bucle"+(actualBucle);
+  }
+  public static String finBucle(){
+    return "fin-bucle"+(actualBucle++);
+  }
+  public static String nuevaEtiq(){
+    return "etiq"+(actualEtiq++);
+  }
 }
 
 
@@ -126,7 +175,7 @@ TOKEN :
 }
 
 
-/** Tokens reconocidos por e analizador léxico(El orden importa)
+/** Tokens reconocidos por el analizador léxico(El orden importa)
 **	-Identificador
 **	-Palabra reservada
 **	-Literal
@@ -284,6 +333,7 @@ SimpleNode compilar():
 void identificador() :
 {
   Token t, t1 = null;
+  String s = "";
   String restoTipo = "";
   if (usaInterfaz)
   {
@@ -309,6 +359,7 @@ Token identificador() :
 {
   Token t, t1 = null;
   String restoTipo = "";
+  String s = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -327,80 +378,93 @@ Token identificador() :
     //System.out.println("identificador "+t.image.toString());
     //System.out.println("identificador "+t.kind);
 
+    /* NECESITO ENVIAR ESTE STRING */
+    s = t.image + restoTipo;
     return t;
   }
 }
 
-void literal() #void:
+String literal() #void:
 {
+  String s = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  literal_integer()#LiteralInteger | literal_float() #LiteralFloat | literal_caracter() #LiteralCaracter | literal_string() #LiteralString | literal_boolean() #LiteralBoolean | literal_null() #LiteralNull
+  s = literal_integer()#LiteralInteger { return s; }
+| s = literal_float() #LiteralFloat { return s; }
+| s = literal_caracter() #LiteralCaracter { return s; }
+| s = literal_string() #LiteralString { return s; }
+| s = literal_boolean() #LiteralBoolean { return s; }
+| s = literal_null() #LiteralNull { return s; }
 }
 
 
-void literal_integer() #void: 
+String literal_integer() #void: 
 {
-  	Token t;
+  	Token t = new Token();
 	if (usaInterfaz)
     	InterfazPlg.escribirAvisos();
     	
 }
 {
-	<LITERAL_INTEGER>
+	t = <LITERAL_INTEGER> { return t.image; }
 }
 
-void literal_float() #void: 
+String literal_float() #void: 
 {
+  Token t = new Token();
 if (usaInterfaz)
 
     InterfazPlg.escribirAvisos();
 }
 {
-    <LITERAL_FLOAT>
+    t = <LITERAL_FLOAT> { return t.image; }
 }
 
-void literal_caracter() #void: 
+String literal_caracter() #void: 
 {
+  Token t = new Token();
 if (usaInterfaz)
 
     InterfazPlg.escribirAvisos();
 }
 {
-    <LITERAL_CARACTER>
+    t = <LITERAL_CARACTER> { return t.image; }
 }
 
-void literal_string() #void: 
+String literal_string() #void: 
 {
+  Token t = new Token();
 if (usaInterfaz)
 
     InterfazPlg.escribirAvisos();
 }
 {
-    <LITERAL_STRING>
+    t = <LITERAL_STRING> { return t.image; }
 }
 
-void literal_boolean() #void: 
+String literal_boolean() #void: 
 {
+  Token t = new Token();
 if (usaInterfaz)
 
     InterfazPlg.escribirAvisos();
 }
 {
-    <LITERAL_BOOLEAN>
+    t = <LITERAL_BOOLEAN> { return t.image; }
 }
 
-void literal_null() #void: 
+String literal_null() #void: 
 {
+  Token t = new Token();
 if (usaInterfaz)
     InterfazPlg.escribirAvisos();
 }
 {
-    <LITERAL_NULL>
+    t = <LITERAL_NULL> { return t.image; }
 }
 
 /*
@@ -419,6 +483,7 @@ void tipo() :
 
 Token tipo() :
 {
+  String s = "";
   Token t = null;
   if (usaInterfaz)
   {
@@ -426,9 +491,39 @@ Token tipo() :
   }
 }
 {
-  ( t =tipo_primitivo() | t =identificador() ) ( <COR_A> <COR_C> )* //FIXME Aun no se bien como coger los corchetes(a lo mejor ni es necesario), preguntar a Ricky
-  {    return t;  }  
+  ( t = tipo_primitivo() | t = identificador() ) ( <COR_A> <COR_C> 
+    { s += '[' + ']'; }
+  )* //FIXME Aun no se bien como coger los corchetes(a lo mejor ni es necesario), preguntar a Ricky
+  {
+    /* 
+    NECESITO DEVOLVER EL STRING QUE ME VIENE DE TIPO_PRIMITIVO O DE IDENTIFICADOR 
+    * s = tipo_primitivo | s = identificador
+    * return s;
+    */
+    return t;
+  }
+  
 }
+
+/* Descomentar si se quiere volver a la version antigua sin comprobacion semántica de las funciones
+void tipo_primitivo() :
+{
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  	(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})
+    | <CHAR> { jjtThis.value = ConstantesTipos.CHAR;}
+    | <SHORT> { jjtThis.value = ConstantesTipos.SHORT;}
+    | <INT> { jjtThis.value = ConstantesTipos.INT;}
+    | <LONG> { jjtThis.value = ConstantesTipos.LONG;}
+    | <FLOAT> { jjtThis.value = ConstantesTipos.FLOAT;}
+    | <DOUBLE> { jjtThis.value = ConstantesTipos.DOUBLE;}
+
+}
+*/
 
 Token tipo_primitivo() :
 {
@@ -439,6 +534,7 @@ Token tipo_primitivo() :
   }
 }
 {
+  	//t =(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})<-- CAMBIO MIO(Ricardo el más guay), no entiendo que diferencia hay si le quitas los parentesis
   	t =<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN; return t;}
     | t =<CHAR> { jjtThis.value = ConstantesTipos.CHAR; return t;}
     | t =<SHORT> { jjtThis.value = ConstantesTipos.SHORT; return t;}
@@ -447,26 +543,57 @@ Token tipo_primitivo() :
     | t =<FLOAT> { jjtThis.value = ConstantesTipos.FLOAT; return t;}
     | t =<DOUBLE> { jjtThis.value = ConstantesTipos.DOUBLE; return t;} 
     
+    /* 
+    * NECESITO DEVOLVER LA IMAGEN DEL TOKEN
+    * return t.image
+    * en lugar de:
+    * return t
+    */
 }
 
 
 void declaracion_tipo() #void:
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  LOOKAHEAD( ( <ABSTRACT> | <FINAL> | <PUBLIC> )* <CLASS> ) declaracion_clase()
+  LOOKAHEAD( ( <ABSTRACT> | <FINAL> | <PUBLIC> )* <CLASS> ) sim = declaracion_clase() 
+	{
+	  System.out.println(sim.codigo);	}
+/*{ escribeFichero(sim.codigo); }*/
 |
-  declaracion_interface()
+  sim = declaracion_interface() /*{ escribeFichero(sim.codigo); }*/
+	{
+	  System.out.println(sim.codigo);
+	}
 |
-  <PYC>
+  <PYC> /*{ escribeFichero(sim.codigo); }*/
+	{
+	  System.out.println(sim.codigo);
+	}
 }
+
+/*
+void tipo_metodo() :
+{
+  Token t;
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  tipo() | <VOID>
+}
+*/
 
 Token tipo_metodo() :
 {
+  String s = "";
   Token t=null;
   if (usaInterfaz)
   {
@@ -482,25 +609,42 @@ Token tipo_metodo() :
   t=<VOID>{
     jjtThis.value = t.image;
     return t;
-  }
+  }
+  /* NECESITO DEVOLER EL STRING QUE ME VIENE DE TIPO O "VOID"
+  * s = tipo() return s;
+  * en void:
+  * return t.image
+  */
 }
  
 
-void lista_de_tipos() #void:
+String lista_de_tipos() #void:
 {
+  String s = "";
+  Token t = new Token();
+  Token t1 = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  identificador()
-  ( <COMA> identificador()
-  )*
+  t = identificador()
+  ( <COMA> t1 = identificador() { s = ',' + t1.image; } )*
+  { return t.image + s; }
 }
 
-void declaracion_clase() #void:
+Simbolo declaracion_clase() #void:
 {
+  Token t = new Token();
+  Token t1 = new Token();
+  String s = "";
+  String s1 = "";
+  String s2 = "";
+  String s3 = "";
+  String s4 = "";
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -508,12 +652,18 @@ void declaracion_clase() #void:
 }
 {
   ( <ABSTRACT> | <FINAL> | <PUBLIC> )*
-  <CLASS> <IDENTIFICADOR> [ <EXTENDS> identificador() ] [ <IMPLEMENTS> lista_de_tipos() ]
-  <LLAVE_A> ( declaracion_cuerpo_clase() )* <LLAVE_C>
+  <CLASS> t1 = <IDENTIFICADOR> [ <EXTENDS> t = identificador() { s2 = "extends" + t.image; } ] [ <IMPLEMENTS> s1 = lista_de_tipos() { s3 = "implements" + s1; } ]
+  <LLAVE_A> ( sim1 = declaracion_cuerpo_clase() { s4+=sim1.codigo; } )* <LLAVE_C>
+  { sim.codigo = "\nclass " + t1.image + ":\n";
+      sim.codigo += s4;
+      return sim;
+    }
 }
 
-void declaracion_cuerpo_clase() #void:
+Simbolo declaracion_cuerpo_clase() #void:
 {
+  Simbolo sim = new Simbolo();
+  String s = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -521,80 +671,131 @@ void declaracion_cuerpo_clase() #void:
 }
 {
   LOOKAHEAD(2)
-  inicializador_static()
+  sim = inicializador_static()
+  { return sim; }
 |
   LOOKAHEAD( [ <PUBLIC> | <PROTECTED> | <PRIVATE> ] identificador() <PAR_A> )
-  declaracion_constructora()
+  sim = declaracion_constructora()
+  { return sim; }
 |
   LOOKAHEAD( declaracionR_metodo() )
-  declaracion_metodo()
+  sim = declaracion_metodo()
+  { return sim; }
 |
-  campo_declaracion()
+  sim = campo_declaracion()
+  { return sim; }
 }
 
-void declaracionR_metodo() #void:
+Simbolo declaracionR_metodo() #void:
 {
+  Token t = new Token();
+  Token t1 = new Token();
+  Token t2 = new Token();
+  Simbolo sim = new Simbolo();
+  String s = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <ABSTRACT> | <FINAL> | <SYNCHRONIZED> )*
-  tipo_metodo() <IDENTIFICADOR> <PAR_A>
+  ( t = <PUBLIC> | t = <PROTECTED> | t = <PRIVATE> | t = <STATIC> | t = <ABSTRACT> | t = <FINAL> | t = <SYNCHRONIZED> )*
+  t2 = tipo_metodo() t1 = <IDENTIFICADOR> <PAR_A>
+    { sim.codigo = t.image + t2.image + t1.image;
+      return sim;
+    }
 }
 
-void declaracion_interface() #void:
+Simbolo declaracion_interface() #void:
 {
+  Token t = new Token();
+  Token t1 = new Token();
+  String s = "";
+  String s1 = "";
+  String s2 = "";
+  String s3 = "";
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  ( <ABSTRACT> | <PUBLIC> )*
-  <INTERFACE> <IDENTIFICADOR> [ <EXTENDS> lista_de_tipos() ]
-  <LLAVE_A> ( declaracion_miembro_interface() )* <LLAVE_C>
+  ( t = <ABSTRACT> | t = <PUBLIC> )*
+  <INTERFACE> t1 = <IDENTIFICADOR> [ <EXTENDS> s2 = lista_de_tipos() {s1 = "extends" + s2;} ]
+  <LLAVE_A> ( sim1 = declaracion_miembro_interface() {s3=sim1.codigo;} )* <LLAVE_C>
+  { sim.codigo = t.image + "interface" + t1.image + s1 + '{' + s3 + '}';    
+      return sim;
+    }
 }
 
-void declaracion_miembro_interface() #void:
+Simbolo declaracion_miembro_interface() #void:
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  LOOKAHEAD( declaracionR_metodo() ) declaracion_metodo()
+  LOOKAHEAD( declaracionR_metodo() ) sim = declaracion_metodo() { return sim; }
 |
-  campo_declaracion()
+  sim = campo_declaracion() 
+  { sim.lugar = nuevaTemp();
+    return sim; 
+  }
 }
 
-void campo_declaracion() :
+Simbolo campo_declaracion() :
 {
+  Token t = new Token();
+  Token t1 = new Token();
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String s = "";
+  String s1 = "";
+  String s2 = "";
+  String s3 = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <FINAL> | <VOLATILE> )*
-  tipo() declarador_variable() ( <COMA> declarador_variable() )* <PYC>}
+  ( t = <PUBLIC> | t = <PROTECTED> | t = <PRIVATE> | t = <STATIC> | t = <FINAL> | t = <VOLATILE> )*
+  t1 = tipo() sim = declarador_variable() ( <COMA> sim1 = declarador_variable()  {sim.codigo += sim1.codigo;} )* <PYC> 
+  { return sim; }
+}
 
-void declarador_variable() #void:
+Simbolo declarador_variable() #void:
 {
+  String aux = "";
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  declarador_variable_id() [ <EQUALS> iniciar_variable() ]
+  sim = declarador_variable_id() 
+    [ <EQUALS> sim1 = iniciar_variable() 
+      {
+        if (!sim1.lugar.equals("new"))
+        {
+          sim.codigo += sim1.codigo;
+          sim.codigo += sim.lugar + ":=" + sim1.lugar + "\n";
+        }
+      }
+    ]
+    { return sim; }
 }
 
-void declarador_variable_id() :
+Simbolo declarador_variable_id() :
 {
-  Token t;
+  Simbolo sim = new Simbolo();
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -604,102 +805,192 @@ void declarador_variable_id() :
   t = <IDENTIFICADOR>
   {
     jjtThis.value = t.image;
-  } ( <COR_A> <COR_C> )*
+	//Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
+	//Compilador.gestorTS.insertar(jjtThis.name, atribs);
+	//System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
+  } ( <COR_A> <COR_C> /*{ s = '[' + ']';}*/ )*
+  {
+    sim.lugar = t.image;
+    return sim;
+  }
 }
 
-void iniciar_variable() #void:
-{}
+Simbolo iniciar_variable() #void:
 {
-  <LLAVE_A> [ iniciar_variable() ( LOOKAHEAD(2) <COMA> iniciar_variable() )* ] [ <COMA> ] <LLAVE_C>
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  String s ="";
+  String s1 = "";
+  String s2 = "";
+  /*if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }*/
+}
+{
+  <LLAVE_A> [ sim1 = iniciar_variable() ( LOOKAHEAD(2) <COMA> sim2 = iniciar_variable() { s = ',' + s; } )* ] [ <COMA> { s2 = ',' + "";} ] <LLAVE_C>
+  { return sim; }
 |
-  expresion()
+  sim = expresion() { return sim; }
 }
 
-void declaracion_metodo() :
+Simbolo declaracion_metodo() :
 {
+  Token t = new Token();
+  Token t1 = new Token();
+  String s ="";
+  String s1 = "";
+  String s2 = "";
+  String s3 = "";
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  ( <PUBLIC> | <PROTECTED> | <PRIVATE> | <STATIC> | <ABSTRACT> | <FINAL> | <SYNCHRONIZED> )*
-  tipo_metodo() declarador_metodo() [ <THROWS> lista_de_tipos() ]
-  ( bloque() | <PYC> )
+  ( t = <PUBLIC> | t = <PROTECTED> | t = <PRIVATE> | t = <STATIC> | t = <ABSTRACT> | t = <FINAL> | t = <SYNCHRONIZED> )*
+  t1 = tipo_metodo() sim = declarador_metodo() [ <THROWS> s1 = lista_de_tipos() {s2 = "throws" + s1;} ]
+  ( sim1 = bloque() {s3 = sim1.codigo;} | <PYC> )
+    {
+      if(t1.image=="void") {
+        sim.codigo += sim1.codigo + "return\n";
+          return sim;
+        }
+        else {
+          sim.codigo += sim1.codigo + "\n";
+          return sim;
+        }
+    }
 }
 
-void declarador_metodo() #void:
+Simbolo declarador_metodo() #void:
 {
+  Token t = new Token();
+  String s = "";
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <IDENTIFICADOR> parametros_formales() ( <COR_A> <COR_C> )*
+  t = <IDENTIFICADOR> sim = parametros_formales() ( <COR_A> <COR_C> {s = '[' + ']' + "";} )*
+  { 
+    sim.codigo = t.image +":\n";
+    return sim;
+  }
 }
 
-void parametros_formales() #void:
+Simbolo parametros_formales() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  String s = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <PAR_A> [ parametro_formal() ( <COMA> parametro_formal() )* ] <PAR_C>
+  <PAR_A> [ sim1 = parametro_formal() ( <COMA> sim2 = parametro_formal() {s = ',' + sim2.codigo;} )* ] <PAR_C>
+  {   
+    sim.lugar = nuevaTemp();
+    sim.codigo = '(' + sim1.codigo + s + ')';
+    return sim;
+  }
 }
 
-void parametro_formal() #void:
+Simbolo parametro_formal() #void:
 {
+  String s = "";
+  String s1 = "";
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  tipo() declarador_variable_id()
+  t = tipo() sim1 = declarador_variable_id()
+  { 
+    sim.codigo = s + sim1.codigo;
+    return sim; 
+  }
 }
 
-void declaracion_constructora() #void:
+Simbolo declaracion_constructora() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  Simbolo sim3 = new Simbolo();
+  String s ="";
+  String s1 = "";
+  Token t = new Token();
+  Token t1;
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  [ <PUBLIC> | <PROTECTED> | <PRIVATE> ]
-  <IDENTIFICADOR> parametros_formales() [ <THROWS> lista_de_tipos() ]
-  <LLAVE_A> [ LOOKAHEAD(2) const_explic() ] ( sentencia_bloque() )* <LLAVE_C>
+  [ t = <PUBLIC> | t = <PROTECTED> | t = <PRIVATE> ]
+  t1 = <IDENTIFICADOR> sim1 = parametros_formales() [ <THROWS> s1 = lista_de_tipos() {s1 = "throws" + s1;} ]
+  <LLAVE_A> [ LOOKAHEAD(2) sim2 = const_explic() ] ( sim3 = sentencia_bloque() )* <LLAVE_C>
+  { 
+    sim.lugar = nuevaTemp();
+    sim.codigo = t.image + t1.image + sim1.codigo + s1 + '{' + sim2.codigo + sim3.codigo + '}';
+    return sim;
+  }
 }
 
-void const_explic() #void:
+Simbolo const_explic() #void:
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <THIS> argumentos() <PYC>
+  <THIS> sim = argumentos() <PYC> //TODO
+  { 
+    sim.codigo += "this" + sim.codigo + ';';
+    return sim;
+  }
 |
-  <SUPER> argumentos() <PYC>
+  <SUPER> sim = argumentos() <PYC> //TODO
+  { 
+    sim.codigo += "super" + sim.codigo + ';';
+    return sim;
+  }
 }
 
-void inicializador_static() #void:
+Simbolo inicializador_static() #void:
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <STATIC> bloque()
+  <STATIC> sim = bloque()
+  { 
+    sim.codigo += "static" + sim.codigo;
+    return sim;
+  }
 }
 
-void expresion() #void:
+Simbolo expresion() #void:
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -707,245 +998,601 @@ void expresion() #void:
 }
 {
   LOOKAHEAD( expresion_primaria() operador_asignacion() )
-  asignacion()
+  sim = asignacion() { return sim; }
 |
-  expresion_cond()
+  sim = expresion_cond() { return sim; }
 }
 
-void asignacion() #asignacion(2):
+Simbolo asignacion() #asignacion(2):
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  String t = "";
+  String aux = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_primaria() operador_asignacion() expresion()
+   sim1 = expresion_primaria()
+  t = operador_asignacion()
+  sim2 = expresion()
+  { sim.lugar = sim1.lugar;
+    sim.codigo = sim1.codigo;
+  if (t == "=")
+    {
+      if (sim2.comienzo == "post"){
+        aux = nuevaTemp();
+        sim.codigo += aux + ":=" + sim2.lugar + "\n";
+    sim.codigo += sim.lugar + ":=" + aux + "\n";
+    sim.codigo += sim2.codigo;
+    }
+    else{
+      sim.codigo += sim2.codigo;
+      sim.codigo += sim.lugar + ":=" + sim2.lugar + "\n";
+      }
+    }
+    else
+    {
+      if (sim2.comienzo == "post")
+      {
+        aux = nuevaTemp();
+        sim.codigo += aux + ":=" + sim2.lugar + "\n";
+    sim.codigo += sim.lugar + t + aux;
+    sim.codigo += sim2.codigo;
+    }
+    else
+    {
+      aux = nuevaTemp();
+      sim.codigo += sim2.codigo;
+      sim.codigo += aux + ":=" + sim1.lugar + t + sim2.lugar + "\n";
+      sim.codigo += sim1.lugar + ":=" + aux + "\n";
+      }
+    }
+    return sim;
+  }
 }
 
-void operador_asignacion() #void :
+String operador_asignacion() #void :
 {
+  Token t = null;
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <EQUALS> | <MULT_E> | <DIV_E> | <MOD_E> | <ADD_E> | <SUB_E> | <AND_E> | <OR_E>
+  t = <EQUALS> { return "="; }
+| t = <MULT_E> { return "*"; }
+| t = <DIV_E> { return "/"; }
+| t = <MOD_E> { return "%"; }
+| t = <ADD_E> { return "+"; }
+| t = <SUB_E> { return "-"; }
+| t = <AND_E> { return "&"; }
+| t = <OR_E> { return "|"; }
 }
 
-void expresion_cond() #void:
+Simbolo expresion_cond() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_cond_or() [ <PREG> expresion() <PYP> expresion_cond() ]
+  sim = expresion_cond_or() [ <PREG>
+  sim1 = expresion() <PYP>
+  sim2 = expresion_cond()
+  {
+    sim.codigo+= sim1.codigo + sim2.codigo;
+  }]
+  { return sim; }
 }
 
-void expresion_cond_or() #void:
+Simbolo expresion_cond_or() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_cond_and() ( <OR> expresion_cond_and() #Or(2) )*
+  sim = expresion_cond_and()
+  ( t = <OR>
+    sim1 = expresion_cond_and() #Or(2)
+    {
+      aux = sim.lugar;
+      sim.lugar = nuevaTemp();
+      sim.comienzo = nuevoIf();
+      sim.falsa = elseIf();
+      sim.siguiente = finIf();
+      sim.codigo += sim1.codigo;
+      sim.codigo += "if (" + aux + " = 0" + ")\n";
+      sim.codigo += "if (" + sim1.lugar + " = 0" + ") goto " + sim.falsa + "\n";
+      sim.codigo += sim.lugar + ":=1\n";
+      sim.codigo += "goto " + sim.siguiente + "\n";
+      sim.codigo += sim.falsa + ":\n" + sim.lugar + ":=0\n";
+      sim.codigo += sim.siguiente + ":\n";
+    }
+  )*
+  { return sim; }
 }
 
-void expresion_cond_and() #void:
+Simbolo expresion_cond_and() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_or_bin() ( <AND> expresion_or_bin() #And(2) )*
+  sim = expresion_or_bin()
+  ( t = <AND>
+    sim1 = expresion_or_bin() #And(2)
+    {
+      aux = sim.lugar;
+      sim.lugar = nuevaTemp();
+      sim.falsa = elseIf();
+      sim.comienzo = nuevoIf();
+      sim.siguiente = finIf();
+      sim.codigo += sim1.codigo;
+      sim.codigo += "if (" + aux + " = 0" + ") goto " + sim.falsa + "\n";
+      sim.codigo += "if (" + sim1.lugar + " = 0" + ") goto " + sim.falsa + "\n";
+      sim.codigo += sim.lugar + ":=1\n";
+      sim.codigo += "goto " + sim.siguiente + "\n";
+      sim.codigo += sim.falsa + ":\n" + sim.lugar + ":=0\n";
+      sim.codigo += sim.siguiente + ":\n";
+    }
+  )*
+  { return sim; }
 }
 
-void expresion_or_bin() #void:
+Simbolo expresion_or_bin() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_xor() ( <OR_B> expresion_xor()  #BOr(2))*
+  sim = expresion_xor()
+  ( t = <OR_B>
+    sim1 = expresion_xor()  #BOr(2)
+    {
+      aux = sim.lugar;
+      sim.lugar = nuevaTemp();
+      sim.codigo += sim1.codigo;
+      sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+    }
+  )*
+  { return sim; }
 }
 
-void expresion_xor() #void:
+Simbolo expresion_xor() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_and_bin() ( <XOR> expresion_and_bin() #XOr(2))*
+  sim = expresion_and_bin()
+  ( t = <XOR>
+    sim1 = expresion_and_bin() #XOr(2)
+    {
+      aux = sim.lugar;
+      sim.lugar = nuevaTemp();
+      sim.codigo += sim1.codigo;
+      sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+    }
+  )*
+  { return sim; }
 }
 
-void expresion_and_bin() #void:
+Simbolo expresion_and_bin() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_equal() ( <AND_B> expresion_equal() #BAnd(2))*
+  sim = expresion_equal()
+  ( t = <AND_B>
+    sim1 = expresion_equal() #BAnd(2)
+    {
+      aux = sim.lugar;
+      sim.lugar = nuevaTemp();
+      sim.codigo += sim1.codigo;
+      sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+    }
+  )*
+  { return sim; }
 }
 
-void expresion_equal() #void:
+Simbolo expresion_equal() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  String s = "";
+  String s1 = "";
+  String s2 = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_instanceof() ( ( <IGUAL_IGUAL> expresion_instanceof() #IgualIgual(2)
-  							| <N_IGUAL> expresion_instanceof() #NIgual(2)
-  							)
-  						)*
+  sim = expresion_instanceof()
+  ( ( t = <IGUAL_IGUAL>
+      sim2 = expresion_instanceof() #IgualIgual(2)
+      {
+        s = sim.lugar;
+        s1 = nuevaEtiq();
+        s2 = nuevaEtiq();
+        sim.lugar = nuevaTemp();
+        sim.codigo = sim1.codigo + sim2.codigo;
+        sim.codigo += "if (" + s + "=" + sim2.lugar + ") goto " + s1 + "\n";
+        sim.codigo += sim.lugar + ":=0\n";
+        sim.codigo += "goto " + s2 + "\n";
+        sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
+        sim.codigo += s2 + ":\n";
+      }
+ |  t = <N_IGUAL>
+    sim2 = expresion_instanceof() #NIgual(2)
+    {
+      s = sim.lugar;
+      s1 = nuevaEtiq();
+      s2 = nuevaEtiq();
+      sim.lugar = nuevaTemp();
+      sim.codigo = sim1.codigo + sim2.codigo;
+      sim.codigo += "if (" + s + "!=" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo += sim.lugar + ":=0\n";
+      sim.codigo += "goto " + s2 + "\n";
+      sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
+      sim.codigo += s2 + ":\n";
+      }
+    )
+  )*
+ { return sim; }
 }
 
-void expresion_instanceof() #void:
+Simbolo expresion_instanceof() #void:
 {
+  Simbolo sim = new Simbolo();
+  Token t = new Token();
+  Token t1 = new Token();
+  String s = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_relacional() [ <INSTANCEOF> tipo() #expresion_instanceof]
+  sim = expresion_relacional() [ t = <INSTANCEOF> t1 = tipo() #expresion_instanceof
+    { sim.codigo += t.image + t1.image; }
+  ]
+  { return sim; }
 }
 
-void expresion_relacional() #void:
+Simbolo expresion_relacional() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  String s = "";
+  String s1 = "";
+  String s2 = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_shift() ( ( <MENOR> expresion_shift() #Menor(2)
-  						| <MAYOR> expresion_shift() #Mayor(2)
-  						| <MENOR_EQ> expresion_shift() #MenorEq(2)
-  						| <MAYOR_EQ> expresion_shift() #MayorEq(2)
-  						)
-  					)*
+  sim = expresion_shift() 
+  ( ( t = <MENOR> sim2 = expresion_shift() #Menor(2)
+      {
+        s = sim.lugar;
+        s1 = nuevaEtiq();
+        s2 = nuevaEtiq();
+        sim.lugar = nuevaTemp();
+        sim.codigo = sim1.codigo + sim2.codigo;
+        sim.codigo += "if (" + s + "<" + sim2.lugar + ") goto " + s1 + "\n";
+        sim.codigo += sim.lugar + ":=0\n";
+        sim.codigo += "goto " + s2 + "\n";
+        sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
+        sim.codigo += s2 + ":\n";
+      }
+  | t = <MAYOR> sim2 = expresion_shift() #Mayor(2)
+    {
+      s = sim.lugar;
+      s1 = nuevaEtiq();
+      s2 = nuevaEtiq();
+      sim.lugar = nuevaTemp();
+      sim.codigo = sim1.codigo + sim2.codigo;
+      sim.codigo += "if (" + s + ">" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo += sim.lugar + ":=0\n";
+      sim.codigo += "goto " + s2 + "\n";
+      sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
+      sim.codigo += s2 + ":\n";
+      }
+  | t = <MENOR_EQ> sim2 = expresion_shift() #MenorEq(2)
+    {
+      s = sim.lugar;
+      s1 = nuevaEtiq();
+      s2 = nuevaEtiq();
+      sim.lugar = nuevaTemp();
+      sim.codigo = sim1.codigo + sim2.codigo;
+      sim.codigo += "if (" + s + "<=" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo += sim.lugar + ":=0\n";
+      sim.codigo += "goto " + s2 + "\n";
+      sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
+      sim.codigo += s2 + ":\n";
+      }
+  | t = <MAYOR_EQ> sim2 = expresion_shift() #MayorEq(2)
+    {
+      s = sim.lugar;
+      s1 = nuevaEtiq();
+      s2 = nuevaEtiq();
+      sim.lugar = nuevaTemp();
+      sim.codigo = sim1.codigo + sim2.codigo;
+      sim.codigo += "if (" + s + ">=" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo += sim.lugar + ":=0\n";
+      sim.codigo += "goto " + s2 + "\n";
+      sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
+      sim.codigo += s2 + ":\n";
+      }
+    )
+  )*
+  { return sim; }
 }
 
-void expresion_shift() #void:
+Simbolo expresion_shift() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_add() ( ( <DESP_I> expresion_add() #DespI(2)
-  					| <DESP_D> expresion_add() #DespD(2)
-  					| <DESP_DNS> expresion_add() #DespDNS(2)
-  					)
-  				)*
+  sim = expresion_add() 
+  ( ( t = <DESP_I> sim1 = expresion_add() #DespI(2)
+      {
+        aux = sim.lugar;
+        sim.lugar = nuevaTemp();
+        sim.codigo += sim1.codigo;
+        sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+      }
+    | t = <DESP_D> sim1 = expresion_add() #DespD(2)
+      {
+        aux = sim.lugar;
+        sim.lugar = nuevaTemp();
+        sim.codigo += sim1.codigo;
+        sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+      }
+    | t = <DESP_DNS> sim1 = expresion_add() #DespDNS(2)
+      {
+        aux = sim.lugar;
+        sim.lugar = nuevaTemp();
+        sim.codigo += sim1.codigo;
+        sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+      } 
+    )
+  )*
+  { return sim; }
 }
 
-void expresion_add() #void:
+Simbolo expresion_add() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_mult() ( ( <ADD> expresion_mult() #Add(2)
-					 | <SUB> expresion_mult() #Sub(2)
-					 )
-  				)*
+  sim = expresion_mult() ( ( t = <ADD> sim1 = expresion_mult() #Add(2)
+      {
+        aux = sim.lugar;
+        sim.lugar = nuevaTemp();
+        sim.codigo += sim1.codigo;
+        sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+      }
+    | t = <SUB> sim1 = expresion_mult() #Sub(2)
+      {
+          aux = sim.lugar;
+          sim.lugar = nuevaTemp();
+          sim.codigo += sim1.codigo;
+          sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+        }
+    )
+  )*
+  { return sim; }
 }
 
-void expresion_mult() #void:
+Simbolo expresion_mult() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_unaria() ( ( <MULT> expresion_unaria() #Mult(2)
-  						| <DIV> expresion_unaria() #Div(2)
-  						| <MOD> expresion_unaria() #Mod(2)
-  						)
-  					)*
+  sim = expresion_unaria() 
+  ( ( t = <MULT> sim1 = expresion_unaria() #Mult(2)
+      {
+        aux = sim.lugar;
+        sim.lugar = nuevaTemp();
+        sim.codigo += sim1.codigo;
+        sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+      }
+    | t = <DIV> sim1 = expresion_unaria() #Div(2)
+      {
+        aux = sim.lugar;
+        sim.lugar = nuevaTemp();
+        sim.codigo += sim1.codigo;
+        sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+      }
+    | t = <MOD> sim1 = expresion_unaria() #Mod(2)
+      {
+        aux = sim.lugar;
+        sim.lugar = nuevaTemp();
+        sim.codigo += sim1.codigo;
+        sim.codigo += sim.lugar + ":=" + aux + t.image + sim1.lugar + "\n";
+      }
+    )
+  )*
+  { return sim; }
 }
 
-void expresion_unaria() #void:
+Simbolo expresion_unaria() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  (   <ADD> expresion_unaria() #UnaryAdd
-  	| <SUB> expresion_unaria() #UnarySub
+  (   t = <ADD> sim = expresion_unaria() #UnaryAdd
+      { return sim; }
+    | t = <SUB> sim1 = expresion_unaria() #UnarySub
+      {
+        sim.lugar = nuevaTemp();
+        sim.codigo = sim1.codigo;
+        sim.codigo += "-" + sim1.lugar + "\n";
+        return sim;
+      }
   ) 
 |
-  expresion_pre_inc()
+  sim = expresion_pre_inc() { return sim; }
 |
-  expresion_pre_dec()
+  sim = expresion_pre_dec() { return sim; }
 |
-  expresion_unaria_dif()
+  sim = expresion_unaria_dif() { return sim; }
 }
 
-void expresion_pre_inc() #void:
+Simbolo expresion_pre_inc() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <PLUS_PLUS> expresion_primaria() #PlusPlus
+  t = <PLUS_PLUS> sim = expresion_primaria() #PlusPlus
+  {
+    aux = nuevaTemp();
+    sim.codigo += aux + ":=" + sim.lugar + "+" + 1;
+    sim.codigo += sim.lugar + ":=" + aux + "\n" + "\n";
+    return sim;
+  }
 }
 
-void expresion_pre_dec() #void:
+Simbolo expresion_pre_dec() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <SUB_SUB> expresion_primaria() #SubSub
+  t = <SUB_SUB> sim = expresion_primaria() #SubSub
+  {
+    aux = nuevaTemp();
+    sim.codigo += aux + ":=" + sim.lugar + "-" + 1 + "\n";
+    sim.codigo += sim.lugar + ":=" + aux + "\n";
+    return sim;
+  }
 }
 
-void expresion_unaria_dif() #void:
+Simbolo expresion_unaria_dif() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  (   <COMP> expresion_unaria() #Comp
-  	| <NOT> expresion_unaria() #Not
+  (   t = <COMP> sim1 = expresion_unaria() #Comp
+      {
+        sim.lugar = nuevaTemp();
+      sim.codigo = sim1.codigo;
+      sim.codigo += sim.lugar + ":= ~" + sim1.lugar + "\n";
+      return sim;
+      }
+    | t = <NOT> sim1 = expresion_unaria() #Not
+      {
+      sim.lugar = nuevaTemp();
+      sim.codigo = sim1.codigo;
+      sim.codigo += sim.lugar + ":= ! " + sim1.lugar + "\n";
+        return sim;
+      }
   ) 
 |
   LOOKAHEAD( look_cast() )
-  expresion_cast()
+  sim = expresion_cast() { return sim; }
 |
-  expresion_post()
+  sim = expresion_post() { return sim; }
 }
 
-void look_cast() #void:
+String look_cast() #void:
 {
+  String s, s1;
+  Token t = new Token();
+  Token t1 = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -953,110 +1600,63 @@ void look_cast() #void:
 }
 {
   LOOKAHEAD(2)
-  <PAR_A> tipo_primitivo()
+  <PAR_A> t=tipo_primitivo() {return '(' + t.image;}
 |
   LOOKAHEAD(<PAR_A> identificador() <COR_A>)
-  <PAR_A> identificador() <COR_A> <COR_C>
+  <PAR_A> t=identificador() <COR_A> <COR_C> {return '(' + t.image + '[' + ']';}
 |
-  <PAR_A> identificador() <PAR_C> ( <COMP> | <NOT> | <PAR_A> | <IDENTIFICADOR> | <THIS> | <SUPER> | <NEW> | literal() )
+  <PAR_A> t=identificador() <PAR_C>
+  (
+    <COMP> {return '(' + t.image + ')' + '~';}
+    | <NOT> {return '(' + t.image + ')' + "not" ;}
+    | <PAR_A> {return '(' + t.image + ')' + '(';}
+    | t1=<IDENTIFICADOR> {return '(' + t.image + ')' + t1.image;}
+    | <THIS> {return '(' + t.image + ')' + "this";}
+    | <SUPER> {return '(' + t.image + ')' + "super";}
+    | <NEW> {return '(' + t.image + ')' + "new";}
+    | s1=literal() {return '(' + t.image + ')' + s1;}
+  )
 }
 
-void expresion_post() #void:
+Simbolo expresion_post() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  String aux = "";
+  String s = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_primaria() [ <PLUS_PLUS> | <SUB_SUB> ]
+  sim = expresion_primaria()
+  [ t=<PLUS_PLUS> {s = t.image;}
+    {    
+      aux = nuevaTemp();
+      sim.comienzo = "post";
+      sim.codigo += aux + ":=" + sim.lugar + "+" + 1 + "\n";
+      sim.codigo += sim.lugar + ":=" + aux + "\n";
+    }
+  | t=<SUB_SUB> {s = t.image;} 
+    {
+      aux = nuevaTemp();
+      sim.comienzo = "post";
+      sim.codigo += aux + ":=" + sim.lugar + "-" + 1 + "\n";
+      sim.codigo += sim.lugar + ":=" + aux + "\n";
+    }
+  ]
+  { return sim; }
 }
 
-void expresion_cast() #void:
+Simbolo expresion_cast() #void:
 {
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  LOOKAHEAD(2)
-  <PAR_A> tipo_primitivo() ( <COR_A> <COR_C> )* <PAR_C> expresion_unaria()
-|
-  <PAR_A> identificador() ( <COR_A> <COR_C> )* <PAR_C> expresion_unaria_dif()
-}
-
-void expresion_primaria() #void:
-{
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  prefijo_primario() ( sufijo_primario() )*
-}
-
-void prefijo_primario() #void:
-{
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  literal()
-|
-  identificador()
-|
-  <THIS>
-|
-  <SUPER> <PUNTO> <IDENTIFICADOR>
-|
-  <PAR_A> expresion() <PAR_C>
-|
-  expresion_asignacion_array()
-}
-
-void sufijo_primario() #void:
-{
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  <COR_A> expresion() <COR_C>
-|
-  <PUNTO> <IDENTIFICADOR>
-|
-  argumentos()
-}
-
-void argumentos() #void:
-{
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  <PAR_A> [ lista_argumentos() ] <PAR_C>
-}
-
-void lista_argumentos() #void:
-{
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  expresion() ( <COMA> expresion() )*
-}
-
-void expresion_asignacion_array() :
-{
+  String s = "";
+  String s2 = "";
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -1064,24 +1664,181 @@ void expresion_asignacion_array() :
 }
 {
   LOOKAHEAD(2)
-  <NEW> tipo_primitivo() dimensiones_array()
+  <PAR_A> t=tipo_primitivo() ( <COR_A> <COR_C> {s2 += '[' + ']';} )* <PAR_C> sim1=expresion_unaria()
+    { 
+      sim.lugar = nuevaTemp();
+      sim.codigo = '(' + t.image + s2 + ')' + sim1.codigo;
+      return sim;
+    }
 |
-  <NEW> identificador() ( argumentos() | dimensiones_array() )
+  <PAR_A> t=identificador() ( <COR_A> <COR_C> {s2 += '[' + ']';} )* <PAR_C> sim1=expresion_unaria_dif()
+      { 
+        sim.lugar = nuevaTemp();
+        sim.codigo = '(' + t.image + s2 + ')' + sim1.codigo;
+        return sim;
+      }
 }
 
-void dimensiones_array() #void:
+Simbolo expresion_primaria() #void:
 {
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  Simbolo sim3 = new Simbolo();
+  Simbolo sim = new Simbolo();
+  String aux = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  ( LOOKAHEAD(2) <COR_A> expresion() <COR_C> )+ ( LOOKAHEAD(2) <COR_A> <COR_C> )*
+  sim1 = prefijo_primario()
+  ( sim2 = sufijo_primario()
+    {
+      if (sim.verdadera == "argumentos")
+          sim2.codigo +="call " + sim1.lugar + ", " + sim2.lugar + "\n";
+      else
+      {
+        System.out.println("ESTOY AQUI\n");
+        sim3.lugar += sim2.lugar;
+        sim3.codigo += sim2.codigo;
+      } 
+    }
+  )*
+  {
+    sim2 = sim3;
+    sim.lugar = sim1.lugar + sim2.lugar;
+    sim.codigo = sim1.codigo + sim2.codigo;
+    if (!sim2.lugar.equals(""))
+    {
+      aux = sim.lugar;
+      sim.lugar = nuevaTemp();
+      sim.codigo += sim.lugar + ":=" + aux + "\n";
+    }
+    return sim;
+  }
 }
 
-void sentencia() #void:
+Simbolo prefijo_primario() #void:
 {
+  Simbolo sim = new Simbolo();
+  String s = "";
+  Token t = new Token();
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  s = literal()
+  {
+    sim.lugar = nuevaTemp();
+    sim.codigo = sim.lugar + ":=" + s + "\n";
+    return sim;
+  }
+|
+  t = identificador()
+  {
+    sim.lugar = t.image;
+    sim.codigo = "";
+    return sim;
+  }
+|
+  t = <THIS>
+  {
+    s = t.image;
+    //TODO
+    return sim;
+  }
+|
+  <SUPER> <PUNTO> t = <IDENTIFICADOR>
+  {
+    //TODO
+    return sim;
+  }
+|
+  <PAR_A> sim = expresion() <PAR_C> { return sim; }
+|
+  sim = expresion_asignacion_array() { return sim; }  
+}
+
+Simbolo sufijo_primario() #void:
+{
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Token t = new Token();
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <COR_A> sim1 = expresion() <COR_C>
+  {
+    sim.lugar = "[" + sim1.lugar+ "]";
+    sim.codigo = sim1.codigo;
+    return sim;
+  }
+|
+  <PUNTO> t = <IDENTIFICADOR>
+  {
+    sim.lugar = "." + t.image;
+    return sim;
+  }
+|
+  sim = argumentos() { return sim; }
+}
+
+Simbolo argumentos() #void:
+{
+  Simbolo sim = new Simbolo();
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <PAR_A> [ sim = lista_argumentos() ] <PAR_C> { return sim; }
+}
+
+Simbolo lista_argumentos() #void:
+{
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  int numeroarg = 0;
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  sim1 = expresion()
+  { 
+    sim.codigo = sim1.codigo;
+    sim.codigo += "param " + sim1.lugar + "\n";
+    numeroarg++;
+  }
+  ( <COMA> sim2 = expresion()
+    { 
+    sim.codigo += sim2.codigo;
+    sim.codigo += "param " + sim2.lugar + "\n";
+    numeroarg++;
+    }
+  )*
+  {
+    sim.lugar = "argumentos"; //FIXME es una cutrada
+    sim.verdadera = "" + numeroarg;
+    return sim;
+  }
+}
+
+Simbolo expresion_asignacion_array() :
+{
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Token t = new Token();
+  String s = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -1089,50 +1846,100 @@ void sentencia() #void:
 }
 {
   LOOKAHEAD(2)
-  sentencia_etiqueta()
+  <NEW> t=tipo_primitivo() sim1=dimensiones_array()
+  {
+    sim.lugar = "new";
+    return sim;
+  }
 |
-  bloque()
-|
-  sentencia_vacia()
-|
-  expresion_sentencia() <PYC>
-|
-  sentencia_switch()
-|
-  sentencia_if()
-|
-  sentencia_while()
-|
-  sentencia_do()
-|
-  sentencia_for()
-|
-  sentencia_break()
-|
-  sentencia_continue()
-|
-  sentencia_return()
-|
-  sentencia_throw()
-|
-  sentencia_synchronized()
-|
-  sentencia_try()
+  <NEW> t=identificador() ( sim1=argumentos() | sim1=dimensiones_array() )
+  {
+    sim.lugar = "new";
+    return sim;
+  }
 }
 
-void sentencia_etiqueta() #void:
+Simbolo dimensiones_array() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <IDENTIFICADOR> <PYP> sentencia()
+  ( LOOKAHEAD(2) <COR_A> sim1=expresion() <COR_C>
+    { 
+      sim.codigo = sim1.codigo;
+      sim.codigo += '[' + sim1.lugar + ']'; 
+    }
+  )+
+  ( LOOKAHEAD(2) <COR_A> <COR_C>
+    { sim.codigo += '[' + ']'; }
+  )*
+  { return sim; }
 }
 
-void bloque() #void:
+Simbolo sentencia() #void:
 {
+  Simbolo sim = new Simbolo();
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  LOOKAHEAD(2)
+  sim = sentencia_etiqueta() { return sim; }
+|
+  sim = bloque() { return sim; }
+|
+  sim = sentencia_vacia() { return sim; }
+|
+  sim = expresion_sentencia() <PYC> { return sim; }
+|
+  sim = sentencia_switch() { return sim; }
+|
+  sim = sentencia_if() { return sim; }
+|
+  sim = sentencia_while() { return sim; }
+|
+  sim = sentencia_do() { return sim; }
+|
+  sim = sentencia_for() { return sim; }
+|
+  sim = sentencia_break() { return sim; }
+|
+  sim = sentencia_continue() { return sim; }
+|
+  sim = sentencia_return() { return sim; }
+|
+  sim = sentencia_throw() { return sim; }
+|
+  sim = sentencia_synchronized() { return sim; }
+|
+  sim = sentencia_try() { return sim; }
+}
+
+Simbolo sentencia_etiqueta() #void:
+{
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  if (usaInterfaz)
+  {
+    InterfazPlg.escribirAvisos();
+  }
+}
+{
+  <IDENTIFICADOR> <PYP> sim1 = sentencia()
+  { return sim; }
+}
+
+Simbolo bloque() #void:
+{
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -1140,12 +1947,14 @@ void bloque() #void:
 }
 {
   { gestorTS.nuevoAmbito(""); }
-  <LLAVE_A> ( sentencia_bloque() )* <LLAVE_C>
+  <LLAVE_A> ( sim1 = sentencia_bloque(){sim.codigo += sim1.codigo;})* <LLAVE_C>
   { gestorTS.cierraAmbito();  }
+  { return sim; }
 }
 
-void sentencia_bloque() #void:
+Simbolo sentencia_bloque() #void:
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -1153,24 +1962,32 @@ void sentencia_bloque() #void:
 }
 {
   LOOKAHEAD(tipo() <IDENTIFICADOR>)
-  declaracion_variable_local() <PYC>
+  sim = declaracion_variable_local() <PYC> { return sim; }
 |
-  sentencia()
+  sim = sentencia() { return sim; }
 }
 
-void declaracion_variable_local() :
+Simbolo declaracion_variable_local() :
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  Simbolo sim3 = new Simbolo();
+  String s = "";
+  Token t = new Token();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  tipo() declarador_variable() ( <COMA> declarador_variable() )*
+  t = tipo() sim = declarador_variable() ( <COMA> sim1 = declarador_variable() )*
+  { return sim; }
 }
 
-void sentencia_vacia() #void:
+Simbolo sentencia_vacia() #void:
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -1178,109 +1995,242 @@ void sentencia_vacia() #void:
 }
 {
   <PYC>
+  { return sim; }
 }
 
-void expresion_sentencia() :
+Simbolo expresion_sentencia() :
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_pre_inc()
+  sim = expresion_pre_inc() { return sim; }
 |
-  expresion_pre_dec()
+  sim = expresion_pre_dec() { return sim; }
 |
   LOOKAHEAD( expresion_primaria() operador_asignacion() )
-  asignacion()
+  sim = asignacion()
+  { return sim; }
 |
-  expresion_post()
+  sim = expresion_post() { return sim; }
 }
 
-void sentencia_switch() :
+Simbolo sentencia_switch() :
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  Simbolo sim3 = new Simbolo();
+  Simbolo sim4 = new Simbolo();
+  String s1 = "";
+  String s2 = "";
+  String etiqCase = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <SWITCH> <PAR_A> expresion() <PAR_C> <LLAVE_A>
-    ( etiqueta_switch() ( sentencia_bloque() )* )*
+  /*TODO*/
+  <SWITCH> <PAR_A> sim3 = expresion() <PAR_C> <LLAVE_A>
+  {
+    sim.comienzo = nuevoIf();
+    sim.siguiente = finIf();
+    etiqCase = nuevoCase(); //hacer
+  }
+    ( sim1 = etiqueta_switch()
+      { sim4 = new Simbolo(); }
+        ( sim2 = sentencia_bloque()
+          { sim4.codigo += sim2.codigo; }
+        )*
+          {
+            if (sim1.lugar != "default")
+              {
+                s1 = nuevaEtiq();
+                s2 = nuevaEtiq();
+                sim.codigo = sim.comienzo + "\n";
+                sim.codigo += sim1.codigo;
+                sim.codigo += "if (" + sim3.lugar + "=" + sim1.lugar + ") goto " + s1 + "\n";
+                sim.codigo += sim1.lugar + ":=0\n";
+                sim.codigo += "goto " + s2 + "\n";
+                sim.codigo += s1 + ":\n" + sim1.lugar + ":=1\n";
+                sim.codigo += s2 + ":\nif (" + sim1.lugar + "=0) goto " + etiqCase + "\n";
+                sim.codigo += sim4.codigo;
+                
+                if (sim2.lugar == "break")
+                  sim.codigo += "goto " + sim.siguiente +"\n";
+              
+                sim.codigo += etiqCase + ":\n";
+                etiqCase = nuevoCase();
+              }
+            else
+              { sim.codigo += sim4.codigo; }
+          }
+    )*
+   { sim.codigo += sim.siguiente + ":\n"; }
   <LLAVE_C>
+  { return sim; }
 }
 
-void etiqueta_switch() :
+Simbolo etiqueta_switch() :
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <CASE> expresion() <PYP>
+  <CASE> sim = expresion() <PYP>
+  { return sim; }
 |
   <DEFAULT_PLG> <PYP>
+  { sim.lugar = "default";
+    return sim; }
 }
 
-void sentencia_if() :
+Simbolo sentencia_if() :
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  Simbolo sim3 = new Simbolo();
+  Boolean hayelse = false;
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <IF> <PAR_A> expresion() <PAR_C> sentencia() [ LOOKAHEAD(1) <ELSE> sentencia() ]
+  <IF> <PAR_A> sim1 = expresion() <PAR_C> sim2 = sentencia()
+  [ LOOKAHEAD(1) <ELSE> sim3 = sentencia() { hayelse = true; } ]
+  { 
+    sim.comienzo = nuevoIf();
+    if (hayelse) sim.falsa = elseIf();
+    sim.siguiente = finIf();
+    sim.codigo = sim1.codigo;
+    if (hayelse)
+      {
+        sim.codigo += "goto " + sim.comienzo + "\n";
+        sim.codigo += sim.comienzo + ":\n";
+        sim.codigo += "if (" + sim1.lugar + "=0) goto " + sim.falsa + "\n";
+        sim.codigo += sim2.codigo;
+        sim.codigo += "goto " + sim.siguiente + "\n";
+        sim.codigo += sim.falsa + ":\n";
+        sim.codigo += sim3.codigo;
+        sim.codigo += sim.siguiente + ":\n";
+      }
+    else
+      {
+        sim.codigo += "goto " + sim.comienzo + "\n";
+        sim.codigo += sim.comienzo + ":\n" + "if (" + sim1.lugar + "=0) goto " + sim.siguiente + "\n";
+        sim.codigo += sim2.codigo;
+        sim.codigo += sim.siguiente + ": \n";
+      }
+    return sim;
+  }
 }
 
-void sentencia_while() :
+Simbolo sentencia_while() :
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <WHILE> <PAR_A> expresion() <PAR_C> sentencia()
+  <WHILE> <PAR_A> sim1 = expresion() <PAR_C> sim2=sentencia()
+  {
+    sim.comienzo = nuevoBucle();
+    sim.siguiente = finBucle();
+    sim.codigo = sim.comienzo + ":\n";
+    sim.codigo += sim1.codigo;
+    sim.codigo += "if (" + sim1.lugar + "=" + 0 + ") goto " + sim.siguiente + "\n";
+    sim.codigo += sim2.codigo;
+    sim.codigo += "goto " + sim.comienzo + "\n";
+    sim.codigo += sim.siguiente + ":\n";
+    return sim;
+  }
 }
 
-void sentencia_do() :
+Simbolo sentencia_do() :
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <DO> sentencia() <WHILE> <PAR_A> expresion() <PAR_C> <PYC>
+  <DO> sim1 = sentencia() <WHILE> <PAR_A> sim2 = expresion() <PAR_C> <PYC>
+  {
+    sim.comienzo = nuevoBucle();
+    sim.siguiente = finBucle();
+    sim.codigo = sim.comienzo + ":\n";
+    sim.codigo += sim1.codigo;
+    sim.codigo += sim2.codigo;
+    sim.codigo += "if (" + sim2.lugar + "=" + 0 + ") goto " + sim.siguiente + "\n";
+    sim.codigo += "goto " + sim.comienzo + "\n";
+    sim.codigo += sim.siguiente + ":\n";
+    return sim;
+  }
 }
 
-void sentencia_for() :
+Simbolo sentencia_for() :
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  Simbolo sim3 = new Simbolo();
+  Simbolo sim4 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <FOR> <PAR_A> [ inicio_for() ] <PYC> [ expresion() ] <PYC> [ actualizar_for() ] <PAR_C> sentencia()
+  <FOR> <PAR_A> [ sim1 = inicio_for() ] <PYC> [ sim2 = expresion() ] <PYC> [ sim3 = actualizar_for() ] <PAR_C> sim4 = sentencia()
+  {
+    sim.comienzo = nuevoBucle();
+    sim.siguiente = finBucle();
+    sim.codigo = sim1.codigo;
+    sim.codigo += sim.comienzo + ":\n";
+    sim.codigo += sim2.codigo;
+    sim.codigo += "if (" + sim2.lugar + "=" + 0 + ") goto " + sim.siguiente + "\n";
+    sim.codigo += sim4.codigo;
+    sim.codigo += sim3.codigo;
+    sim.codigo += "goto " + sim.comienzo + "\n";
+    sim.codigo += sim.siguiente + ":\n";  
+  return sim;
+  }
 }
 
-void lista_expresion_sentencia() #void:
+Simbolo lista_expresion_sentencia() #void:
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  expresion_sentencia() ( <COMA> expresion_sentencia() )*
+  sim = expresion_sentencia() ( <COMA> sim2 = expresion_sentencia() )*
+  { return sim; }
 }
 
-void inicio_for() #void:
+Simbolo inicio_for() #void:
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -1288,86 +2238,132 @@ void inicio_for() #void:
 }
 {
   LOOKAHEAD( tipo() <IDENTIFICADOR> )
-  declaracion_variable_local()
+  sim = declaracion_variable_local()
+  { return sim; }
 |
-  lista_expresion_sentencia()
+  sim = lista_expresion_sentencia()
+  { return sim; }
 }
 
-void actualizar_for() #void:
+Simbolo actualizar_for() #void:
 {
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  lista_expresion_sentencia()
+  sim = lista_expresion_sentencia()
+  { return sim; }
 }
 
-void sentencia_break() :
-{
+Simbolo sentencia_break() :
+{ String s = "";
+  Token t = new Token();
+  Simbolo sim = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <BREAK> [ <IDENTIFICADOR> ] <PYC>
+  <BREAK> [ t=<IDENTIFICADOR> {s = t.image;} ] <PYC>
+  { 
+    sim.lugar = "break";
+    return sim; 
+  }
 }
 
-void sentencia_continue() :
-{
+Simbolo sentencia_continue() :
+{ Token t = new Token();
+  Simbolo sim = new Simbolo();
+  String s = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <CONTINUE> [ <IDENTIFICADOR> ] <PYC>
+  <CONTINUE> [ t=<IDENTIFICADOR> {s = t.image;} ] <PYC>
+  { sim.codigo = "continue" + s + ';';
+    return sim; }
 }
 
-void sentencia_return() :
-{
+Simbolo sentencia_return() :
+{ String s = "";
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <RETURN> [ expresion() ] <PYC>
+  <RETURN> [ sim1 = expresion() { s = sim1.codigo; } ] <PYC>
+  { 
+    sim.codigo = sim1.codigo;
+    sim.codigo += "return " + sim1.lugar + "\n";
+    return sim; 
+  }
 }
 
-void sentencia_throw() :
+Simbolo sentencia_throw() :
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <THROW> expresion() <PYC>
+  <THROW> sim1=expresion() <PYC>
+  { 
+    sim.codigo = "throw" + sim1.codigo + ';';
+    return sim; 
+  }
 }
 
-void sentencia_synchronized() :
+Simbolo sentencia_synchronized() :
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <SYNCHRONIZED> <PAR_A> expresion() <PAR_C> bloque()
+  <SYNCHRONIZED> <PAR_A> sim1=expresion() <PAR_C> sim2 = bloque()
+  { 
+    sim.codigo = "synchronized" + '(' + sim1.codigo + ')' + sim2.codigo;
+    return sim; 
+  }
 }
 
-void sentencia_try() :
+Simbolo sentencia_try() :
 {
+  Simbolo sim = new Simbolo();
+  Simbolo sim1 = new Simbolo();
+  Simbolo sim2 = new Simbolo();
+  Simbolo sim3 = new Simbolo();
+  Simbolo sim4 = new Simbolo();
+  Simbolo sim5 = new Simbolo();
+  String s = "";
+  String s1 = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
   }
 }
 {
-  <TRY> bloque()
-  ( <CATCH> <PAR_A> parametro_formal() <PAR_C> bloque() )*
-  [ <FINALLY> bloque() ]
+  <TRY> sim1 = bloque()
+  ( <CATCH> <PAR_A> sim5=parametro_formal() <PAR_C> sim3=bloque() {s = "cath" + '(' + sim5.codigo + ')' + sim3.codigo;} )*
+  [ <FINALLY> sim4 = bloque() {s1 = "finally" + sim4.codigo;} ]
+  { 
+    sim.codigo = "try" + sim1.codigo + s + s1;
+    return sim; 
+  }
 }
