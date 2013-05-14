@@ -26,6 +26,8 @@ public class Compilador {
   public static CGestorTS gestorTS;
   public static boolean usaInterfaz = false;
   public static java.io.DataOutputStream fichero;
+
+  public int aliasCounter = 0;
   
   public static void main ( String args [] ) {
 
@@ -577,20 +579,6 @@ void declaracion_tipo() #void:
 	}
 }
 
-/*
-void tipo_metodo() :
-{
-  Token t;
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  tipo() | <VOID>
-}
-*/
-
 Token tipo_metodo() :
 {
   String s = "";
@@ -804,6 +792,7 @@ Simbolo declarador_variable_id() :
 {
   t = <IDENTIFICADOR>
   {
+    aliasCounter++;
     jjtThis.value = t.image;
 	//Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
 	//Compilador.gestorTS.insertar(jjtThis.name, atribs);
@@ -866,7 +855,7 @@ Simbolo declaracion_metodo() :
     }
 }
 
-Simbolo declarador_metodo() #void:
+Simbolo declarador_metodo() :
 {
   Token t = new Token();
   String s = "";
@@ -878,7 +867,8 @@ Simbolo declarador_metodo() #void:
 }
 {
   t = <IDENTIFICADOR> sim = parametros_formales() ( <COR_A> <COR_C> {s = '[' + ']' + "";} )*
-  { 
+  {
+    jjtThis.value = t.image;
     sim.codigo = t.image +":\n";
     return sim;
   }

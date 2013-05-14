@@ -14,19 +14,19 @@ public class Prueba {
 	
 	//Hay que comprobar la sobrecarga de métodos?¿?¿?¿?¿¿?
 	
-	public int dameint(char c){
+	public int dameint1(char c){
 		
 		return 3+4;
 		
 	}
 	
-	public int dameint(char c){
+	public int dameint2(char c, boolean val){
 		
 		return 3+"4";
 	}
 
 	
-	public int dameint(char c,long l, String s){
+	public int dameint3(char c,long l, String s){
 		
 		String s2 = s; 
 		
