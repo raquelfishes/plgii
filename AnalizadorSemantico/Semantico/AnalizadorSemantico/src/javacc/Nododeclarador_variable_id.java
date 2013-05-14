@@ -22,14 +22,14 @@ class Nododeclarador_variable_id extends SimpleNode {
 	  if (parent instanceof Nodocampo_declaracion || parent instanceof Nododeclaracion_variable_local){
 		  nTipo = (Nodotipo)((SimpleNode)parent).children[0];
 		  if(nTipo != null){
-			  if (Compilador.gestorTS.esLexemaValido((String)nTipo.value)){
+			  if (Compilador.gestorTS.esLexemaValido((String)value)){
 				  Atributos atribs = new Atributos((String)value, (String)nTipo.value);
 				  Compilador.gestorTS.insertar((String)value, atribs);
 				  System.out.println("Insertando identificador en TS: " + (String)value +
 						  " de tipo " + (String)nTipo.value);
 			  }
 			  else{
-				  addErrSemantico(firstToken.beginLine, "el identificador: "+(String)nTipo.value+" no es válido");
+				  addErrSemantico(firstToken.beginLine, "el identificador: "+(String)value+" no es válido");
 			  }
 		  }
 		  else{

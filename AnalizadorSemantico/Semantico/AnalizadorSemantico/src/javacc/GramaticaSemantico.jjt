@@ -430,26 +430,6 @@ Token tipo() :
   {    return t;  }  
 }
 
-/* Descomentar si se quiere volver a la version antigua sin comprobacion semántica de las funciones
-void tipo_primitivo() :
-{
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  	(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})
-    | <CHAR> { jjtThis.value = ConstantesTipos.CHAR;}
-    | <SHORT> { jjtThis.value = ConstantesTipos.SHORT;}
-    | <INT> { jjtThis.value = ConstantesTipos.INT;}
-    | <LONG> { jjtThis.value = ConstantesTipos.LONG;}
-    | <FLOAT> { jjtThis.value = ConstantesTipos.FLOAT;}
-    | <DOUBLE> { jjtThis.value = ConstantesTipos.DOUBLE;}
-
-}
-*/
-
 Token tipo_primitivo() :
 {
   Token t=null;
@@ -459,7 +439,6 @@ Token tipo_primitivo() :
   }
 }
 {
-  	//t =(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})<-- CAMBIO MIO(Ricardo el más guay), no entiendo que diferencia hay si le quitas los parentesis
   	t =<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN; return t;}
     | t =<CHAR> { jjtThis.value = ConstantesTipos.CHAR; return t;}
     | t =<SHORT> { jjtThis.value = ConstantesTipos.SHORT; return t;}
@@ -486,19 +465,6 @@ void declaracion_tipo() #void:
   <PYC>
 }
 
-/*
-void tipo_metodo() :
-{
-  Token t;
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  tipo() | <VOID>
-}
-*/
 Token tipo_metodo() :
 {
   Token t=null;
@@ -638,9 +604,6 @@ void declarador_variable_id() :
   t = <IDENTIFICADOR>
   {
     jjtThis.value = t.image;
-	//Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
-	//Compilador.gestorTS.insertar(jjtThis.name, atribs);
-	//System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
   } ( <COR_A> <COR_C> )*
 }
 
