@@ -17,13 +17,6 @@ public class Atributos
     	this.alias = "$var_" + (aliasCounter++);
     }
     
-    public Atributos(String lexema, String tipo, String alias) {
-    	this.lexema = lexema;
-    	this.tipo = tipo;
-    	this.alias = alias;
-    	//this.alias = "$var_" + (aliasCounter++);
-    }
-    
     public Atributos(String lexema, String tipo, int tamArray) {
     	this.lexema = lexema;
     	this.tipo = tipo;
@@ -72,5 +65,9 @@ public class Atributos
     
     public String toString(){
     	return "{Lexema:"+lexema+", Alias:"+alias+", Tipo:"+tipo+"}";
+    }
+    
+    public static void resetAliasCounter(){
+    	aliasCounter = 0;
     }
 }
