@@ -1176,7 +1176,7 @@ void bloque() #void:
   }
 }
 {
-  { gestorTS.nuevoAmbito(); }
+  { gestorTS.nuevoAmbito(""); }
   <LLAVE_A> ( sentencia_bloque() )* <LLAVE_C>
   { gestorTS.cierraAmbito();  }
 }

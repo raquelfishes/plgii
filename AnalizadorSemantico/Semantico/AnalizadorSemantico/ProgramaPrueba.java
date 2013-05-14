@@ -8,8 +8,8 @@ public class Prueba {
 		//Gato unArray[] = new Gato[5];
 		i = 2+3;
 		isEnable = false;
-		//boolean b = false || isEnable;
-		//b = true || 3;
+		boolean b = false || isEnable;
+		b = true || 3;
 	}
 	
 	
