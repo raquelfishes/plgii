@@ -89,6 +89,10 @@ public class CGestorTS implements IGestorTS {
 		listarTodosLosLexemasAux(ambitoGlobal, 0);
 	}
 	
+	public boolean estaLexema(String lexema) {
+		return !ambitoActual.esLexemaValido(lexema);
+	}
+	
 	private void listarTodosLosLexemasAux(Ambito ambito, int n_tab){
 		
 		String tabulacion = calcularTabulacion(n_tab);

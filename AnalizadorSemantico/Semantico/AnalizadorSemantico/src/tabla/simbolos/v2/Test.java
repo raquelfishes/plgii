@@ -59,15 +59,16 @@ public class Test {
 			gestor.insertar("a", new Atributos("a", "int"));
 			gestor.nuevoAmbito("ambito_if");
 				gestor.insertar("b", new Atributos("b", "int"));
+				if (gestor.getAtributos("a") != null) System.out.println(";;;;;;;;;;;;");
 				gestor.nuevoAmbito("ambito_while");
 				
 					if(!gestor.esLexemaValido("entero"))
-						System.err.println("variableGlobal ya esta definida cazurro!");
+						System.err.println("variableGlobal ya esta definida cazurro 1!");
 				
 					gestor.insertar("entero", new Atributos("entero", "int"));
 					
 					if(!gestor.esLexemaValido("variableGlobal"))
-						System.err.println("variableGlobal ya esta definida cazurro!");
+						System.err.println("variableGlobal ya esta definida cazurro 2!");
 					
 					gestor.insertar("variableGlobal", new Atributos("variableGlobal", "int"));
 				gestor.cierraAmbito();
@@ -81,6 +82,7 @@ public class Test {
 			
 			gestor.insertar("entero", new Atributos("entero", "int"));
 			
+			if (gestor.getAtributos("a") != null) System.out.println("uuuuuuuuuuuuu");
 		gestor.cierraAmbito();
 		
 		

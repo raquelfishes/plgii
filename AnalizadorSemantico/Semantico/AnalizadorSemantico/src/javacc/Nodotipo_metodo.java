@@ -11,6 +11,20 @@ class Nodotipo_metodo extends SimpleNode {
   public Nodotipo_metodo(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+	 
+	  if(this.parent!=null && this.parent instanceof SimpleNode)
+          ((SimpleNode)this.parent).setValor(this.value);
+  
+  
+	  int i, k = jjtGetNumChildren();
+	
+	     for (i = 0; i < k; i++)
+	        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=cb4975a9c5a3174504d881246903da0c (do not edit this line) */

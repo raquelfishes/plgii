@@ -24,7 +24,7 @@ class Nodoexpresion_instanceof extends SimpleNode {
 	 if (n2 instanceof Nodoidentificador){
 		 if (Compilador.gestorTS.estaLexema((String)n2.value)){
 			 addErrSemantico(lastToken.beginLine, "instanceof debe referenciar " +
-			 		"un tipo no al identificador "+(String)n2.value);
+			 		"un tipo no al identificador: "+(String)n2.value);
 		 }
 	 }
 	 
