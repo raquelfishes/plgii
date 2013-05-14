@@ -2,6 +2,8 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=true,NODE_PREFIX=Nodo,NODE_EXTENDS=XNode,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package javacc;
 
+import tabla.simbolos.v2.Atributos;
+
 public
 class Nodocompilar extends SimpleNode {
   public Nodocompilar(int id) {
@@ -14,6 +16,8 @@ class Nodocompilar extends SimpleNode {
   
   public void interpret()
   {
+	  Atributos.resetAliasCounter();
+	  
 	  int i, k = jjtGetNumChildren();
 
 	  for (i = 0; i < k; i++)

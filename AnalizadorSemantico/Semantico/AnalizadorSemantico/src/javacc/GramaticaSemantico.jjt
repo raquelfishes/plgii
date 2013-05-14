@@ -28,8 +28,6 @@ public class Compilador {
   public static java.io.DataOutputStream fichero;
 
   public static CGestorTS gestorTSIntermedia;
-
-  public static int aliasCounter = 0;
   
   public static void main ( String args [] ) {
 
@@ -68,6 +66,7 @@ public class Compilador {
       }
       try {
         SimpleNode root = Compilador.compilar();
+		Atributos.resetAliasCounter();
         root.dump("");
         System.out.println ("Compilador: La entrada ha sido leida con éxito.");
         jjtree.rootNode().interpret();
@@ -799,8 +798,7 @@ Simbolo declarador_variable_id() :
     jjtThis.value = t.image;
 
 	String lexema = t.image;
-	if(!gestorTSIntermedia.estaLexema(lexema))	{		gestorTSIntermedia.insertar(lexema, new Atributos(lexema,"",""+aliasCounter));
-		aliasCounter++;
+	if(!gestorTSIntermedia.estaLexema(lexema))	{		gestorTSIntermedia.insertar(lexema, new Atributos(lexema,""));
   	}
   	else  	{		System.err.println("No se puede insertar el lexema: "+lexema);
   	}
