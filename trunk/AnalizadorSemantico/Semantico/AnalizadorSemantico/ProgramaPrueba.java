@@ -6,7 +6,7 @@ public class Prueba {
 	void main(){
 		//Gato unArray[] = new Gato[5];
 		i = 2+3;
-		isEnable = false;
+		isEnable = 3;
 		boolean b = false || isEnable;
 		b = true || 3;
 	}

@@ -42,11 +42,22 @@ class Nodoasignacion extends SimpleNode {
 	  }
 	  
 	  if (a1 != null && a2 != null){
-		  if (a1.getTipo() != a2.getTipo()){
+		  if (!ConstantesTipos.esCompatible(a1.getTipo(), a2.getTipo())){
 			  addErrSemantico(firstToken.beginLine, "no puede asignarse "+
-					  (String)n2.value+" a "+(String)n1.value+" al tener distintos tipos");
+					  (String)n2.value+" a "+(String)n1.value+" al tener tipos incompatibles");
 		  }
 	  }
+	  else if(a1 != null){
+		  if (!ConstantesTipos.esCompatible(a1.getTipo(), (String)n2.value)){
+			  addErrSemantico(firstToken.beginLine, "no puede asignarse "+
+					  (String)n2.value+" a "+(String)n1.value+" al tener tipos incompatibles");
+		  }
+	  }
+	  else {
+		  addErrSemantico(firstToken.beginLine, "no puede asignarse "+
+				  (String)n1.value+", debe ser un identificador");
+	  }
+	  
   }
 
 }
