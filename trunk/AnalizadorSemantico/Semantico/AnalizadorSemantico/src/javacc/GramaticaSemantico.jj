@@ -14,8 +14,8 @@ options {
 PARSER_BEGIN(Compilador)
 package javacc;
 
-import tabla.simbolos.CGestorTS;
-import tabla.simbolos.Atributos;
+import tabla.simbolos.v2.CGestorTS;
+import tabla.simbolos.v2.Atributos;
 import interfaz.InterfazPlg;
 
 public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@egen*/ {/*@bgen(jjtree)*/

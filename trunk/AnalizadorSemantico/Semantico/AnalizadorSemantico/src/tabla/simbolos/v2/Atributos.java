@@ -2,14 +2,16 @@ package tabla.simbolos.v2;
 
 public class Atributos 
 {
-        private String lexema, tipo;
+        private String lexema, tipo, alias;
         private boolean esArray; // provisional
         private int tamArray;
+        private static int aliasCounter = 0;
         //...
         
         public Atributos(String lexema, String tipo) {
         	this.lexema = lexema;
         	this.tipo = tipo;
+        	this.alias = "$var_" + (aliasCounter++);
         }
         
         public Atributos(String lexema, String tipo, int tamArray) {
@@ -17,6 +19,7 @@ public class Atributos
         	this.tipo = tipo;
         	this.esArray = true;
         	this.tamArray = tamArray;
+        	this.alias = "$var_" + (aliasCounter++);
         }
         
         public String getTipo(){
