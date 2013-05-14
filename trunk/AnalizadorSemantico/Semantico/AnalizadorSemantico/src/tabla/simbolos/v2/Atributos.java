@@ -44,4 +44,12 @@ public class Atributos
         	this.esArray = a.esArray;
         	this.tamArray = a.tamArray;
         }
+        
+        public String getAlias(){
+        	return alias;
+        }
+        
+        public String toString(){
+        	return "{Lexema:"+lexema+", Alias:"+alias+", Tipo:"+tipo+"}";
+        }
 }

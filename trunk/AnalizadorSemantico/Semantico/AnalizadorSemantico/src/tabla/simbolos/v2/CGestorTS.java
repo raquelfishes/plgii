@@ -18,7 +18,7 @@ public class CGestorTS implements IGestorTS {
 		pilaAmbitosSuperiores = new LinkedList<Ambito>();
 		ambitoGlobal = new Ambito("AmbitoClase");		
 		ambitoActual = ambitoGlobal;
-		
+		ambitos = ambitoGlobal.dameListaAmbitosHijos();
 	}
 	
 	private void apilaAmbito(Ambito a) //Siempre añadimos al principio de "ambitos" para que funcione como pila
@@ -85,12 +85,19 @@ public class CGestorTS implements IGestorTS {
 		return s;
 	}
 	
-	public void listarTodosLosLexemas(){
-		listarTodosLosLexemasAux(ambitoGlobal, 0);
-	}
+	
 	
 	public boolean estaLexema(String lexema) {
 		return !ambitoActual.esLexemaValido(lexema);
+	}
+	
+	
+	/**
+	 * Listar lexemas POR CONSOLA
+	 */
+	
+	public void listarTodosLosLexemas(){
+		listarTodosLosLexemasAux(ambitoGlobal, 0);
 	}
 	
 	private void listarTodosLosLexemasAux(Ambito ambito, int n_tab){
@@ -123,6 +130,62 @@ public class CGestorTS implements IGestorTS {
 		while(it.hasNext()){
 			System.out.println(tabulacion+"\t"+it.next());
 		}
+	}
+	
+	
+	/**
+	 * Listar lexemas en una LISTA DE ATRIBUTOS
+	 * @param nombreMetodo
+	 * @return
+	 */
+	
+	public List<Atributos> dameListaAtributos(String nombreMetodo){
+		
+				
+		Ambito metodoBuscado=null;//O constructora... pero realmente no sé si la constructora la haremos, en un principio tambien encuentra la constructora
+		
+		for(Ambito a : ambitos){
+			if(a.getNombre().equals(nombreMetodo)){
+				metodoBuscado = a;
+			}
+		}
+		
+		List<Atributos> listaAtributos = new ArrayList<Atributos>();
+		listarTodosLosAtributos(metodoBuscado, listaAtributos);
+		
+		return listaAtributos;
+	}
+	
+	
+	
+	private void listarTodosLosAtributos(Ambito ambito, List<Atributos> listaMetodo){
+		
+		
+		listarAtributos(ambito, listaMetodo);
+		
+		List<Ambito> listaAmbitoHijos = ambito.dameListaAmbitosHijos();
+		
+		int numHijos = listaAmbitoHijos.size();
+		
+		if(numHijos==0){
+			return;
+		}
+		else{
+			for(Ambito ambitoHijo : listaAmbitoHijos){
+				listarAtributos(ambitoHijo, listaMetodo);
+			}
+		}
+		
+	}
+	
+	private void listarAtributos(Ambito a, List<Atributos> lista){
+		
+		Iterable<Atributos> listaAtributos = a.dameAtributos();
+
+		for(Atributos atribs : listaAtributos){
+			lista.add(atribs);
+		}
+		
 	}
 	
 //	@Override

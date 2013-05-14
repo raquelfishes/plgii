@@ -1,5 +1,7 @@
 package tabla.simbolos.v2;
 
+import java.util.List;
+
 
 public class Test {
 	
@@ -59,18 +61,19 @@ public class Test {
 			gestor.insertar("a", new Atributos("a", "int"));
 			gestor.nuevoAmbito("ambito_if");
 				gestor.insertar("b", new Atributos("b", "int"));
-				if (gestor.getAtributos("a") != null) System.out.println(";;;;;;;;;;;;");
+				
 				gestor.nuevoAmbito("ambito_while");
 				
 					if(!gestor.esLexemaValido("entero"))
 						System.err.println("variableGlobal ya esta definida cazurro 1!");
-				
-					gestor.insertar("entero", new Atributos("entero", "int"));
+					else
+						gestor.insertar("entero", new Atributos("entero", "int"));
 					
 					if(!gestor.esLexemaValido("variableGlobal"))
 						System.err.println("variableGlobal ya esta definida cazurro 2!");
+					else
+						gestor.insertar("variableGlobal", new Atributos("variableGlobal", "int"));
 					
-					gestor.insertar("variableGlobal", new Atributos("variableGlobal", "int"));
 				gestor.cierraAmbito();
 			gestor.cierraAmbito();
 			
@@ -82,11 +85,15 @@ public class Test {
 			
 			gestor.insertar("entero", new Atributos("entero", "int"));
 			
-			if (gestor.getAtributos("a") != null) System.out.println("uuuuuuuuuuuuu");
 		gestor.cierraAmbito();
 		
 		
 		gestor.listarTodosLosLexemas();
+		
+		List<Atributos> lista = gestor.dameListaAtributos("ambito_dameInt");
+		for(Atributos a : lista){
+			System.out.println(a);
+		}
 	}
 
 }
