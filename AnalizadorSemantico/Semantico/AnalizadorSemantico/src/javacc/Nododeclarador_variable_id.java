@@ -36,6 +36,23 @@ class Nododeclarador_variable_id extends SimpleNode {
 			  throw new RuntimeException("Error obteniendo el tipo del identificador");
 		  }
 	  }
+	  else if(parent instanceof Nododeclarador_metodo){
+		  nTipo = (Nodotipo)((SimpleNode)parent).children[0];
+		  if(nTipo != null){
+			  if (Compilador.gestorTS.esLexemaValido((String)value)){
+				  Atributos a = new Atributos((String)value, (String)nTipo.value);
+				  ((Nododeclarador_metodo)parent).atribs.add(a);
+				  System.out.println("Insertando parámetro: " + (String)value +
+						  " de tipo " + (String)nTipo.value);
+			  }
+			  else{
+				  addErrSemantico(firstToken.beginLine, "el identificador: "+(String)value+" no es válido");
+			  }
+		  }
+		  else{
+			  throw new RuntimeException("Error obteniendo el tipo del identificador");
+		  }
+	  }
   }
 }
 /* JavaCC - OriginalChecksum=265a78532ed9fe4f80d1d6beac516403 (do not edit this line) */

@@ -2,8 +2,11 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=true,NODE_PREFIX=Nodo,NODE_EXTENDS=XNode,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package javacc;
 
+import tabla.simbolos.v2.Atributos;
+
 public
 class Nododeclaracion_metodo extends SimpleNode {
+	
   public Nododeclaracion_metodo(int id) {
     super(id);
   }
@@ -17,22 +20,20 @@ class Nododeclaracion_metodo extends SimpleNode {
 	 
 	  // Se supone que un metodo siempre estará compuesto por un tipo_metodo ,
 	  // argumentos y finalmente una sentencia_return
-	  int numHijos = jjtGetNumChildren();
 	  int nodo_tipo_metodo = 0;
-	  int nodo_sentencia_return = numHijos - 1;
+	  int nodo_declarador_metodo = 1;
 	
 	  // TipoMetodo, al terminar esta sentencia, este
 	  // nodo(Nododeclaracion_metodo) ya tiene asignado su tipo
-	  jjtGetChild(nodo_tipo_metodo).interpret();
+	  ((Nodotipo_metodo)jjtGetChild(nodo_tipo_metodo)).interpret();
 	
-	  // Los nodos que estan entre el primero(nodo_tipo_metodo)y el
-	  // último(nodo_sentencia_return)
-	  for (int i = nodo_tipo_metodo + 1; i < nodo_sentencia_return; i++)
-	          jjtGetChild(i).interpret();
+	  // DeclaradorMetodo, ahora se declaran los parametros formales
+	  ((Nododeclarador_metodo)jjtGetChild(nodo_declarador_metodo)).interpret();
 	
-	  // Sentencia return
-	  jjtGetChild(nodo_sentencia_return).interpret();
-
+	  // resto de hijos
+	  for (int i = nodo_declarador_metodo + 1; i < jjtGetNumChildren(); i++)
+          jjtGetChild(i).interpret();
+	  
   }
 
 }
