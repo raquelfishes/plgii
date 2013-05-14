@@ -15,7 +15,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
   public static boolean usaInterfaz = false;
   public static java.io.DataOutputStream fichero;
 
-  public int aliasCounter = 0;
+  public static int aliasCounter = 0;
 
   public static void main ( String args [] ) {
 
