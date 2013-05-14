@@ -99,7 +99,13 @@ public class Ambito {
 		return tsLocal.getLexemas();
 	}
 	
+	public Iterable<Atributos> dameAtributos(){
+		return tsLocal.getListaAtributos();
+	}
+	
 	public String toString(){
 		return nombre;
 	}
+	
+	
 }

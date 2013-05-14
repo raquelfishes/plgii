@@ -33,6 +33,22 @@ public class TablaSimbolos {
 		return ts.keySet().iterator();
 	}
 	
+	
+	/**
+	 * Elegi iterable para que se pueda usar con un for each
+	 * 
+	 * 	for(Tipo t: listaTipos){
+	 * 
+	 * 	}
+	 * 
+	 * @return
+	 */
+	public Iterable<Atributos> getListaAtributos(){
+		
+		return ts.values();
+		
+	}
+	
 	public int numSimbolos(){
 		return ts.size();
 	}
