@@ -696,26 +696,6 @@ Token tipo() :
 /*@egen*/  
 }
 
-/* Descomentar si se quiere volver a la version antigua sin comprobacion sem\u00e1ntica de las funciones
-void tipo_primitivo() :
-{
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  	(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})
-    | <CHAR> { jjtThis.value = ConstantesTipos.CHAR;}
-    | <SHORT> { jjtThis.value = ConstantesTipos.SHORT;}
-    | <INT> { jjtThis.value = ConstantesTipos.INT;}
-    | <LONG> { jjtThis.value = ConstantesTipos.LONG;}
-    | <FLOAT> { jjtThis.value = ConstantesTipos.FLOAT;}
-    | <DOUBLE> { jjtThis.value = ConstantesTipos.DOUBLE;}
-
-}
-*/
-
 Token tipo_primitivo() :
 {/*@bgen(jjtree) tipo_primitivo */
   Nodotipo_primitivo jjtn000 = new Nodotipo_primitivo(JJTTIPO_PRIMITIVO);
@@ -732,7 +712,6 @@ Token tipo_primitivo() :
 {/*@bgen(jjtree) tipo_primitivo */
         try {
 /*@egen*/
-  	//t =(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})<-- CAMBIO MIO(Ricardo el m\u00e1s guay), no entiendo que diferencia hay si le quitas los parentesis
   	t =<BOOLEAN>/*@bgen(jjtree)*/
                      {
                        jjtree.closeNodeScope(jjtn000, true);
@@ -808,19 +787,6 @@ void declaracion_tipo()      :
   <PYC>
 }
 
-/*
-void tipo_metodo() :
-{
-  Token t;
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  tipo() | <VOID>
-}
-*/
 Token tipo_metodo() :
 {/*@bgen(jjtree) tipo_metodo */
   Nodotipo_metodo jjtn000 = new Nodotipo_metodo(JJTTIPO_METODO);
@@ -1035,9 +1001,6 @@ void declarador_variable_id() :
   t = <IDENTIFICADOR>
   {
     jjtn000.value = t.image;
-	//Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
-	//Compilador.gestorTS.insertar(jjtThis.name, atribs);
-	//System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
   } ( <COR_A> <COR_C> )*/*@bgen(jjtree)*/
   } finally {
     if (jjtc000) {

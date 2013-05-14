@@ -1,6 +1,5 @@
 public class Prueba {
 	int i, k;
-	int i;
 	Persona paco;
 	boolean isEnable;
 		
