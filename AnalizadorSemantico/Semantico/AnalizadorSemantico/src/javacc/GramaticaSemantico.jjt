@@ -27,6 +27,8 @@ public class Compilador {
   public static boolean usaInterfaz = false;
   public static java.io.DataOutputStream fichero;
 
+  public static CGestorTS gestorTSIntermedia;
+
   public static int aliasCounter = 0;
   
   public static void main ( String args [] ) {
@@ -100,6 +102,7 @@ public class Compilador {
 	public static void initGestorTS(){
 		//Inicialización Tabla de Símbolos y Gestor de Ámbitos
 	   gestorTS = new CGestorTS();
+	   gestorTSIntermedia = new CGestorTS(); 
 	}
 
 	public Node rootNode() {
@@ -792,8 +795,16 @@ Simbolo declarador_variable_id() :
 {
   t = <IDENTIFICADOR>
   {
-    aliasCounter++;
+    
     jjtThis.value = t.image;
+
+	String lexema = t.image;
+	if(!gestorTSIntermedia.estaLexema(lexema))	{		gestorTSIntermedia.insertar(lexema, new Atributos(lexema,"",""+aliasCounter));
+		aliasCounter++;
+  	}
+  	else  	{		System.err.println("No se puede insertar el lexema: "+lexema);
+  	}
+    
 	//Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
 	//Compilador.gestorTS.insertar(jjtThis.name, atribs);
 	//System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
@@ -1936,9 +1947,9 @@ Simbolo bloque() #void:
   }
 }
 {
-  { gestorTS.nuevoAmbito(""); }
+  { gestorTSIntermedia.nuevoAmbito(""); }
   <LLAVE_A> ( sim1 = sentencia_bloque(){sim.codigo += sim1.codigo;})* <LLAVE_C>
-  { gestorTS.cierraAmbito();  }
+  { gestorTSIntermedia.cierraAmbito();  }
   { return sim; }
 }
 

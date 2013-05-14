@@ -17,12 +17,19 @@ public class Atributos
     	this.alias = "$var_" + (aliasCounter++);
     }
     
+    public Atributos(String lexema, String tipo, String alias) {
+    	this.lexema = lexema;
+    	this.tipo = tipo;
+    	this.alias = alias;
+    	//this.alias = "$var_" + (aliasCounter++);
+    }
+    
     public Atributos(String lexema, String tipo, int tamArray) {
     	this.lexema = lexema;
     	this.tipo = tipo;
     	this.esArray = true;
     	this.tamArray = tamArray;
-    	this.alias = "$var_" + (aliasCounter++);
+    	//this.alias = "$var_" + (aliasCounter++);
     }
     
     public Atributos(String lexema, String tipo, ArrayList<Atributos> params){
