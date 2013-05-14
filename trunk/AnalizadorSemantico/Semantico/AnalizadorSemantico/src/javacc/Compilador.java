@@ -3208,7 +3208,7 @@ void tipo_metodo() :
   {
     InterfazPlg.escribirAvisos();
   }
-    gestorTS.nuevoAmbito();
+    gestorTS.nuevoAmbito("");
     jj_consume_token(LLAVE_A);
     label_35:
     while (true) {
