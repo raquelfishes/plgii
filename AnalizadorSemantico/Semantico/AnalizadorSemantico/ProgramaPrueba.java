@@ -6,9 +6,9 @@ public class Prueba {
 	void main(){
 		//Gato unArray[] = new Gato[5];
 		i = 2+3;
-		isEnable = 3;
+		//isEnable = 3;
 		boolean b = false || isEnable;
-		b = true || 3;
+		//b = true || 3;
 	}
 	
 	
@@ -22,7 +22,7 @@ public class Prueba {
 	
 	public int dameint2(char c, boolean val){
 		
-		return 3+"4";
+		return 3;//+"4";
 	}
 
 	
@@ -30,7 +30,7 @@ public class Prueba {
 		
 		String s2 = s; 
 		
-		return "3+4";
+		return 3+4;//"3+4";
 	}
 	
 	

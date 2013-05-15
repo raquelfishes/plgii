@@ -7,6 +7,7 @@ import tabla.simbolos.v2.CGestorTS;
 import tabla.simbolos.v2.Atributos;
 import interfaz.InterfazPlg;
 import javacc.Simbolo;
+import traductor.Traductor;
 
 /** Token Manager. */
 public class CompiladorTokenManager implements CompiladorConstants

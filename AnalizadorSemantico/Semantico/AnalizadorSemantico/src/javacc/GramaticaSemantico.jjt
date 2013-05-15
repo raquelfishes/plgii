@@ -21,6 +21,7 @@ import tabla.simbolos.v2.CGestorTS;
 import tabla.simbolos.v2.Atributos;
 import interfaz.InterfazPlg;
 import javacc.Simbolo;
+import traductor.Traductor;
 
 public class Compilador {
   public static CGestorTS gestorTS;
@@ -28,6 +29,8 @@ public class Compilador {
   public static java.io.DataOutputStream fichero;
 
   public static CGestorTS gestorTSIntermedia;
+
+  public static Traductor traductor;
   
   public static void main ( String args [] ) {
 
@@ -65,7 +68,7 @@ public class Compilador {
         return ;
       }
 	  try {
-        fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ProgramaIntermedio.txt"));
+        fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ejemplos/ProgramaIntermedio.txt"));
       }
       catch(java.io.FileNotFoundException e){
         System.out.println ("MAL, NO HAS CREADO EL FICHERO");
@@ -77,6 +80,12 @@ public class Compilador {
         root.dump("");
         System.out.println ("Compilador: La entrada ha sido leida con éxito.");
         jjtree.rootNode().interpret();
+
+        //Codigo final
+        traductor = new Traductor();
+        traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
+        System.out.println("Traducido.");
+        
       }
       catch(ParseException e){
         System.out.println ("Compilador: Ha ocurrido un error durante el análisis.");
