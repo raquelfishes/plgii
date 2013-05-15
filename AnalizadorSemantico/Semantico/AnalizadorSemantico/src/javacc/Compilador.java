@@ -1539,7 +1539,7 @@ void tipo_primitivo() :
       jjtc000 = false;
       jjtn000.jjtSetLastToken(getToken(0));
       if(t1.image=="void") {
-        sim.codigo += sim1.codigo + "return\u005cn";
+        sim.codigo += sim1.codigo + "&return\u005cn";
           {if (true) return sim;}
         }
         else {
@@ -1602,7 +1602,7 @@ void tipo_primitivo() :
     jjtc000 = false;
     jjtn000.jjtSetLastToken(getToken(0));
     jjtn000.value = t.image;
-    sim.codigo = t.image +":\u005cn";
+    sim.codigo = "&" + t.image +":\u005cn";
     {if (true) return sim;}
     } catch (Throwable jjte000) {
     if (jjtc000) {
@@ -4934,7 +4934,7 @@ void tipo_primitivo() :
     jjtc000 = false;
     jjtn000.jjtSetLastToken(getToken(0));
     sim.codigo = sim1.codigo;
-    sim.codigo += "return " + sim1.lugar + "\u005cn";
+    sim.codigo += "&return " + sim1.lugar + "\u005cn";
     {if (true) return sim;}
     } catch (Throwable jjte000) {
     if (jjtc000) {
@@ -5263,39 +5263,11 @@ void tipo_primitivo() :
     finally { jj_save(19, xla); }
   }
 
-<<<<<<< .mine
-  static private boolean jj_3R_119() {
-    if (jj_3R_130()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3R_137()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  static private boolean jj_3R_128() {
-    if (jj_3R_126()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_44() {
-    if (jj_scan_token(IDENTIFICADOR)) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_1()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
   static private boolean jj_3_17() {
     if (jj_3R_53()) return true;
     return false;
   }
 
-=======
->>>>>>> .r94
   static private boolean jj_3R_161() {
     if (jj_3R_170()) return true;
     return false;
@@ -6575,6 +6547,11 @@ void tipo_primitivo() :
     return false;
   }
 
+  static private boolean jj_3R_128() {
+    if (jj_3R_126()) return true;
+    return false;
+  }
+
   static private boolean jj_3R_44() {
     if (jj_scan_token(IDENTIFICADOR)) return true;
     Token xsp;
@@ -6582,11 +6559,6 @@ void tipo_primitivo() :
       xsp = jj_scanpos;
       if (jj_3_1()) { jj_scanpos = xsp; break; }
     }
-    return false;
-  }
-
-  static private boolean jj_3_17() {
-    if (jj_3R_53()) return true;
     return false;
   }
 
