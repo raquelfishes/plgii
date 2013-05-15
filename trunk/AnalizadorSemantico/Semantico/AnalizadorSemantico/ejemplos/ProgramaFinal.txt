@@ -1,6 +1,6 @@
-
-classPrueba:
-MOVE $100 .R0
-main:
-MOVE $0 .R0
-MOVE $3 .R0
+Prueba:
+MOVE #100 .R0        ;Asignacion Tmp:=Inmediato
+main:        ; Abriendo ámbito 'main'.
+MOVE #0 .R0        ;Asignacion Tmp:=Inmediato
+Error en bloqueAsignacionTmpVariable(s1,s2)
+MOVE #0[.IX] .R0        ;Asignacion Tmp:=Variable
