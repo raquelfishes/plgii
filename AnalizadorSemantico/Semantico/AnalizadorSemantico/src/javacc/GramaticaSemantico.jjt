@@ -64,6 +64,13 @@ public class Compilador {
         System.out.println ("         java ExampleParser fichero");
         return ;
       }
+	  try {
+        fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ProgramaIntermedio.txt"));
+      }
+      catch(java.io.FileNotFoundException e){
+        System.out.println ("MAL, NO HAS CREADO EL FICHERO");
+        return;
+      }
       try {
         SimpleNode root = Compilador.compilar();
 		Atributos.resetAliasCounter();
@@ -78,13 +85,6 @@ public class Compilador {
       catch(TokenMgrError e){
         System.out.println ("Compilador: Ha ocurrido un error.");
         System.out.println (e.getMessage());
-      }
-      try {
-        fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ProgramaIntermedio.txt"));
-      }
-      catch(java.io.FileNotFoundException e){
-        System.out.println ("MAL, NO HAS CREADO EL FICHERO");
-        return;
       }
     }
 
@@ -401,7 +401,12 @@ String literal() #void:
 | s = literal_float() #LiteralFloat { return s; }
 | s = literal_caracter() #LiteralCaracter { return s; }
 | s = literal_string() #LiteralString { return s; }
-| s = literal_boolean() #LiteralBoolean { return s; }
+| s = literal_boolean() #LiteralBoolean
+	{	if (s == "true")
+			return ""+1;
+		else
+			return ""+0;
+	}
 | s = literal_null() #LiteralNull { return s; }
 }
 
@@ -566,19 +571,12 @@ void declaracion_tipo() #void:
 }
 {
   LOOKAHEAD( ( <ABSTRACT> | <FINAL> | <PUBLIC> )* <CLASS> ) sim = declaracion_clase() 
-	{
-	  System.out.println(sim.codigo);	}
-/*{ escribeFichero(sim.codigo); }*/
+	{ escribeFichero(sim.codigo); }
 |
-  sim = declaracion_interface() /*{ escribeFichero(sim.codigo); }*/
-	{
-	  System.out.println(sim.codigo);
-	}
+  sim = declaracion_interface() 
+	{ escribeFichero(sim.codigo); }
 |
-  <PYC> /*{ escribeFichero(sim.codigo); }*/
-	{
-	  System.out.println(sim.codigo);
-	}
+  <PYC> { escribeFichero(sim.codigo); }
 }
 
 Token tipo_metodo() :
@@ -808,7 +806,7 @@ Simbolo declarador_variable_id() :
 	//System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
   } ( <COR_A> <COR_C> /*{ s = '[' + ']';}*/ )*
   {
-    sim.lugar = t.image;
+    sim.lugar = gestorTSIntermedia.getAtributos(t.image).getAlias();
     return sim;
   }
 }
@@ -851,14 +849,14 @@ Simbolo declaracion_metodo() :
 {
   ( t = <PUBLIC> | t = <PROTECTED> | t = <PRIVATE> | t = <STATIC> | t = <ABSTRACT> | t = <FINAL> | t = <SYNCHRONIZED> )*
   t1 = tipo_metodo() sim = declarador_metodo() [ <THROWS> s1 = lista_de_tipos() {s2 = "throws" + s1;} ]
-  ( sim1 = bloque() {s3 = sim1.codigo;} | <PYC> )
+  ( sim1 = bloque() | <PYC> )
     {
       if(t1.image=="void") {
         sim.codigo += sim1.codigo + "return\n";
           return sim;
         }
         else {
-          sim.codigo += sim1.codigo + "\n";
+          sim.codigo += sim1.codigo;
           return sim;
         }
     }
@@ -1115,9 +1113,9 @@ Simbolo expresion_cond_or() #void:
       sim.falsa = elseIf();
       sim.siguiente = finIf();
       sim.codigo += sim1.codigo;
-      sim.codigo += "if (" + aux + " = 0" + ")\n";
+      sim.codigo += "if (" + aux + " = 1" + ") goto " + sim.comienzo + "\n";
       sim.codigo += "if (" + sim1.lugar + " = 0" + ") goto " + sim.falsa + "\n";
-      sim.codigo += sim.lugar + ":=1\n";
+      sim.codigo += sim.comienzo + ":\n" + sim.lugar + ":=1\n";
       sim.codigo += "goto " + sim.siguiente + "\n";
       sim.codigo += sim.falsa + ":\n" + sim.lugar + ":=0\n";
       sim.codigo += sim.siguiente + ":\n";
@@ -1685,6 +1683,8 @@ Simbolo expresion_primaria() #void:
   Simbolo sim3 = new Simbolo();
   Simbolo sim = new Simbolo();
   String aux = "";
+  String s = "";
+  String s1 = "";
   if (usaInterfaz)
   {
     InterfazPlg.escribirAvisos();
@@ -1694,18 +1694,18 @@ Simbolo expresion_primaria() #void:
   sim1 = prefijo_primario()
   ( sim2 = sufijo_primario()
     {
-      if (sim.verdadera == "argumentos")
-          sim2.codigo +="call " + sim1.lugar + ", " + sim2.lugar + "\n";
+      if (sim2.verdadera.equals("argumentos"))      {        sim2.codigo +="call " + sim1.lugar + ", " + sim2.comienzo + "\n";
+      }
       else
       {
-        System.out.println("ESTOY AQUI\n");
-        sim3.lugar += sim2.lugar;
-        sim3.codigo += sim2.codigo;
+        s += sim2.lugar;
+		s1 += sim2.codigo;
+		sim2.lugar = s;
+		sim2.codigo = s1;
       } 
     }
   )*
   {
-    sim2 = sim3;
     sim.lugar = sim1.lugar + sim2.lugar;
     sim.codigo = sim1.codigo + sim2.codigo;
     if (!sim2.lugar.equals(""))
@@ -1738,7 +1738,11 @@ Simbolo prefijo_primario() #void:
 |
   t = identificador()
   {
-    sim.lugar = t.image;
+	if (gestorTSIntermedia.estaLexema(t.image))
+		sim.lugar = gestorTSIntermedia.getAtributos(t.image).getAlias();
+	else
+		sim.lugar = t.image;
+    //sim.lugar = t.image;
     sim.codigo = "";
     return sim;
   }
@@ -1805,6 +1809,7 @@ Simbolo lista_argumentos() #void:
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
+  String s;
   int numeroarg = 0;
   if (usaInterfaz)
   {
@@ -1815,19 +1820,20 @@ Simbolo lista_argumentos() #void:
   sim1 = expresion()
   { 
     sim.codigo = sim1.codigo;
-    sim.codigo += "param " + sim1.lugar + "\n";
+    s = "param " + sim1.lugar + "\n";
     numeroarg++;
   }
   ( <COMA> sim2 = expresion()
     { 
     sim.codigo += sim2.codigo;
-    sim.codigo += "param " + sim2.lugar + "\n";
+    s += "param " + sim2.lugar + "\n";
     numeroarg++;
     }
   )*
   {
-    sim.lugar = "argumentos"; //FIXME es una cutrada
-    sim.verdadera = "" + numeroarg;
+    sim.verdadera = "argumentos"; //FIXME es una cutrada
+    sim.comienzo = "" + numeroarg;
+    sim.codigo += s;
     return sim;
   }
 }
@@ -2039,6 +2045,7 @@ Simbolo sentencia_switch() :
     sim.comienzo = nuevoIf();
     sim.siguiente = finIf();
     etiqCase = nuevoCase(); //hacer
+    sim.codigo = sim.comienzo + ":\n";
   }
     ( sim1 = etiqueta_switch()
       { sim4 = new Simbolo(); }
@@ -2050,7 +2057,6 @@ Simbolo sentencia_switch() :
               {
                 s1 = nuevaEtiq();
                 s2 = nuevaEtiq();
-                sim.codigo = sim.comienzo + "\n";
                 sim.codigo += sim1.codigo;
                 sim.codigo += "if (" + sim3.lugar + "=" + sim1.lugar + ") goto " + s1 + "\n";
                 sim.codigo += sim1.lugar + ":=0\n";
