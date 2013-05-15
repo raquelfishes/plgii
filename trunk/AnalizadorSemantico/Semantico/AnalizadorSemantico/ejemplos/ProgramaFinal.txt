@@ -1,5 +1,82 @@
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del programa
 Prueba:
-MOVE #100 .R0        ;Asignacion Tmp:=Inmediato
-main:        ; Abriendo ámbito 'main'.
-MOVE #0 .R0        ;Asignacion Tmp:=Inmediato
-MOVE #0[.IX] .R0        ;Asignacion Tmp:=Variable
+		;colocamos el puntero de pila en la cima de la memoria
+		MOVE #65535, .SP
+		;reservamos el espacio para variables globales de clase en la pila
+		SUB .SP, #5
+		MOVE .A, .SP
+		;guardamos en .IY el puntero a pila, para tener controladas las variables globales
+		MOVE .SP, .IY
+		;guardamos tambien en .IX el puntero a pila, para tener controlado siempre SP en las recursiones
+		MOVE .SP, .IX
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+				MOVE #1, .R0				;r0 contiene tmp0
+				MOVE .R0, #5[.IY]				;r0 contiene tmp0
+				MOVE #2, .R0				;r0 contiene tmp1
+				MOVE .R0, #3[.IY]				;r0 contiene tmp1
+				MOVE #3, .R0				;r0 contiene tmp2
+				MOVE .R0, #4[.IY]				;r0 contiene tmp2
+				MOVE #4, .R0				;r0 contiene tmp3
+				MOVE .R0, #1[.IY]				;r0 contiene tmp3
+				MOVE #5, .R0				;r0 contiene tmp4
+				MOVE .R0, #2[.IY]				;r0 contiene tmp4
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito main
+main:
+		;guardamos los registros en pila
+		PUSH .IX
+		PUSH .R0
+		PUSH .R1
+		PUSH .R2
+		PUSH .R3
+		PUSH .R4
+		PUSH .R5
+		PUSH .R6
+		PUSH .R7
+		PUSH .R8
+		PUSH .R9
+		;reservamos el espacio para variables locales en la pila
+		SUB .SP, #6
+		MOVE .A, .SP
+		;guardamos en .IX el puntero a pila, para usar este registro como índice de este método
+		MOVE .SP, .IX
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+				MOVE #5[.IY], #1[.IX]				;r0 contiene $var_0
+				MOVE #3[.IY], #2[.IX]				;r0 contiene $var_1
+				MOVE #4[.IY], #4[.IX]				;r0 contiene $var_2
+				MOVE #1[.IY], #5[.IX]				;r0 contiene $var_3
+				MOVE #2[.IY], #3[.IX]				;r0 contiene $var_4
+				MOVE #6, .R0				;r0 contiene tmp6
+				MOVE .R0, #5[.IY]				;r0 contiene tmp6
+				MOVE #7, .R0				;r0 contiene tmp7
+				MOVE .R0, #3[.IY]				;r0 contiene tmp7
+				MOVE #8, .R0				;r0 contiene tmp8
+				MOVE .R0, #4[.IY]				;r0 contiene tmp8
+				MOVE #9, .R0				;r0 contiene tmp9
+				MOVE .R0, #1[.IY]				;r0 contiene tmp9
+				MOVE #10, .R0				;r0 contiene tmp10
+				MOVE .R0, #2[.IY]				;r0 contiene tmp10
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo main
+		;liberamos el espacio para variables locales de la pila
+		ADD .SP, #6
+		MOVE .A, .SP
+		;cargamos los registros de la pila
+		POP .R9
+		POP .R8
+		POP .R7
+		POP .R6
+		POP .R5
+		POP .R4
+		POP .R3
+		POP .R2
+		POP .R1
+		POP .R0
+		POP .IX
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+		;Fin de la ejecución.
+		HALT
