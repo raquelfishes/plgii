@@ -84,7 +84,7 @@ public class Ambito {
 		}
 		
 		//Si el alias no esta en la TS local al ambito se busca en sus padres
-		for(Ambito tsPadre : listaDeAmbitosPadres){
+		for(Ambito tsPadre : listaDeAmbitosHijos){
 		
 			//Si algun padre la tiene se devuelve el atributo
 			atrib = tsPadre.dameTS().getAtributosDeALias(alias);
