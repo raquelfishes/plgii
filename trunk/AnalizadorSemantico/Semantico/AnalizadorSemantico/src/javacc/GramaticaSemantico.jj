@@ -1290,7 +1290,7 @@ Simbolo declaracion_metodo() :
 /*@egen*/
     {
       if(t1.image=="void") {
-        sim.codigo += sim1.codigo + "return\n";
+        sim.codigo += sim1.codigo + "&return\n";
           return sim;
         }
         else {
@@ -1348,7 +1348,7 @@ Simbolo declarador_metodo() :
 /*@egen*/
   {
     jjtn000.value = t.image;
-    sim.codigo = t.image +":\n";
+    sim.codigo = "&" + t.image +":\n";
     return sim;
   }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
@@ -3974,7 +3974,7 @@ Simbolo sentencia_return() :
 /*@egen*/
   { 
     sim.codigo = sim1.codigo;
-    sim.codigo += "return " + sim1.lugar + "\n";
+    sim.codigo += "&return " + sim1.lugar + "\n";
     return sim; 
   }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {

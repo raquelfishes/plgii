@@ -861,7 +861,7 @@ Simbolo declaracion_metodo() :
   ( sim1 = bloque() | <PYC> )
     {
       if(t1.image=="void") {
-        sim.codigo += sim1.codigo + "return\n";
+        sim.codigo += sim1.codigo + "&return\n";
           return sim;
         }
         else {
@@ -885,7 +885,7 @@ Simbolo declarador_metodo() :
   t = <IDENTIFICADOR> sim = parametros_formales() ( <COR_A> <COR_C> {s = '[' + ']' + "";} )*
   {
     jjtThis.value = t.image;
-    sim.codigo = t.image +":\n";
+    sim.codigo = "&" + t.image +":\n";
     return sim;
   }
 }
@@ -2313,7 +2313,7 @@ Simbolo sentencia_return() :
   <RETURN> [ sim1 = expresion() { s = sim1.codigo; } ] <PYC>
   { 
     sim.codigo = sim1.codigo;
-    sim.codigo += "return " + sim1.lugar + "\n";
+    sim.codigo += "&return " + sim1.lugar + "\n";
     return sim; 
   }
 }
