@@ -4,11 +4,17 @@ public class Prueba {
 	boolean isEnable;
 		
 	void main(){
-		//Gato unArray[] = new Gato[5];
+		Gato unArray [ ] = new Gato [ 5 ] ;
 		i = 2+3;
 		//isEnable = 3;
 		boolean b = false || isEnable;
 		//b = true || 3;
+		
+		for (int i = 0; i < 10; i++){
+			int k,b;
+			k = b*2;			
+		}
+		
 	}
 	
 	
@@ -27,7 +33,6 @@ public class Prueba {
 
 	
 	public int dameint3(char c,long l, String s){
-		
 		String s2 = s; 
 		
 		return 3+4;//"3+4";

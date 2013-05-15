@@ -17,8 +17,8 @@ class Nododeclaracion_metodo extends SimpleNode {
   
   public void interpret()
   {
-	 
-	  // Se supone que un metodo siempre estará compuesto por un tipo_metodo ,
+	  
+	  	  // Se supone que un metodo siempre estará compuesto por un tipo_metodo ,
 	  // argumentos y finalmente una sentencia_return
 	  int nodo_tipo_metodo = 0;
 	  int nodo_declarador_metodo = 1;
@@ -34,6 +34,8 @@ class Nododeclaracion_metodo extends SimpleNode {
 	  for (int i = nodo_declarador_metodo + 1; i < jjtGetNumChildren(); i++)
           jjtGetChild(i).interpret();
 	  
+	  Compilador.gestorTS.cierraAmbito();
+	  System.out.println("Cerrando último ámbito.");
   }
 
 }
