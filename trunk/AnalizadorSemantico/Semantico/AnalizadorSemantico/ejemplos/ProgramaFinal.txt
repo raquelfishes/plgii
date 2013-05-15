@@ -2,5 +2,4 @@ Prueba:
 MOVE #100 .R0        ;Asignacion Tmp:=Inmediato
 main:        ; Abriendo ámbito 'main'.
 MOVE #0 .R0        ;Asignacion Tmp:=Inmediato
-Error en bloqueAsignacionTmpVariable(s1,s2)
 MOVE #0[.IX] .R0        ;Asignacion Tmp:=Variable
