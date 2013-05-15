@@ -73,6 +73,30 @@ public class Ambito {
 		
 	}
 	
+	public Atributos dameAtributosDeAlias(String alias){
+		
+		//Si el alias se encuentra en la TS local al Ambito
+		
+		Atributos atrib = tsLocal.getAtributosDeALias(alias);
+		
+		if(atrib!=null){
+			return atrib;
+		}
+		
+		//Si el alias no esta en la TS local al ambito se busca en sus padres
+		for(Ambito tsPadre : listaDeAmbitosPadres){
+		
+			//Si algun padre la tiene se devuelve el atributo
+			atrib = tsPadre.dameTS().getAtributosDeALias(alias);
+			if(atrib!=null){
+				return atrib;
+			}			
+		}
+
+		return null;
+		
+	}
+	
 	/**
 	 * Metodo que sirve para comprobar la declaracion de variables repetidas.
 	 * 

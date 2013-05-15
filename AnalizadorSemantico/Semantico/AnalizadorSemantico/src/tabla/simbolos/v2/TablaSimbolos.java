@@ -24,6 +24,19 @@ public class TablaSimbolos {
 		return ts.get(lexema);
 	}
 	
+	public Atributos getAtributosDeALias(String alias)
+	{
+		Iterable<Atributos> listaAtributos = ts.values();
+		
+		for(Atributos a : listaAtributos){
+			if(a.getAlias().equals(alias)){
+				return a;
+			}
+		}
+		
+		return null;
+	}
+	
 	public boolean containsLexema(String lexema)
 	{
 		return ts.containsKey(lexema);

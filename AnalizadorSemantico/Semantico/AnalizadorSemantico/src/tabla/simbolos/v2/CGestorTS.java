@@ -73,6 +73,10 @@ public class CGestorTS implements IGestorTS {
 		return ambitoActual.dameAtributosDeLexema(lexema);
 	}
 	
+	public Atributos getAtributosDeAlias(String alias) {
+		return ambitoGlobal.dameAtributosDeAlias(alias);
+	}
+	
 	private String calcularTabulacion(int n){
 		
 		String s = "";
