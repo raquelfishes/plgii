@@ -70,7 +70,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
         jjtree.rootNode().interpret();
 
         //Codigo final
-        traductor = new Traductor();
+        traductor = new Traductor(gestorTS);
         traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
         System.out.println("Traducido.");
 

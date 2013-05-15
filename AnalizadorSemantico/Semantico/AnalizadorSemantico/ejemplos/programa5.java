@@ -4,6 +4,7 @@ public class Prueba {
 	boolean a;
 	
 	void main(){
+		int j;
 		i = 25;
 		llamada (i);
 	}
