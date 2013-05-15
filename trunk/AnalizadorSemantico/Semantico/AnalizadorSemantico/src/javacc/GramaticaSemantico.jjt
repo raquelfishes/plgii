@@ -1534,8 +1534,7 @@ Simbolo expresion_pre_inc() #void:
   t = <PLUS_PLUS> sim = expresion_primaria() #PlusPlus
   {
     aux = nuevaTemp();
-    sim.codigo += aux + ":=" + sim.lugar + "+" + 1;
-    sim.codigo += sim.lugar + ":=" + aux + "\n" + "\n";
+    sim.codigo += sim.lugar + ":=" + "++" + "\n";
     return sim;
   }
 }
@@ -1555,8 +1554,7 @@ Simbolo expresion_pre_dec() #void:
   t = <SUB_SUB> sim = expresion_primaria() #SubSub
   {
     aux = nuevaTemp();
-    sim.codigo += aux + ":=" + sim.lugar + "-" + 1 + "\n";
-    sim.codigo += sim.lugar + ":=" + aux + "\n";
+    sim.codigo += sim.lugar + ":=" + "--" + "\n";
     return sim;
   }
 }
@@ -1642,15 +1640,13 @@ Simbolo expresion_post() #void:
     {    
       aux = nuevaTemp();
       sim.comienzo = "post";
-      sim.codigo += aux + ":=" + sim.lugar + "+" + 1 + "\n";
-      sim.codigo += sim.lugar + ":=" + aux + "\n";
+      sim.codigo += sim.lugar + ":=" + "++" + "\n";
     }
   | t=<SUB_SUB> {s = t.image;} 
     {
       aux = nuevaTemp();
       sim.comienzo = "post";
-      sim.codigo += aux + ":=" + sim.lugar + "-" + 1 + "\n";
-      sim.codigo += sim.lugar + ":=" + aux + "\n";
+      sim.codigo += sim.lugar + ":=" + "--" + "\n";
     }
   ]
   { return sim; }

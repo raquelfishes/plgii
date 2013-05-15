@@ -2719,8 +2719,7 @@ Simbolo expresion_pre_inc()      :
 /*@egen*/          
   {
     aux = nuevaTemp();
-    sim.codigo += aux + ":=" + sim.lugar + "+" + 1;
-    sim.codigo += sim.lugar + ":=" + aux + "\n" + "\n";
+    sim.codigo += sim.lugar + ":=" + "++" + "\n";
     return sim;
   }
 }
@@ -2769,8 +2768,7 @@ Simbolo expresion_pre_dec()      :
 /*@egen*/        
   {
     aux = nuevaTemp();
-    sim.codigo += aux + ":=" + sim.lugar + "-" + 1 + "\n";
-    sim.codigo += sim.lugar + ":=" + aux + "\n";
+    sim.codigo += sim.lugar + ":=" + "--" + "\n";
     return sim;
   }
 }
@@ -2914,15 +2912,13 @@ Simbolo expresion_post()      :
     {    
       aux = nuevaTemp();
       sim.comienzo = "post";
-      sim.codigo += aux + ":=" + sim.lugar + "+" + 1 + "\n";
-      sim.codigo += sim.lugar + ":=" + aux + "\n";
+      sim.codigo += sim.lugar + ":=" + "++" + "\n";
     }
   | t=<SUB_SUB> {s = t.image;} 
     {
       aux = nuevaTemp();
       sim.comienzo = "post";
-      sim.codigo += aux + ":=" + sim.lugar + "-" + 1 + "\n";
-      sim.codigo += sim.lugar + ":=" + aux + "\n";
+      sim.codigo += sim.lugar + ":=" + "--" + "\n";
     }
   ]
   { return sim; }
