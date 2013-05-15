@@ -22,6 +22,7 @@ import tabla.simbolos.v2.CGestorTS;
 import tabla.simbolos.v2.Atributos;
 import interfaz.InterfazPlg;
 import javacc.Simbolo;
+import traductor.Traductor;
 
 public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@egen*/ {/*@bgen(jjtree)*/
   protected static JJTCompiladorState jjtree = new JJTCompiladorState();
@@ -32,6 +33,8 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@ege
   public static java.io.DataOutputStream fichero;
 
   public static CGestorTS gestorTSIntermedia;
+
+  public static Traductor traductor;
   
   public static void main ( String args [] ) {
 
@@ -69,7 +72,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@ege
         return ;
       }
 	  try {
-        fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ProgramaIntermedio.txt"));
+        fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ejemplos/ProgramaIntermedio.txt"));
       }
       catch(java.io.FileNotFoundException e){
         System.out.println ("MAL, NO HAS CREADO EL FICHERO");
@@ -81,6 +84,12 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@ege
         root.dump("");
         System.out.println ("Compilador: La entrada ha sido leida con \u00e9xito.");
         jjtree.rootNode().interpret();
+
+        //Codigo final
+        traductor = new Traductor();
+        traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
+        System.out.println("Traducido.");
+        
       }
       catch(ParseException e){
         System.out.println ("Compilador: Ha ocurrido un error durante el an\u00e1lisis.");

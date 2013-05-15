@@ -9,6 +9,7 @@ import tabla.simbolos.v2.CGestorTS;
 import tabla.simbolos.v2.Atributos;
 import interfaz.InterfazPlg;
 import javacc.Simbolo;
+import traductor.Traductor;
 
 public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, CompiladorConstants {/*@bgen(jjtree)*/
   protected static JJTCompiladorState jjtree = new JJTCompiladorState();public static CGestorTS gestorTS;
@@ -16,6 +17,8 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
   public static java.io.DataOutputStream fichero;
 
   public static CGestorTS gestorTSIntermedia;
+
+  public static Traductor traductor;
 
   public static void main ( String args [] ) {
 
@@ -53,7 +56,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
         return ;
       }
           try {
-        fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ProgramaIntermedio.txt"));
+        fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ejemplos/ProgramaIntermedio.txt"));
       }
       catch(java.io.FileNotFoundException e){
         System.out.println ("MAL, NO HAS CREADO EL FICHERO");
@@ -65,6 +68,12 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
         root.dump("");
         System.out.println ("Compilador: La entrada ha sido leida con \u00e9xito.");
         jjtree.rootNode().interpret();
+
+        //Codigo final
+        traductor = new Traductor();
+        traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
+        System.out.println("Traducido.");
+
       }
       catch(ParseException e){
         System.out.println ("Compilador: Ha ocurrido un error durante el an\u00e1lisis.");
@@ -5258,31 +5267,6 @@ void tipo_primitivo() :
     finally { jj_save(19, xla); }
   }
 
-  static private boolean jj_3R_119() {
-    if (jj_3R_130()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3R_137()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  static private boolean jj_3R_44() {
-    if (jj_scan_token(IDENTIFICADOR)) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_1()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  static private boolean jj_3_17() {
-    if (jj_3R_53()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_161() {
     if (jj_3R_170()) return true;
     return false;
@@ -6554,6 +6538,31 @@ void tipo_primitivo() :
 
   static private boolean jj_3R_128() {
     if (jj_3R_126()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_119() {
+    if (jj_3R_130()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_137()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  static private boolean jj_3R_44() {
+    if (jj_scan_token(IDENTIFICADOR)) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_1()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  static private boolean jj_3_17() {
+    if (jj_3R_53()) return true;
     return false;
   }
 
