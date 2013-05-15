@@ -188,6 +188,18 @@ public class CGestorTS implements IGestorTS {
 		
 	}
 	
+	public List<Atributos> dameListaAtributosDeClase(){
+		
+		List<Atributos> lista = new ArrayList<Atributos>();
+		
+		Iterable<Atributos> listaAtributos = ambitoGlobal.dameAtributos();
+		for(Atributos atribs : listaAtributos){
+			lista.add(atribs);
+		}
+		
+		return lista;
+	}
+	
 //	@Override
 //	public Iterator<Atributos> listarLexemasAmbitoActual() {
 //		return ambitoActual.dameLexemas();
