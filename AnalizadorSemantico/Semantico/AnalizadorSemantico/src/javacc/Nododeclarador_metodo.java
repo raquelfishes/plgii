@@ -20,6 +20,9 @@ class Nododeclarador_metodo extends SimpleNode {
   
   public void interpret()
   {
+	  Compilador.gestorTS.nuevoAmbito((String)value);
+	  System.out.println("Abriendo ambito "+(String)value);
+	  
 	  if (Compilador.gestorTS.esLexemaValido((String)value)){
 		  String tipoDevMetodo = (String)((Nodotipo_metodo)((Nododeclaracion_metodo)parent).children[0]).value;
 		  
@@ -33,6 +36,7 @@ class Nododeclarador_metodo extends SimpleNode {
 	  }
 	  else
 		  addErrSemantico(lastToken.beginLine, "el método "+ value +" ya existe");
+	  
   }
 }
 /* JavaCC - OriginalChecksum=1c4a52c4f7f72a33c046bace0ef7c158 (do not edit this line) */

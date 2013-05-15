@@ -13,6 +13,7 @@ class Nodosentencia_for extends SimpleNode {
   }
 
 	public void interpret() {
+		
 		int i, k = jjtGetNumChildren();
 
 		for (i = 0; i < k; i++)
