@@ -168,7 +168,7 @@ class SimpleNode extends XNode implements Node {
  private boolean esTipoBoolean(Node nodo){
 	  
 	  if(nodo instanceof Nodoidentificador){
-		  Object s = ((SimpleNode)children[1]).getValor();
+		  Object s = ((SimpleNode)nodo).getValor();
 		  if(s!=null){
 			  boolean esta = Compilador.gestorTS.estaLexema(s.toString());
 			  if(esta){
