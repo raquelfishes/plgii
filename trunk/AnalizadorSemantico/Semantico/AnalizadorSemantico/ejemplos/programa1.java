@@ -6,6 +6,8 @@ public class Prueba {
 	int e = 5;
 	
 	void main(){
+		//int a = 0;
+		int[] array = new int[10];
 		int f, g, h, i, j;
 		f = a;
 		g = b;
@@ -17,5 +19,11 @@ public class Prueba {
 		c = 8;
 		d = 9;
 		e = 10;
+		//llamada(i, j, a);
+		//f = array[3];
 	}
+	
+	//void llamada(int x){ FIXME Parece ser que la TS no añade las variables de parámetro, como esta "int x"
+	//	x = x+b;
+	//}
 }

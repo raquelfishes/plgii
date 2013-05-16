@@ -38,7 +38,7 @@ main:
 		PUSH .R8
 		PUSH .R9
 		;reservamos el espacio para variables locales en la pila
-		SUB .SP, #6
+		SUB .SP, #16
 		MOVE .A, .SP
 		;guardamos en .IX el puntero a pila, para usar este registro como índice de este método
 		MOVE .SP, .IX
@@ -49,20 +49,20 @@ main:
 				MOVE #4[.IY], #4[.IX]				;r0 contiene $var_2
 				MOVE #1[.IY], #5[.IX]				;r0 contiene $var_3
 				MOVE #2[.IY], #3[.IX]				;r0 contiene $var_4
-				MOVE #6, .R0				;r0 contiene tmp6
-				MOVE .R0, #5[.IY]				;r0 contiene tmp6
-				MOVE #7, .R0				;r0 contiene tmp7
-				MOVE .R0, #3[.IY]				;r0 contiene tmp7
-				MOVE #8, .R0				;r0 contiene tmp8
-				MOVE .R0, #4[.IY]				;r0 contiene tmp8
-				MOVE #9, .R0				;r0 contiene tmp9
-				MOVE .R0, #1[.IY]				;r0 contiene tmp9
-				MOVE #10, .R0				;r0 contiene tmp10
-				MOVE .R0, #2[.IY]				;r0 contiene tmp10
+				MOVE #6, .R0				;r0 contiene tmp7
+				MOVE .R0, #5[.IY]				;r0 contiene tmp7
+				MOVE #7, .R0				;r0 contiene tmp8
+				MOVE .R0, #3[.IY]				;r0 contiene tmp8
+				MOVE #8, .R0				;r0 contiene tmp9
+				MOVE .R0, #4[.IY]				;r0 contiene tmp9
+				MOVE #9, .R0				;r0 contiene tmp10
+				MOVE .R0, #1[.IY]				;r0 contiene tmp10
+				MOVE #10, .R0				;r0 contiene tmp11
+				MOVE .R0, #2[.IY]				;r0 contiene tmp11
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo main
 		;liberamos el espacio para variables locales de la pila
-		ADD .SP, #6
+		ADD .SP, #16
 		MOVE .A, .SP
 		;cargamos los registros de la pila
 		POP .R9
@@ -77,6 +77,10 @@ main:
 		POP .R0
 		POP .IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+		;liberamos el espacio para variables locales de la pila
+		ADD .SP, #15
+		MOVE .A, .SP
 
 		;Fin de la ejecución.
 		HALT
