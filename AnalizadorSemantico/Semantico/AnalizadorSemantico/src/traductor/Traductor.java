@@ -698,7 +698,7 @@ public class Traductor {
 	
 	private int desplazamiento(Atributos a, List<Atributos> l) {
 		int d = MARCO_ACTIVACION;
-		Atributos actual = new Atributos("vacio","vacio");
+		Atributos actual = new Atributos("vacio","vacio",false);
 		for (int i=0; i<l.size() && !actual.equals(a); i++) {
 			actual = l.get(i);
 			if (actual.getEsArray()) {
