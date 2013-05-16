@@ -844,6 +844,7 @@ Simbolo iniciar_variable() #void:
 
 Simbolo declaracion_metodo() :
 {
+    
   Token t = new Token();
   Token t1 = new Token();
   String s ="";
@@ -858,10 +859,16 @@ Simbolo declaracion_metodo() :
   }
 }
 {
+  {System.out.println("-----------------ABRIENDO-------------------");
+
+    gestorTSIntermedia.nuevoAmbito("");  }
   ( t = <PUBLIC> | t = <PROTECTED> | t = <PRIVATE> | t = <STATIC> | t = <ABSTRACT> | t = <FINAL> | t = <SYNCHRONIZED> )*
   t1 = tipo_metodo() sim = declarador_metodo() [ <THROWS> s1 = lista_de_tipos() {s2 = "throws" + s1;} ]
   ( sim1 = bloque() | <PYC> )
     {
+	gestorTSIntermedia.cierraAmbito();
+    System.out.println("-----------------cerraNDO-------------------");  
+      
       if(t1.image=="void") {
         sim.codigo += sim1.codigo + "&return\n";
           return sim;
@@ -871,6 +878,7 @@ Simbolo declaracion_metodo() :
           return sim;
         }
     }
+    
 }
 
 Simbolo declarador_metodo() :
@@ -1952,9 +1960,9 @@ Simbolo bloque() #void:
   }
 }
 {
-  { gestorTSIntermedia.nuevoAmbito(""); }
+  
   <LLAVE_A> ( sim1 = sentencia_bloque(){sim.codigo += sim1.codigo;})* <LLAVE_C>
-  { gestorTSIntermedia.cierraAmbito();  }
+ 
   { return sim; }
 }
 
@@ -2026,6 +2034,8 @@ Simbolo expresion_sentencia() :
 
 Simbolo sentencia_switch() :
 {
+
+  gestorTSIntermedia.nuevoAmbito(""); 
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -2078,7 +2088,10 @@ Simbolo sentencia_switch() :
     )*
    { sim.codigo += sim.siguiente + ":\n"; }
   <LLAVE_C>
-  { return sim; }
+  {
+    gestorTSIntermedia.cierraAmbito();  
+    return sim;
+  }
 }
 
 Simbolo etiqueta_switch() :
@@ -2100,6 +2113,7 @@ Simbolo etiqueta_switch() :
 
 Simbolo sentencia_if() :
 {
+  gestorTSIntermedia.nuevoAmbito(""); 
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -2111,9 +2125,11 @@ Simbolo sentencia_if() :
   }
 }
 {
+
   <IF> <PAR_A> sim1 = expresion() <PAR_C> sim2 = sentencia()
   [ LOOKAHEAD(1) <ELSE> sim3 = sentencia() { hayelse = true; } ]
-  { 
+  {
+    
     sim.comienzo = nuevoIf();
     if (hayelse) sim.falsa = elseIf();
     sim.siguiente = finIf();
@@ -2137,12 +2153,16 @@ Simbolo sentencia_if() :
         sim.codigo += sim2.codigo;
         sim.codigo += sim.siguiente + ": \n";
       }
+
+	gestorTSIntermedia.cierraAmbito();
+    
     return sim;
   }
 }
 
 Simbolo sentencia_while() :
 {
+  gestorTSIntermedia.nuevoAmbito("");
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -2162,12 +2182,17 @@ Simbolo sentencia_while() :
     sim.codigo += sim2.codigo;
     sim.codigo += "goto " + sim.comienzo + "\n";
     sim.codigo += sim.siguiente + ":\n";
+
+	gestorTSIntermedia.cierraAmbito(); 
+    
     return sim;
   }
 }
 
 Simbolo sentencia_do() :
 {
+
+  gestorTSIntermedia.nuevoAmbito(""); 
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -2187,12 +2212,15 @@ Simbolo sentencia_do() :
     sim.codigo += "if (" + sim2.lugar + "=" + 0 + ") goto " + sim.siguiente + "\n";
     sim.codigo += "goto " + sim.comienzo + "\n";
     sim.codigo += sim.siguiente + ":\n";
+
+    gestorTSIntermedia.cierraAmbito(); 
     return sim;
   }
 }
 
 Simbolo sentencia_for() :
 {
+  gestorTSIntermedia.nuevoAmbito("");
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -2215,7 +2243,8 @@ Simbolo sentencia_for() :
     sim.codigo += sim4.codigo;
     sim.codigo += sim3.codigo;
     sim.codigo += "goto " + sim.comienzo + "\n";
-    sim.codigo += sim.siguiente + ":\n";  
+    sim.codigo += sim.siguiente + ":\n";
+    gestorTSIntermedia.cierraAmbito(); 
   return sim;
   }
 }
@@ -2352,6 +2381,7 @@ Simbolo sentencia_synchronized() :
 
 Simbolo sentencia_try() :
 {
+  gestorTSIntermedia.nuevoAmbito("");
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -2371,6 +2401,7 @@ Simbolo sentencia_try() :
   [ <FINALLY> sim4 = bloque() {s1 = "finally" + sim4.codigo;} ]
   { 
     sim.codigo = "try" + sim1.codigo + s + s1;
+    gestorTSIntermedia.cierraAmbito();
     return sim; 
   }
 }

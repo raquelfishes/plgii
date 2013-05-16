@@ -1265,6 +1265,7 @@ Simbolo declaracion_metodo() :
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+    
   Token t = new Token();
   Token t1 = new Token();
   String s ="";
@@ -1281,6 +1282,9 @@ Simbolo declaracion_metodo() :
 {/*@bgen(jjtree) declaracion_metodo */
   try {
 /*@egen*/
+  {System.out.println("-----------------ABRIENDO-------------------");
+
+    gestorTSIntermedia.nuevoAmbito("");  }
   ( t = <PUBLIC> | t = <PROTECTED> | t = <PRIVATE> | t = <STATIC> | t = <ABSTRACT> | t = <FINAL> | t = <SYNCHRONIZED> )*
   t1 = tipo_metodo() sim = declarador_metodo() [ <THROWS> s1 = lista_de_tipos() {s2 = "throws" + s1;} ]
   ( sim1 = bloque() | <PYC> )/*@bgen(jjtree)*/
@@ -1291,6 +1295,9 @@ Simbolo declaracion_metodo() :
     }
 /*@egen*/
     {
+	gestorTSIntermedia.cierraAmbito();
+    System.out.println("-----------------cerraNDO-------------------");  
+      
       if(t1.image=="void") {
         sim.codigo += sim1.codigo + "&return\n";
           return sim;
@@ -1321,6 +1328,7 @@ Simbolo declaracion_metodo() :
     }
   }
 /*@egen*/
+    
 }
 
 Simbolo declarador_metodo() :
@@ -3264,9 +3272,9 @@ Simbolo bloque()      :
   }
 }
 {
-  { gestorTSIntermedia.nuevoAmbito(""); }
+  
   <LLAVE_A> ( sim1 = sentencia_bloque(){sim.codigo += sim1.codigo;})* <LLAVE_C>
-  { gestorTSIntermedia.cierraAmbito();  }
+ 
   { return sim; }
 }
 
@@ -3429,6 +3437,8 @@ Simbolo sentencia_switch() :
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+
+  gestorTSIntermedia.nuevoAmbito(""); 
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -3489,7 +3499,10 @@ Simbolo sentencia_switch() :
     jjtn000.jjtSetLastToken(getToken(0));
   }
 /*@egen*/
-  { return sim; }/*@bgen(jjtree)*/
+  {
+    gestorTSIntermedia.cierraAmbito();  
+    return sim;
+  }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -3577,6 +3590,7 @@ Simbolo sentencia_if() :
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+  gestorTSIntermedia.nuevoAmbito(""); 
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -3590,6 +3604,7 @@ Simbolo sentencia_if() :
 {/*@bgen(jjtree) sentencia_if */
   try {
 /*@egen*/
+
   <IF> <PAR_A> sim1 = expresion() <PAR_C> sim2 = sentencia()
   [ LOOKAHEAD(1) <ELSE> sim3 = sentencia() { hayelse = true; } ]/*@bgen(jjtree)*/
   {
@@ -3598,7 +3613,8 @@ Simbolo sentencia_if() :
     jjtn000.jjtSetLastToken(getToken(0));
   }
 /*@egen*/
-  { 
+  {
+    
     sim.comienzo = nuevoIf();
     if (hayelse) sim.falsa = elseIf();
     sim.siguiente = finIf();
@@ -3622,6 +3638,9 @@ Simbolo sentencia_if() :
         sim.codigo += sim2.codigo;
         sim.codigo += sim.siguiente + ": \n";
       }
+
+	gestorTSIntermedia.cierraAmbito();
+    
     return sim;
   }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
@@ -3654,6 +3673,7 @@ Simbolo sentencia_while() :
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+  gestorTSIntermedia.nuevoAmbito("");
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -3681,6 +3701,9 @@ Simbolo sentencia_while() :
     sim.codigo += sim2.codigo;
     sim.codigo += "goto " + sim.comienzo + "\n";
     sim.codigo += sim.siguiente + ":\n";
+
+	gestorTSIntermedia.cierraAmbito(); 
+    
     return sim;
   }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
@@ -3713,6 +3736,8 @@ Simbolo sentencia_do() :
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+
+  gestorTSIntermedia.nuevoAmbito(""); 
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -3740,6 +3765,8 @@ Simbolo sentencia_do() :
     sim.codigo += "if (" + sim2.lugar + "=" + 0 + ") goto " + sim.siguiente + "\n";
     sim.codigo += "goto " + sim.comienzo + "\n";
     sim.codigo += sim.siguiente + ":\n";
+
+    gestorTSIntermedia.cierraAmbito(); 
     return sim;
   }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
@@ -3772,6 +3799,7 @@ Simbolo sentencia_for() :
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+  gestorTSIntermedia.nuevoAmbito("");
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -3802,7 +3830,8 @@ Simbolo sentencia_for() :
     sim.codigo += sim4.codigo;
     sim.codigo += sim3.codigo;
     sim.codigo += "goto " + sim.comienzo + "\n";
-    sim.codigo += sim.siguiente + ":\n";  
+    sim.codigo += sim.siguiente + ":\n";
+    gestorTSIntermedia.cierraAmbito(); 
   return sim;
   }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
@@ -4107,6 +4136,7 @@ Simbolo sentencia_try() :
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
 /*@egen*/
+  gestorTSIntermedia.nuevoAmbito("");
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -4134,6 +4164,7 @@ Simbolo sentencia_try() :
 /*@egen*/
   { 
     sim.codigo = "try" + sim1.codigo + s + s1;
+    gestorTSIntermedia.cierraAmbito();
     return sim; 
   }/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
