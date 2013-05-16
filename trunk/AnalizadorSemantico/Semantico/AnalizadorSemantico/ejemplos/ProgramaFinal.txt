@@ -38,31 +38,17 @@ main:
 		PUSH .R8
 		PUSH .R9
 		;reservamos el espacio para variables locales en la pila
-		SUB .SP, #16
+		SUB .SP, #11
 		MOVE .A, .SP
+		;.IX apunta todavía al anterior marco de pila, lo usamos para rescatar los parámetros
 		;guardamos en .IX el puntero a pila, para usar este registro como índice de este método
 		MOVE .SP, .IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-				MOVE #5[.IY], #1[.IX]				;r0 contiene $var_0
-				MOVE #3[.IY], #2[.IX]				;r0 contiene $var_1
-				MOVE #4[.IY], #4[.IX]				;r0 contiene $var_2
-				MOVE #1[.IY], #5[.IX]				;r0 contiene $var_3
-				MOVE #2[.IY], #3[.IX]				;r0 contiene $var_4
-				MOVE #6, .R0				;r0 contiene tmp7
-				MOVE .R0, #5[.IY]				;r0 contiene tmp7
-				MOVE #7, .R0				;r0 contiene tmp8
-				MOVE .R0, #3[.IY]				;r0 contiene tmp8
-				MOVE #8, .R0				;r0 contiene tmp9
-				MOVE .R0, #4[.IY]				;r0 contiene tmp9
-				MOVE #9, .R0				;r0 contiene tmp10
-				MOVE .R0, #1[.IY]				;r0 contiene tmp10
-				MOVE #10, .R0				;r0 contiene tmp11
-				MOVE .R0, #2[.IY]				;r0 contiene tmp11
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo main
 		;liberamos el espacio para variables locales de la pila
-		ADD .SP, #16
+		ADD .SP, #11
 		MOVE .A, .SP
 		;cargamos los registros de la pila
 		POP .R9
@@ -76,17 +62,63 @@ main:
 		POP .R1
 		POP .R0
 		POP .IX
+		;liberamos el espacio de los parametros de la llamada
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 		;liberamos el espacio para variables locales de la pila
-		ADD .SP, #15
+		ADD .SP, #10
 		MOVE .A, .SP
 
 		;Fin de la ejecución.
 		HALT
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito llamada
-llamada:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito llamada1
+llamada1:
+		;guardamos los registros en pila
+		PUSH .IX
+		PUSH .R0
+		PUSH .R1
+		PUSH .R2
+		PUSH .R3
+		PUSH .R4
+		PUSH .R5
+		PUSH .R6
+		PUSH .R7
+		PUSH .R8
+		PUSH .R9
+		;reservamos el espacio para variables locales en la pila
+		SUB .SP, #3
+		MOVE .A, .SP
+		;.IX apunta todavía al anterior marco de pila, lo usamos para rescatar los parámetros
+		;guardamos en .IX el puntero a pila, para usar este registro como índice de este método
+		MOVE .SP, .IX
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+				MOVE #0, .R0				;r0 contiene tmp8
+				MOVE .R0, #1[.IX]				;r0 contiene tmp8
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo llamada1
+		;liberamos el espacio para variables locales de la pila
+		ADD .SP, #3
+		MOVE .A, .SP
+		;cargamos los registros de la pila
+		POP .R9
+		POP .R8
+		POP .R7
+		POP .R6
+		POP .R5
+		POP .R4
+		POP .R3
+		POP .R2
+		POP .R1
+		POP .R0
+		POP .IX
+		;liberamos el espacio de los parametros de la llamada
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito llamada2
+llamada2:
 		;guardamos los registros en pila
 		PUSH .IX
 		PUSH .R0
@@ -102,12 +134,15 @@ llamada:
 		;reservamos el espacio para variables locales en la pila
 		SUB .SP, #2
 		MOVE .A, .SP
+		;.IX apunta todavía al anterior marco de pila, lo usamos para rescatar los parámetros
 		;guardamos en .IX el puntero a pila, para usar este registro como índice de este método
 		MOVE .SP, .IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+				MOVE #0, .R0				;r0 contiene tmp10
+				MOVE .R0, #1[.IX]				;r0 contiene tmp10
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo llamada
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo llamada2
 		;liberamos el espacio para variables locales de la pila
 		ADD .SP, #2
 		MOVE .A, .SP
@@ -123,5 +158,6 @@ llamada:
 		POP .R1
 		POP .R0
 		POP .IX
+		;liberamos el espacio de los parametros de la llamada
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

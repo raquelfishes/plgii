@@ -426,10 +426,7 @@ public class Traductor {
 		String s14 = "\t\t;reservamos el espacio para variables locales en la pila";
 		String s15 = "\t\tSUB .SP, #" + calcularTamanoAmbito(ambitoActual);
 		String s16 = "\t\tMOVE .A, .SP";
-		String s17 = "\t\t;guardamos en .IX el puntero a pila, para usar este registro como índice de este método";
-		String s18 = "\t\tMOVE .SP, .IX";
-		String s19 = "";
-		String s20 = "";
+		String s17 = "\t\t;.IX apunta todavía al anterior marco de pila, lo usamos para rescatar los parámetros";
 		output.add("");
 		output.add(s0);
 		output.add(s1);
@@ -449,7 +446,17 @@ public class Traductor {
 		output.add(s15);
 		output.add(s16);
 		output.add(s17);
+		//int desp =  1/*numParams*/; //Desp desde .IX
+		//ArrayList<Atributos> aL = gestorTS.getAtributos(nombreAmbitoActual).getListaParametros(); //XXX comprobar
+		//for (int i = desp; i< aL.size(); i++) {
+		//	String s= "\t\tMOVE #" + (desp+aL.size()-i) + "[.IX], #" + desplazamiento(aL.get(i), ambitoActual) + "[.SP]";
+		//	output.add(s);
+		//}
+		String s18 = "\t\t;guardamos en .IX el puntero a pila, para usar este registro como índice de este método";
+		String s19 = "\t\tMOVE .SP, .IX";
+		
 		output.add(s18);
+		output.add(s19);
 		output.add(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
 		output.add("");
 	}
@@ -474,7 +481,11 @@ public class Traductor {
 		String s14 = "\t\tPOP .R1";
 		String s15 = "\t\tPOP .R0";
 		String s16 = "\t\tPOP .IX";
-		String s17 = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;";
+		String s17 = "\t\t;liberamos el espacio de los parametros de la llamada";
+		//ArrayList<Atributos> aL = gestorTS.getAtributos(nombreAmbitoActual).getListaParametros(); //XXX comprobar
+		//String s18 = "\t\tADD .SP, #" + aL.size()+1/*numParams*/;
+		//String s19 = "\t\tMOVE .A, .SP";
+		String s20 = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;";
 		output.add("");
 		output.add(s1);
 		output.add(s2);
@@ -493,6 +504,9 @@ public class Traductor {
 		output.add(s15);
 		output.add(s16);
 		output.add(s17);
+		//output.add(s18);
+		//output.add(s19);
+		output.add(s20);
 		output.add("");
 	}
 	
