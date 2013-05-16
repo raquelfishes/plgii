@@ -84,3 +84,44 @@ main:
 
 		;Fin de la ejecución.
 		HALT
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito llamada
+llamada:
+		;guardamos los registros en pila
+		PUSH .IX
+		PUSH .R0
+		PUSH .R1
+		PUSH .R2
+		PUSH .R3
+		PUSH .R4
+		PUSH .R5
+		PUSH .R6
+		PUSH .R7
+		PUSH .R8
+		PUSH .R9
+		;reservamos el espacio para variables locales en la pila
+		SUB .SP, #2
+		MOVE .A, .SP
+		;guardamos en .IX el puntero a pila, para usar este registro como índice de este método
+		MOVE .SP, .IX
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo llamada
+		;liberamos el espacio para variables locales de la pila
+		ADD .SP, #2
+		MOVE .A, .SP
+		;cargamos los registros de la pila
+		POP .R9
+		POP .R8
+		POP .R7
+		POP .R6
+		POP .R5
+		POP .R4
+		POP .R3
+		POP .R2
+		POP .R1
+		POP .R0
+		POP .IX
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

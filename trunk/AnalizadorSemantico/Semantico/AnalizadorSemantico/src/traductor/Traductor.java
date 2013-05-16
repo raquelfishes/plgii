@@ -428,6 +428,8 @@ public class Traductor {
 		String s16 = "\t\tMOVE .A, .SP";
 		String s17 = "\t\t;guardamos en .IX el puntero a pila, para usar este registro como índice de este método";
 		String s18 = "\t\tMOVE .SP, .IX";
+		String s19 = "";
+		String s20 = "";
 		output.add("");
 		output.add(s0);
 		output.add(s1);
