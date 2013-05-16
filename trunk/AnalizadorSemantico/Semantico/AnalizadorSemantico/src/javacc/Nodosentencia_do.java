@@ -16,10 +16,16 @@ class Nodosentencia_do extends SimpleNode {
   @Override
   public void interpret(){
 	  
+	  Compilador.gestorTS.nuevoAmbito("do");
+	  System.out.println("Abriendo ambito: do");
+	  
 	  int i, k = jjtGetNumChildren();
 
 	     for (i = 0; i < k; i++)
 	        jjtGetChild(i).interpret();
+	     
+     Compilador.gestorTS.cierraAmbito();
+     System.out.println("Cerrando ambito: do");
   }
 
 }

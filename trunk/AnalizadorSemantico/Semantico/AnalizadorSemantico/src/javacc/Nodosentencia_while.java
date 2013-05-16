@@ -15,10 +15,16 @@ class Nodosentencia_while extends SimpleNode {
   @Override
   public void interpret(){
 	  
+	  Compilador.gestorTS.nuevoAmbito("while");
+	  System.out.println("Abriendo ambito: while");
+	  
 	  int i, k = jjtGetNumChildren();
 
 	     for (i = 0; i < k; i++)
 	        jjtGetChild(i).interpret();
+	     
+	    Compilador.gestorTS.nuevoAmbito("while");
+		System.out.println("Abriendo ambito: while");
   }
 
 }

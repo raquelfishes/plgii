@@ -15,10 +15,15 @@ class Nodosentencia_if extends SimpleNode {
   @Override
   public void interpret(){
 	  
+	  Compilador.gestorTS.nuevoAmbito("if");
+	  System.out.println("Abriendo ambito: if");
 	  int i, k = jjtGetNumChildren();
 
 	     for (i = 0; i < k; i++)
 	        jjtGetChild(i).interpret();
+	     
+	     Compilador.gestorTS.cierraAmbito();
+	     System.out.println("Cerrando ambito: if");
   }
 
 }

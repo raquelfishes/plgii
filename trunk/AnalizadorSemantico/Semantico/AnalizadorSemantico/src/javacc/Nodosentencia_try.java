@@ -11,6 +11,20 @@ class Nodosentencia_try extends SimpleNode {
   public Nodosentencia_try(Compilador p, int id) {
     super(p, id);
   }
+  
+  @Override
+  public void interpret(){
+	  
+	  Compilador.gestorTS.nuevoAmbito("try");
+	  System.out.println("Abriendo ambito: if");
+	  int i, k = jjtGetNumChildren();
+
+	     for (i = 0; i < k; i++)
+	        jjtGetChild(i).interpret();
+	     
+     Compilador.gestorTS.cierraAmbito();
+     System.out.println("Cerrando ambito: try");
+  }
 
 }
 /* JavaCC - OriginalChecksum=4598def2cdc4a53cf4834a4e39766a03 (do not edit this line) */

@@ -12,5 +12,20 @@ class Nodosentencia_switch extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public void interpret(){
+	  
+	  Compilador.gestorTS.nuevoAmbito("switch");
+	  System.out.println("Abriendo ambito: if");
+	  int i, k = jjtGetNumChildren();
+
+	     for (i = 0; i < k; i++)
+	        jjtGetChild(i).interpret();
+	     
+     Compilador.gestorTS.cierraAmbito();
+     System.out.println("Cerrando ambito: switch");
+  }
+
+  
 }
 /* JavaCC - OriginalChecksum=7e6d0574ca19499301cdf66a6b34624f (do not edit this line) */

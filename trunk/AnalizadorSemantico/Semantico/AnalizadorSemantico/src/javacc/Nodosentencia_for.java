@@ -14,10 +14,15 @@ class Nodosentencia_for extends SimpleNode {
 
 	public void interpret() {
 		
+		Compilador.gestorTS.nuevoAmbito("for");
+		System.out.println("Abriendo ambito: for");
 		int i, k = jjtGetNumChildren();
 
 		for (i = 0; i < k; i++)
 			jjtGetChild(i).interpret();
+		
+		Compilador.gestorTS.cierraAmbito();
+		System.out.println("Cerrando ambito: for");
 	}
 }
 /* JavaCC - OriginalChecksum=0ab76c19c8bca2ef552d7992f060a3ab (do not edit this line) */
