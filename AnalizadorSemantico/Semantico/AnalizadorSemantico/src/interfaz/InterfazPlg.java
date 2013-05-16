@@ -34,14 +34,11 @@ import net.miginfocom.swing.MigLayout;
 public class InterfazPlg {
 
 	private JFrame frmGrupo;
-	private JScrollPane sc_TA_ID; // Scroll pane for text area identificadores
-	private JScrollPane sc_TA_T; // Scroll pane for text area tokens
-	private static JTextArea JTextAreaIdentificadores;
-	private static JTextArea JTextAreaTokens;
+	private JFrame frmGrupoID;
 	private static JTextArea JTextAreaAvisos;
 	private String fich;
 	private JTextArea JTextAreaArchivo;
-	
+	private static JTextArea JTextArea_ID;
 	private static InterfazPlg INSTANCE;
 	
 	
@@ -76,12 +73,15 @@ public class InterfazPlg {
         return INSTANCE;
     }
 	
-	public void escrbirTokens(String arg0){
+	/*public void escrbirTokens(String arg0){
 		String parcial = JTextAreaTokens.getText();
 		JTextAreaTokens.setText(parcial+"\n"+arg0);
-	}
+	}*/
 	
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	private InterfazPlg() {
 		try {
 			initialize();
@@ -92,13 +92,14 @@ public class InterfazPlg {
 	}	
 	
 	public static void escribirIdentificadores(String id){
-		String parcial = JTextAreaIdentificadores.getText();
-		JTextAreaIdentificadores.setText(parcial+"\n"+id);
+		String parcial = JTextArea_ID.getText();
+		JTextArea_ID.setText(parcial+"\n"+id);
 	}
+	/*
 	public static void escribirTokens(String t){
 		String parcial = JTextAreaTokens.getText();
 		JTextAreaTokens.setText(parcial+"\n"+t);
-	}
+	}*/
 	public static void escribirAvisos(){
 		String t ="Procesando regla: "+ Thread.currentThread().getStackTrace()[2].getMethodName();
 		String parcial = JTextAreaAvisos.getText();
@@ -145,49 +146,52 @@ private void abrirFichero (){
 		
 		frmGrupo = new JFrame();
 		frmGrupo.setTitle("Grupo 3 - Compilador Java ");
-		frmGrupo.setBounds(100, 100, 903, 740);
+		frmGrupo.setBounds(100, 100, 1299, 692);
 		frmGrupo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmGrupo.getContentPane().setLayout(new MigLayout("", "[178.00,grow][349.00,grow][306.00]", "[64.00][514.00,grow][grow 600]"));
+		frmGrupo.getContentPane().setLayout(new MigLayout("", "[180.00,grow][360.00,grow][324.00,grow,fill][327.00,grow][]", "[64.00,grow][480.00,grow][grow 600]"));
 		
+		JPanel JPanelCI = new JPanel();
+		frmGrupo.getContentPane().add(JPanelCI, "cell 2 0 1 2,grow");
+		JPanelCI.setLayout(new MigLayout("", "[grow]", "[16.00][grow]"));
 		
-		JPanel JPanelResultados = new JPanel();
+		JLabel JLabelCI = new JLabel("C\u00F3digo Intermedio Generado:");
+		JLabelCI.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabelCI.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JPanelCI.add(JLabelCI, "cell 0 0");
 		
-		JTextAreaIdentificadores = new JTextArea();
-		JTextAreaIdentificadores.setEditable(false);
+		JScrollPane JScrollPaneCI = new JScrollPane();
+		JPanelCI.add(JScrollPaneCI, "cell 0 1,grow");
 		
-		JTextAreaTokens = new JTextArea();
-		JTextAreaTokens.setEditable(false);
+		JTextArea JTextAreaCI = new JTextArea();
+		JTextAreaCI.setEditable(false);
+		JScrollPaneCI.setViewportView(JTextAreaCI);
 		
-		sc_TA_ID = new JScrollPane(JTextAreaIdentificadores);
-		sc_TA_ID.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		JPanel JPanelCF = new JPanel();
+		frmGrupo.getContentPane().add(JPanelCF, "cell 3 0 1 2,grow");
+		JPanelCF.setLayout(new MigLayout("", "[grow]", "[15.00][grow]"));
 		
-		sc_TA_T = new JScrollPane(JTextAreaTokens);
-		sc_TA_T.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		JLabel JLabelCF = new JLabel("C\u00F3digo Final Generado:");
+		JLabelCF.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabelCF.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JPanelCF.add(JLabelCF, "cell 0 0");
 		
-		JLabel JLabel_Identificadores = new JLabel("Identificadores");
-		JLabel_Identificadores.setFont(new Font("Tahoma", Font.BOLD, 12));
-		JLabel_Identificadores.setHorizontalAlignment(SwingConstants.CENTER);
+		JScrollPane JScrollPaneCF = new JScrollPane();
+		JPanelCF.add(JScrollPaneCF, "cell 0 1,grow");
 		
-		JLabel JLabel_Tokens = new JLabel("Tokens");
-		JLabel_Tokens.setHorizontalAlignment(SwingConstants.CENTER);
-		JLabel_Tokens.setFont(new Font("Tahoma", Font.BOLD, 12));
-		frmGrupo.getContentPane().add(JPanelResultados, "cell 2 0 1 2,alignx center,aligny center");
-		JPanelResultados.setLayout(new MigLayout("", "[238px]", "[15px][195px][15px][195px]"));
-		JPanelResultados.add(sc_TA_ID, "cell 0 1,grow");
-		JPanelResultados.add(sc_TA_T, "cell 0 3,grow");
-		JPanelResultados.add(JLabel_Identificadores, "cell 0 0,alignx center,aligny top");
-		JPanelResultados.add(JLabel_Tokens, "cell 0 2,alignx center,aligny top");
+		JTextArea JTtextAreaCF = new JTextArea();
+		JTtextAreaCF.setEditable(false);
+		JScrollPaneCF.setViewportView(JTtextAreaCF);
 		
 		JPanel JPanelBotones = new JPanel();
 		frmGrupo.getContentPane().add(JPanelBotones, "cell 0 1,alignx center,aligny top");
-		JPanelBotones.setLayout(new MigLayout("", "[]", "[][25px][][]"));
+		JPanelBotones.setLayout(new MigLayout("", "[168.00]", "[31.00px][31.00][81.00][31.00][30.00][31.00][102.00][][31.00]"));
 		
 		JButton JButton_Abrir = new JButton("Abrir");
 		JButton_Abrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		JPanelBotones.add(JButton_Abrir, "cell 0 1,growx,aligny top");
+		JPanelBotones.add(JButton_Abrir, "cell 0 0,growx,aligny center");
 		JButton_Abrir.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent arg0) {
 
@@ -223,50 +227,10 @@ private void abrirFichero (){
 		
 		JButton_Abrir.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		JButton JButton_Salir = new JButton("Salir");
-		JPanelBotones.add(JButton_Salir, "cell 0 2,growx,aligny center");
-		JButton_Salir.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				frmGrupo.dispose();
-				System.exit(0);
-			}
-		});
-		JButton_Salir.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
 		JButton JButton_Ejecutar = new JButton("Ejecutar");
-		JPanelBotones.add(JButton_Ejecutar, "cell 0 3,alignx right,aligny top");
-		JButton_Ejecutar.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JPanel JPanelTexto = new JPanel();
-		frmGrupo.getContentPane().add(JPanelTexto, "cell 1 0 1 2,grow");
-		JPanelTexto.setLayout(new MigLayout("", "[grow]", "[][grow]"));
-		
-		JLabel JLabelNombre = new JLabel("Archivo leido:");
-		JLabelNombre.setHorizontalAlignment(SwingConstants.CENTER);
-		JLabelNombre.setFont(new Font("Tahoma", Font.BOLD, 12));
-		JPanelTexto.add(JLabelNombre, "cell 0 0");
-		
-		JScrollPane JScrollPaneArchivo = new JScrollPane();
-		JPanelTexto.add(JScrollPaneArchivo, "cell 0 1,grow");
-		
-		JTextAreaArchivo = new JTextArea();
-		JTextAreaArchivo.setEditable(false);
-		JScrollPaneArchivo.setViewportView(JTextAreaArchivo);
-		JPanel JPanelAvisos = new JPanel();
-	 	
-		frmGrupo.getContentPane().add(JPanelAvisos, "cell 0 2 3 1,grow");
-		 	
-		JPanelAvisos.setLayout(new MigLayout("", "[grow]", "[grow]"));
-		JScrollPane JScrollPaneAvisos = new JScrollPane();
-		JPanelAvisos.add(JScrollPaneAvisos, "cell 0 0,grow");		
-		JTextAreaAvisos = new JTextArea();
-		JTextAreaAvisos.setEditable(false);
-		JScrollPaneAvisos.setViewportView(JTextAreaAvisos);
 		JButton_Ejecutar.addMouseListener(new MouseAdapter() {
-			
-			public void mousePressed(MouseEvent arg0) {
-			   
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
 				if(fich!=null){
 					if (fich.endsWith(".pdf")) System.out.print("*.PDF no es un formato correcto.");
 					try {
@@ -294,9 +258,89 @@ private void abrirFichero (){
 					} catch (FileNotFoundException fn1) {
 						JOptionPane.showMessageDialog (frmGrupo, "Selecciona un archivo antes de ejecutar."); 
 					}
-				}
+				}		
 			
 			}
 		});
+		
+		JButton_Ejecutar.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JPanelBotones.add(JButton_Ejecutar, "cell 0 1,growx,aligny center");
+		
+		JButton JButton_ConsultaId = new JButton("Ver Identificadores");
+		JButton_ConsultaId.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				frmGrupoID = new JFrame();
+				frmGrupoID.setTitle("Grupo3 - Compilador Java - Identificadores");
+				frmGrupoID.setBounds(100, 100, 460, 421);
+				frmGrupoID.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frmGrupoID.getContentPane().setLayout(new MigLayout("", "[grow]", "[][grow]"));
+				
+				JLabel lblListaDeIdentificadores = new JLabel("Lista de Identificadores procesados:");
+				lblListaDeIdentificadores.setHorizontalAlignment(SwingConstants.CENTER);
+				lblListaDeIdentificadores.setFont(new Font("Tahoma", Font.BOLD, 12));
+				frmGrupoID.getContentPane().add(lblListaDeIdentificadores, "cell 0 0");
+				
+				JScrollPane JScrollPane_ID = new JScrollPane();
+				frmGrupoID.getContentPane().add(JScrollPane_ID, "cell 0 1,grow");
+				
+				JTextArea_ID = new JTextArea();
+				JTextArea_ID.setEditable(false);
+				JScrollPane_ID.setViewportView(JTextArea_ID);
+				
+				frmGrupoID.setVisible(true);
+				
+			}
+		});
+		JButton_ConsultaId.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JPanelBotones.add(JButton_ConsultaId, "cell 0 4,growx,aligny center");
+		
+		JButton JButton_ENS = new JButton("Ejecutar ENS2001");
+		JButton_ENS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Prueba de botón ENS2001 ");
+				// Hasta que el código final no haya terminado, este botón debe ser not enable.
+				//     TODO: Usar misma variable que en el Botón: Ver CF.
+				
+				//TODO: Generar un fichero de tipo CFinal.ens que contiene ProgramaFinal.txt y sirve de entrada al ENS2001.
+				//TODO: Generar una llamada a WENS2001 e intentar que abra directamente este fichero.
+			}
+		});
+		JButton_ENS.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JPanelBotones.add(JButton_ENS, "cell 0 5,growx,aligny center");
+		
+		JButton JButton_Reset = new JButton("Reset");
+		JButton_Reset.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JPanelBotones.add(JButton_Reset, "cell 0 7,growx,aligny center");
+		
+		JButton JButton_Salir = new JButton("Salir");
+		JButton_Salir.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JPanelBotones.add(JButton_Salir, "cell 0 8,growx");
+		
+		JPanel JPanelTexto = new JPanel();
+		frmGrupo.getContentPane().add(JPanelTexto, "cell 1 0 1 2,grow");
+		JPanelTexto.setLayout(new MigLayout("", "[grow]", "[][grow]"));
+		
+		JLabel JLabelArchivo = new JLabel("Archivo leido:");
+		JLabelArchivo.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabelArchivo.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JPanelTexto.add(JLabelArchivo, "cell 0 0");
+		
+		JScrollPane JScrollPaneArchivo = new JScrollPane();
+		JPanelTexto.add(JScrollPaneArchivo, "cell 0 1,grow");
+		
+		JTextAreaArchivo = new JTextArea();
+		JTextAreaArchivo.setEditable(false);
+		JScrollPaneArchivo.setViewportView(JTextAreaArchivo);
+		JPanel JPanelAvisos = new JPanel();
+	 	
+		frmGrupo.getContentPane().add(JPanelAvisos, "cell 0 2 4 1,grow");
+		 	
+		JPanelAvisos.setLayout(new MigLayout("", "[grow]", "[grow]"));
+		JScrollPane JScrollPaneAvisos = new JScrollPane();
+		JPanelAvisos.add(JScrollPaneAvisos, "cell 0 0,grow");		
+		JTextAreaAvisos = new JTextArea();
+		JTextAreaAvisos.setEditable(false);
+		JScrollPaneAvisos.setViewportView(JTextAreaAvisos);
 	}
 }
