@@ -12,7 +12,7 @@ public class Prueba {
 		boolean b = false || isEnable;
 		//b = true || 3;
 		
-		for (int i = 0; i < 10; i++){
+		for (int r = 0; r < 10; r++){
 			k = b*2;			
 		}
 		
@@ -21,13 +21,13 @@ public class Prueba {
 	
 	//Hay que comprobar la sobrecarga de métodos?¿?¿?¿?¿¿?
 	
-	public int dameint(char c){
+	public int dameint1(char c){
 		
 		return 3+4;
 		
 	}
 	
-	public int dameint(char c, boolean val){
+	public int dameint2(char c, boolean val){
 		
 		return 3;//+"4";
 	}

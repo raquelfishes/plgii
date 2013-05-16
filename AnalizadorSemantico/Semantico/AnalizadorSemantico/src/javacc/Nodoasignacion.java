@@ -54,23 +54,9 @@ class Nodoasignacion extends SimpleNode {
 		  }
 	  }
 	  else {
-		  if (n1 instanceof NodoLiteralInteger){
-			  // estamos en un array
-			  Nodoidentificador idenArray = (Nodoidentificador)parent.jjtGetChild(0);
-			  String tipoArray = Compilador.gestorTS.getAtributos((String)idenArray.value).getTipo();
-			  String tipoVariable = a2 != null ? a2.getTipo() : (String)n2.value;
-			  
-			  if (!ConstantesTipos.esCompatible(tipoArray, tipoVariable)){
-				  addErrSemantico(firstToken.beginLine, "tipo de datos del array "+
-						  (String)idenArray.value+", incompatible");
-			  }
-		  }
-		  else{
-		  
 		  addErrSemantico(firstToken.beginLine, "no puede asignarse "+
 				  (String)n1.value+", debe ser un identificador");
-		  }
-	}
+	  }
 	  
   }
 
