@@ -74,4 +74,12 @@ public class Atributos
     public boolean esParametroDeMetodo(){
     	return esParametroDeMetodo;
     }
+    
+    public boolean getEsMetodo(){
+    	return esMetodo;
+    }
+    
+    public ArrayList<Atributos> getParamList(){
+    	return parametros;
+    }
 }
