@@ -177,17 +177,7 @@ public class CGestorTS implements IGestorTS {
 			}
 		}
 		
-		List<Atributos> listaAtributos = new ArrayList<Atributos>();
-		listarTodosLosAtributos(metodoBuscado, listaAtributos);
-		
-		List<Atributos> listaSoloConParametros = new ArrayList<Atributos>();
-		
-		for(Atributos atrib : listaAtributos){
-			if(atrib.esParametroDeMetodo())
-				listaSoloConParametros.add(atrib);
-		}
-		
-		return listaSoloConParametros;
+		return metodoBuscado.dameAtributosDeLexema(nombreMetodo).getParamList();
 	}
 	
 	

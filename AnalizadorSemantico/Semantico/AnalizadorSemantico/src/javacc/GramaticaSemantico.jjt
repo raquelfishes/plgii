@@ -859,7 +859,7 @@ Simbolo declaracion_metodo() :
   }
 }
 {
-  {System.out.println("-----------------ABRIENDO-------------------");
+  {System.out.println("----------------- ABRIENDO-AMBITO ------------------");
 
     gestorTSIntermedia.nuevoAmbito("");  }
   ( t = <PUBLIC> | t = <PROTECTED> | t = <PRIVATE> | t = <STATIC> | t = <ABSTRACT> | t = <FINAL> | t = <SYNCHRONIZED> )*
@@ -867,7 +867,7 @@ Simbolo declaracion_metodo() :
   ( sim1 = bloque() | <PYC> )
     {
 	gestorTSIntermedia.cierraAmbito();
-    System.out.println("-----------------cerraNDO-------------------");  
+    System.out.println("----------------- CERRANDO-AMBITO ------------------");  
       
       if(t1.image=="void") {
         sim.codigo += sim1.codigo + "&return\n";
@@ -2147,7 +2147,7 @@ Simbolo sentencia_if() :
       }
     else
       {
-        System.out.println("IF\t" + sim2.codigo);
+        //System.out.println("IF\t" + sim2.codigo);
         sim.codigo += "goto " + sim.comienzo + "\n";
         sim.codigo += sim.comienzo + ":\n" + "if (" + sim1.lugar + "=0) goto " + sim.siguiente + "\n";
         sim.codigo += sim2.codigo;
