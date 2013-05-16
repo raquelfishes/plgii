@@ -169,6 +169,30 @@ public class CGestorTS implements IGestorTS {
 		return listaAtributos;
 	}
 	
+	public List<Atributos> dameParametrosMetodo(String nombreMetodo){
+		
+		
+		Ambito metodoBuscado=null;//O constructora... pero realmente no sé si la constructora la haremos, en un principio tambien encuentra la constructora
+		
+		for(Ambito a : ambitos){
+			if(a.getNombre().equals(nombreMetodo)){
+				metodoBuscado = a;
+			}
+		}
+		
+		List<Atributos> listaAtributos = new ArrayList<Atributos>();
+		listarTodosLosAtributos(metodoBuscado, listaAtributos);
+		
+		List<Atributos> listaSoloConParametros = new ArrayList<Atributos>();
+		
+		for(Atributos atrib : listaAtributos){
+			if(atrib.esParametroDeMetodo())
+				listaSoloConParametros.add(atrib);
+		}
+		
+		return listaSoloConParametros;
+	}
+	
 	
 	
 	private void listarTodosLosAtributos(Ambito ambito, List<Atributos> listaMetodo){
