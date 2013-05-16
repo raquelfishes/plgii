@@ -1,4 +1,28 @@
 public class Prueba {
+	
+	int a = 1;
+	int b = 2;
+	int c = 3;
+	int d = 4;
+	int e = 5;
+	
+	void main(){
+		//int a = 0;
+		int[] array = new int[10];
+		
+	}
+	
+	void llamada1(int x){
+		//x = x+b; //FIXME Parece ser que la TS no encuentra las variables del método, como esta "int x"
+		int w = 0; //FIXME o esta w;
+	}
+	
+	void llamada2(){
+		//x = x+b; //FIXME Parece ser que la TS no encuentra las variables del método, como esta "int x"
+		int w = 0; //FIXME o esta w;
+	}
+	
+	/*
 	int a = 1;
 	int b = 2;
 	int c = 3;
@@ -27,4 +51,5 @@ public class Prueba {
 		//x = x+b; //FIXME Parece ser que la TS no encuentra las variables del método, como esta "int x"
 		int w = 0; //FIXME o esta w;
 	}
+	*/
 }
