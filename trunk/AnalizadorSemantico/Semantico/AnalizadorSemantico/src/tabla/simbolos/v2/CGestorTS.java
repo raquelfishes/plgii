@@ -37,6 +37,15 @@ public class CGestorTS implements IGestorTS {
 	public boolean esPalabraReservada(String lexema) {
 		return PalabrasReservadas.esReservada(lexema);
 	}
+	
+	public boolean esMetodoRepetido(String metodo){
+		
+		for(Ambito ambito : ambitos){
+			return (ambito.getNombre()!=null) && ambito.getNombre().equals(metodo);
+		}
+		
+		return true;
+	}
 
 	/**
 	 * Este método debe ser llamado cuando al ejecutar el analizador se detecte una llave "{" 

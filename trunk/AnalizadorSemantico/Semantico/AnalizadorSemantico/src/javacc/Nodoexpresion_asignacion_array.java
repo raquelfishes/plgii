@@ -39,7 +39,7 @@ class Nodoexpresion_asignacion_array extends SimpleNode {
 					  addErrSemantico(firstToken.beginLine, "el tamaño del array no puede ser negativo");
 				  }
 				  else{
-					  Atributos atribs_nuevos = new Atributos((String)nIdent.value, (String)nTipo1.value, tArray);
+					  Atributos atribs_nuevos = new Atributos((String)nIdent.value, (String)nTipo1.value, tArray, false);//XXX););
 					  Atributos atribs_viejos = Compilador.gestorTS.getAtributos((String)nIdent.value);
 					  if (atribs_viejos != null){
 						  atribs_viejos.setAtributos(atribs_nuevos);

@@ -31,7 +31,7 @@ class Nododeclarador_metodo extends SimpleNode {
 		  for (int i = 0; i < jjtGetNumChildren(); i++)
 	          jjtGetChild(i).interpret();
 		  
-		  Atributos a = new Atributos((String)value, tipoDevMetodo, atribs);
+		  Atributos a = new Atributos((String)value, tipoDevMetodo, atribs , false);//XXX
 		  Compilador.gestorTS.insertar((String)value, a);
 	  }
 	  else

@@ -6,18 +6,19 @@ public class Atributos
 {
 	private static int aliasCounter = 0;
     private String lexema, tipo, alias;
+    private boolean esParametroDeMetodo;
     private boolean esArray;
     private int tamArray;        
     private boolean esMetodo;
     private ArrayList<Atributos> parametros;
     
-    public Atributos(String lexema, String tipo) {
+    public Atributos(String lexema, String tipo, boolean esParametroDeMetodo) {
     	this.lexema = lexema;
     	this.tipo = tipo;
     	this.alias = "$var_" + (aliasCounter++);
     }
     
-    public Atributos(String lexema, String tipo, int tamArray) {
+    public Atributos(String lexema, String tipo, int tamArray, boolean esParametroDeMetodo) {
     	this.lexema = lexema;
     	this.tipo = tipo;
     	this.esArray = true;
@@ -25,7 +26,7 @@ public class Atributos
     	//this.alias = "$var_" + (aliasCounter++);
     }
     
-    public Atributos(String lexema, String tipo, ArrayList<Atributos> params){
+    public Atributos(String lexema, String tipo, ArrayList<Atributos> params, boolean esParametroDeMetodo){
     	this.lexema = lexema;
     	this.tipo = tipo;
     	this.esMetodo = true;
@@ -69,5 +70,8 @@ public class Atributos
     
     public static void resetAliasCounter(){
     	aliasCounter = 0;
+    }
+    public boolean esParametroDeMetodo(){
+    	return esParametroDeMetodo;
     }
 }
