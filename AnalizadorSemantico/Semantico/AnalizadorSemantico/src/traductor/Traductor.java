@@ -20,14 +20,14 @@ import tabla.simbolos.v2.*;
  */
 public class Traductor {
 
-	private static int MARCO_ACTIVACION = 1;
+	private static int MARCO_ACTIVACION = 0;
 	
 	private CGestorTS gestorTS;
 	
 	private String nombreAmbitoActual;
 	private String nombreAmbitoClase;
 	private List<Atributos> ambitoActual;
-	private List<Atributos> globales;
+	private List<Atributos> ambitoGlobal;
 	
 	private ArrayList<String> input;
 	private ArrayList<String> output;
@@ -38,7 +38,6 @@ public class Traductor {
 		this.gestorTS = gestorTS;
 		nombreAmbitoActual = "";
 		nombreAmbitoClase = "";
-		registros = new String[10];
 	}
 	
 	public void traduce(String rutaInput, String rutaOutput){
@@ -108,7 +107,9 @@ public class Traductor {
 		input = lineas;
 		output = new ArrayList<String>(); 
 		ambitoActual = new ArrayList<Atributos>();
-		globales = new ArrayList<Atributos>();
+		ambitoGlobal = new ArrayList<Atributos>();
+		registros = new String[10];
+		for (int i=0; i<10; i++) registros[i] = "";
 	}
 	
 	public ArrayList<String> getOutput() {
@@ -120,10 +121,7 @@ public class Traductor {
 	 */
 	private void comienzaTraduccion() {
 		for (int i=0; i<input.size(); i++) {
-			//Aquí es donde empezaremos a partir cada línea con un tokenizer,
-			//para descubrir qué instrucción es, y llamaremos a un método que traduzca ese tipo.
-			//Una vez dentro de ese método, se tomarán decisiones más concretas, para añadir a output
-			//las líneas que correspondan como fruto de la traducción.
+			liberaRegistros(i);
 			primeraDecision(input.get(i));
 		}		
 	}
@@ -138,17 +136,29 @@ public class Traductor {
 		if (linea.contains(":=")) {
 			//Es asignación/operación
 			esAsignacionUOperacion(linea);
-		} else {
+		} else if (linea.contains(":")){
 			//Es una etiqueta
-			if (linea.contains(":")){
-				esEtiqueta(linea);
-			} else {
-				//No es asignación/operación ni etiqueta (if, for, etc)
-				if  (linea.endsWith("return") || linea.startsWith("&return ")) {
-					esReturn(linea);
-				}
-			}
-			
+			esEtiqueta(linea);
+		} else if (linea.contains("goto")) {
+			//Es un salto
+			esSalto(linea);
+		} else if (linea.contains("param")||linea.contains("call")||linea.contains("return")) {
+			//Es un procedimiento
+			esProcedimiento(linea);
+		}
+	}
+
+	/**
+	 * ¿Esta línea es una asignación simple o una operación? Actúa en consecuencia.
+	 * @param linea
+	 */
+	private void esAsignacionUOperacion(String linea) {
+		if (linea.contains("+")||linea.contains("-")||linea.contains("*")||linea.contains("/")) {
+			//Operación
+			esOperacion(linea);
+		} else {
+			//Asignación
+			esAsignacionSimple(linea);
 		}
 	}
 	
@@ -179,90 +189,191 @@ public class Traductor {
 				String lineaAux = linea.replaceAll(" ", "");
 				lineaAux = lineaAux.replaceAll("class", "");
 				nombreAmbitoActual = nombreAmbitoClase = lineaAux.replaceAll(":", "").replaceAll("&", "");
-				globales = gestorTS.dameListaAtributosDeClase();
+				ambitoGlobal = gestorTS.dameListaAtributosDeClase();
 				bloqueComienzoClase();
 			}
 	    }
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////
+	// SALTOS
+	///////////////////////////////////////////////////////////////////////////
+	/**
+	 * Estamos ante un salto. ¿Condicional o incondicional?
+	 * @param linea
+	 */
+	private void esSalto(String linea) {
+		if (linea.contains("if")) {
+			// Condicionales: (if x op_rel y goto E), que compara x e y mediante un operador relacional op_rel (<,>, <=, etc.). Si dicha relación se verifica, la siguiente proposicion que debe ejecutarse es la etiquetada con E. En caso contrario, la siguiente proposición que debe ejecutarse es la siguiente a la actual (secuencia habitual, no se produce salto)
+			esSaltoCondicional(linea);
+		} else {
+			// Incondicionales: (goto E), que indica que la siguiente proposición de tres direcciones que debe ejecutarse es la etiquetada con E.
+			esSaltoIncondicional(linea);
+		}
+	}
+	
+	/**
+	 * Salto incondicional; actúa en consecuencia.
+	 * @param linea
+	 */
+	private void esSaltoIncondicional(String linea) {
+		String s = "\t\tBR $" + linea.replaceAll("goto", "").replaceAll(" ","");
+		output.add(s);
+	}
+	
+	/**
+	 * Salto condicional; actúa en consecuencia.
+	 * @param linea
+	 */
+	private void esSaltoCondicional(String linea) {
+		StringTokenizer sT = new StringTokenizer(linea);
+		String s1 = sT.nextToken(")");
+		String s2 = sT.nextToken(")");
+		s1 = s1.replaceAll("if(", "").replaceAll(" ", "");	//comparación
+		s2 = s2.replaceAll("goto","").replaceAll(" ","");	//etiqueta
+		bloqueComparacion(s1);
+		bloqueSaltoCondicional(s1,s2);
+	}
+	
+	private void bloqueComparacion(String comp) {
+		StringTokenizer sT = new StringTokenizer(comp);
+		String s1 = sT.nextToken("<>=!|&");
+		String s2 = sT.nextToken("<>=!|&");
+		String s = "\t\t\t\tCMP ";
+		if (esUnNumero(s1)) {
+			//Primer token es un número
+			s += "#" + s1;
+		} else if (!s1.contains("$")) {
+			//Primer token es un tmp
+			s += ".R" + dameNumeroRegistro(s1);
+		} else if (!s1.contains("[")){
+			//Primer token es una variable
+			s += getDesplazamientoVariable(s1);
+		} else {
+			//Primer token es un array
+			//XXX Array
+			s += "";
+		}
+		s += " ";
+		if (esUnNumero(s2)) {
+			//Segundo token es un número
+			s += "#" + s2;
+		} else if (!s2.contains("$")) {
+			//Segundo token es un tmp
+			s += ".R" + dameNumeroRegistro(s2);
+		} else if (!s2.contains("[")){
+			//Segundo token es una variable
+			s += getDesplazamientoVariable(s1);
+		} else {
+			//Segundo token es un array
+			//XXX Array
+			s += "";
+		}
+		output.add(s);
+	}
+	
+	private void bloqueSaltoCondicional(String comp, String etiq){
+		//TODO Completar tipos de salto condicional
+		String s = "\t\t\t\t";
+		if (comp.contains("!=")){
+			s += "BNZ";
+		} else if (comp.contains("=")){
+			s += "BZ";
+		} else if (comp.contains(">")){
+			s += "BP";
+		} else if (comp.contains("<")){
+			s += "BN";
+		} //...
+		s += " " + etiq;
+		output.add(s);
+	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	// METODOS Y FUNCIONES
+	///////////////////////////////////////////////////////////////////////////
+	
+	private void esProcedimiento(String linea) {
+		// Proposiciones propias de procedimientos y funciones
+		// Llamada a procedimiento o función 
+		if (linea.contains("param")) {
+			//	i. Paso de parámetros: (param x). Introduce el parametro x en la pila
+			esProcedimientoPasoParam(linea);
+		} else if (linea.contains("call")/*||linea.contains("]")*/) {
+			//	ii. Invocación del subprograma: (call p, n). Llama al procedimiento p, y le dice que tome n parámetros de la cima de la pila.
+			esProcedimientoInvocacion(linea);
+		} else {
+			// Retorno: (return y), donde el parámetro y es opcional. Si aparece, es el valor devuelto por una función; en cualquier caso, devuelve el flujo de control a proposición situada inmediatamente después de call p, n que invocó el subprograma en curso.
+			esProcedimientoRetorno(linea);
+		}
+		
+	}
+	
+	/**
+	 * Estamos ante un param; actúa en consecuencia.
+	 * @param linea
+	 */
+	private void esProcedimientoPasoParam(String linea) {
+		//XXX Paso de parámetros POR COPIA
+		linea = linea.replaceAll("param", "").replaceAll(" ", "");
+		String s = "\t\t\t\tPUSH ";
+		if (esUnNumero(linea)) {
+			//Primer token es un número
+			s += "#" + linea;
+		} else if (!linea.contains("$")) {
+			//Primer token es un tmp
+			s += ".R" + dameNumeroRegistro(linea);
+		} else if (!linea.contains("[")){
+			//Primer token es una variable
+			s += getDesplazamientoVariable(linea);
+		} else {
+			//Primer token es un array
+			//XXX Array
+			s += "";
+		}
+		output.add(s);
+	}
+	
+	/**
+	 * Estamos ante un call; actúa en consecuencia.
+	 * @param linea
+	 */
+	private void esProcedimientoInvocacion(String linea) {
+		StringTokenizer sT = new StringTokenizer(linea);
+		String s1 = sT.nextToken(",");
+		String s2 = sT.nextToken(",");
+		s1 = s1.replaceAll("call", "").replaceAll(" ","");
+		s2 = s2.replaceAll(" ", "");
+		String s = "\t\t\t\tPUSH #" + s2; //Este numero indicará a la funcion llamada cuantos push de parámetros ha habido
+		output.add(s);
+		s = "\t\t\t\tCALL /" + s1;
+		output.add(s);
 	}
 	
 	/**
 	 * Estamos ante un return; actúa en consecuencia.
 	 * @param linea
 	 */
-	private void esReturn(String linea) {
+	private void esProcedimientoRetorno(String linea) {
 		if (linea.replaceAll(" ", "").equals("&return")) {
-			bloqueReturnMetodo();
+			// Return sin devolver valor
+			bloqueReturnSinValor();
 			if (nombreAmbitoActual.toLowerCase().equals("main")) { //Fin de la ejecución
+				output.add("\t\t;liberamos el espacio para variables locales de la pila");
+				output.add("\t\tADD .SP, #" + (calcularTamanoAmbito(ambitoActual)-1));
+				output.add("\t\tMOVE .A, .SP");
+				output.add("");
 				output.add("\t\t;Fin de la ejecución.");
 				output.add("\t\tHALT");
 			}
 			nombreAmbitoActual = nombreAmbitoClase;
-			ambitoActual = globales;
+			ambitoActual = ambitoGlobal;
 		} else {
-			//TODO
+			//TODO Return con valor
 			output.add(";LINEA DE CODIGO SIN HACER, RETURN CON VALOR");
 		}
 	}
-
-	/**
-	 * ¿Esta línea es una asignación simple o una operación? Actúa en consecuencia.
-	 * @param linea
-	 */
-	private void esAsignacionUOperacion(String linea) {
-		if (linea.contains("+")||linea.contains("-")||linea.contains("*")||linea.contains("/")) {
-			//Operación
-			tipoDeOperacion(linea);
-		} else {
-			//Asignación
-			tipoDeAsignacion(linea);
-		}
-	}
 	
-	/**
-	 * ¿Qué tipo de operación es esta línea? Actúa en consecuencia.
-	 * @param linea
-	 */
-	private void tipoDeOperacion(String linea) {
-		//. . .
-	}
-	
-	/**
-	 * ¿Qué tipo de asignación es esta línea? Actúa en consecuencia.
-	 * @param linea
-	 */
-	private void tipoDeAsignacion(String linea) {
-		StringTokenizer sT = new StringTokenizer(linea);
-		String s1 = sT.nextToken(":=");
-		String s2 = sT.nextToken(":=");
-		if (!s1.contains("$")) {
-			//Primer token es un tmp
-			if (esUnNumero(s2)) {
-				// Segundo token es un número (inmediato)
-				bloqueAsignacionTmpInmediato(s1,s2);
-			} else {
-				// Segundo token es una variable
-				bloqueAsignacionTmpVariable(s1,s2);
-			}
-		} else {
-			//Primer token es una variable
-			if (esUnNumero(s2)) {
-				// Segundo token es un número (inmediato)
-				bloqueAsignacionVariableInmediato(s1,s2);
-			} else {
-				if (!s2.contains("$")) {
-					// Segundo token es un tmp
-					bloqueAsignacionVariableTmp(s1,s2);
-				} else {
-					// Segundo token es una variable
-					bloqueAsignacionVariableVariable(s1,s2);
-				}
-			}
-		}
-	}
-	
-	///////////////////////////////////////////////////////////////////////////
-	// METODOS Y FUNCIONES
-	///////////////////////////////////////////////////////////////////////////
 	/**
 	 * Añade a output el bloque de código correspondiente al comienzo de la clase.
 	 */
@@ -272,7 +383,7 @@ public class Traductor {
 		String s2 = "\t\t;colocamos el puntero de pila en la cima de la memoria";
 		String s3 = "\t\tMOVE #65535, .SP";
 		String s4 = "\t\t;reservamos el espacio para variables globales de clase en la pila";
-		String s5 = "\t\tSUB .SP, #" + globales.size();
+		String s5 = "\t\tSUB .SP, #" + calcularTamanoAmbito(ambitoGlobal);
 		String s6 = "\t\tMOVE .A, .SP";
 		String s7 = "\t\t;guardamos en .IY el puntero a pila, para tener controladas las variables globales";
 		String s8 = "\t\tMOVE .SP, .IY";
@@ -313,7 +424,7 @@ public class Traductor {
 		String s12 = "\t\tPUSH .R8";
 		String s13 = "\t\tPUSH .R9";
 		String s14 = "\t\t;reservamos el espacio para variables locales en la pila";
-		String s15 = "\t\tSUB .SP, #" + ambitoActual.size();
+		String s15 = "\t\tSUB .SP, #" + calcularTamanoAmbito(ambitoActual);
 		String s16 = "\t\tMOVE .A, .SP";
 		String s17 = "\t\t;guardamos en .IX el puntero a pila, para usar este registro como índice de este método";
 		String s18 = "\t\tMOVE .SP, .IX";
@@ -344,10 +455,10 @@ public class Traductor {
 	/**
 	 * Añade a output el bloque de código correspondiente al retorno de un método.
 	 */
-	private void bloqueReturnMetodo() {
+	private void bloqueReturnSinValor() {
 		String s1 = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo " + nombreAmbitoActual;
 		String s2 = "\t\t;liberamos el espacio para variables locales de la pila";
-		String s3 = "\t\tADD .SP, #" + ambitoActual.size();
+		String s3 = "\t\tADD .SP, #" + calcularTamanoAmbito(ambitoActual);
 		String s4 = "\t\tMOVE .A, .SP";
 		String s5 = "\t\t;cargamos los registros de la pila";
 		String s6 = "\t\tPOP .R9";
@@ -382,15 +493,93 @@ public class Traductor {
 		output.add(s17);
 		output.add("");
 	}
+	
+	
 	///////////////////////////////////////////////////////////////////////////
-	// ASIGNACIONES
+	// ASIGNACIONES Y OPERACIONES
 	///////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * ¿Qué tipo de operación es esta línea? Actúa en consecuencia.
+	 * @param linea
+	 */
+	private void esOperacion(String linea) {
+		//TODO OPERACIONES	
+	}
+	
+	/**
+	 * ¿Qué tipo de asignación es esta línea? Actúa en consecuencia.
+	 * @param linea
+	 */
+	private void esAsignacionSimple(String linea) {
+		StringTokenizer sT = new StringTokenizer(linea);
+		String s1 = sT.nextToken(":=");
+		String s2 = sT.nextToken(":=");
+		if (!s1.contains("$")) {
+			//Primer token es un tmp
+			asignaRegistro(s1);
+			if (esUnNumero(s2)) {
+				// Segundo token es un número (inmediato)
+				bloqueAsignacionTmpInmediato(s1,s2);
+			} else if (!s2.contains("&")){
+				// Segundo token es un tmp
+				asignaRegistro(s2);
+				bloqueAsignacionTmpTmp(s1,s2);
+			} else if (!s2.contains("[")){
+				// Segundo token es una variable
+				bloqueAsignacionTmpVariable(s1,s2);
+			} else {
+				// Segundo token es un array
+				bloqueAsignacionTmpArray(s1,s2);
+			}
+		} else if (!s1.contains("[")){
+			//Primer token es una variable
+			if (esUnNumero(s2)) {
+				// Segundo token es un número (inmediato)
+				bloqueAsignacionVariableInmediato(s1,s2);
+			} else 	if (!s2.contains("$")) {
+				// Segundo token es un tmp
+				bloqueAsignacionVariableTmp(s1,s2);
+			} else if (!s2.contains("[")){
+					// Segundo token es una variable
+				bloqueAsignacionVariableVariable(s1,s2);
+			} else {
+				// Segundo token es un array
+				bloqueAsignacionVariableArray(s1,s2);
+			}
+		} else {
+			//Primer token es un array
+			if (esUnNumero(s2)) {
+				// Segundo token es un número (inmediato)
+				bloqueAsignacionArrayInmediato(s1,s2);
+			} else 	if (!s2.contains("$")) {
+				// Segundo token es un tmp
+				bloqueAsignacionArrayTmp(s1,s2);
+			} else if (!s2.contains("[")){
+					// Segundo token es una variable
+				bloqueAsignacionArrayVariable(s1,s2);
+			} else {
+				// Segundo token es un array
+				bloqueAsignacionArrayArray(s1,s2);
+			}
+		}
+	}
+	
 	/**
 	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
 	 */
 	private void bloqueAsignacionTmpInmediato(String s1, String s2) {
 		registros[0] = s1;
-		String s = "\t\t\t\tMOVE #" + s2 + ", .R" + "0" + "\t\t\t\t;r0 contiene " + registros[0];
+		String s = "\t\t\t\tMOVE #" + s2 + ", .R" + dameNumeroRegistro(s1) + "\t\t\t\t;r0 contiene " + registros[0];
+		output.add(s);
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
+	 */
+	private void bloqueAsignacionTmpTmp(String s1, String s2) {
+		registros[0] = s1;
+		String s = "\t\t\t\tMOVE .R" + dameNumeroRegistro(s2) + ", .R" + dameNumeroRegistro(s1) + "\t\t\t\t;r0 contiene " + registros[0];
 		output.add(s);
 	}
 	
@@ -399,7 +588,7 @@ public class Traductor {
 	 */
 	private void bloqueAsignacionTmpVariable(String s1, String s2) {
 		registros[0] = s1;
-		String s = "\t\t\t\tMOVE " + getDesplazamiento(s2) + ", .R" + "0" + "\t\t\t\t;r0 contiene " + registros[0];
+		String s = "\t\t\t\tMOVE " + getDesplazamientoVariable(s2) + ", .R" + dameNumeroRegistro(s1) + "\t\t\t\t;r0 contiene " + registros[0];
 		output.add(s);
 	}
 
@@ -407,7 +596,7 @@ public class Traductor {
 	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
 	 */
 	private void bloqueAsignacionVariableInmediato(String s1, String s2) {
-		String s = "\t\t\t\tMOVE #" + s2 + ", " + getDesplazamiento(s1) + "\t\t\t\t;Asignacion Variable:=Inmediato";
+		String s = "\t\t\t\tMOVE #" + s2 + ", " + getDesplazamientoVariable(s1) + "\t\t\t\t;Asignacion Variable:=Inmediato";
 		output.add(s);
 	}
 	
@@ -416,7 +605,7 @@ public class Traductor {
 	 */
 	private void bloqueAsignacionVariableTmp(String s1, String s2) {
 		registros[0] = s2;
-		String s = "\t\t\t\tMOVE .R" + "0" + ", " + getDesplazamiento(s1) + "\t\t\t\t;r0 contiene " + registros[0];
+		String s = "\t\t\t\tMOVE .R" + dameNumeroRegistro(s2) + ", " + getDesplazamientoVariable(s1) + "\t\t\t\t;r0 contiene " + registros[0];
 		output.add(s);
 	}
 	
@@ -425,31 +614,152 @@ public class Traductor {
 	 */
 	private void bloqueAsignacionVariableVariable(String s1, String s2) {
 		registros[0] = s2;
-		String s = "\t\t\t\tMOVE " + getDesplazamiento(s2) + ", " + getDesplazamiento(s1) + "\t\t\t\t;r0 contiene " + registros[0];
+		String s = "\t\t\t\tMOVE " + getDesplazamientoVariable(s2) + ", " + getDesplazamientoVariable(s1) + "\t\t\t\t;r0 contiene " + registros[0];
 		output.add(s);
+	}
+
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
+	 */
+	private void bloqueAsignacionTmpArray(String s1, String s2) {
+		//TODO AsignacionTmpArray
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
+	 */
+	private void bloqueAsignacionVariableArray(String s1, String s2) {
+		//TODO AsignacionVariableArray
+	}
+
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
+	 */
+	private void bloqueAsignacionArrayInmediato(String s1, String s2) {
+		//TODO AsignacionArrayInmediato
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
+	 */
+	private void bloqueAsignacionArrayTmp(String s1, String s2) {
+		//TODO AsignacionArrayTmp
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
+	 */
+	private void bloqueAsignacionArrayVariable(String s1, String s2) {
+		//TODO AsignacionArrayVariable
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
+	 */
+	private void bloqueAsignacionArrayArray(String s1, String s2) {
+		//TODO AsignacionArrayArray
 	}
 	
 	
-	private String getDesplazamiento(String alias) {
-		//Ejemplo: MOVE #6[.IX],.R1 
-		//El 6 representa el desplazamiento desde el registro indice (que apuntará a la base del registro de activación).
-		//El numero tenemos que sacarlo del indice de la variable dentro de un ámbito (posición que ocupa la variable
-		//en el ámbito actual).
-		int desplazamiento = MARCO_ACTIVACION;		
+	
+	///////////////////////////////////////////////////////////////////////////
+	// AUXILIARES
+	///////////////////////////////////////////////////////////////////////////
+	
+	//REFERENCIA DE VARIABLES//////////////////////////////////////////////////
+	private String getDesplazamientoVariable(String alias) {
 		String s = "";
 		Atributos a = gestorTS.getAtributosDeAlias(alias);
-		if (globales.contains(a)) {
-			desplazamiento += globales.indexOf(a);
-			s= "#" + desplazamiento + "[.IY]";
-		} else if (ambitoActual.contains(a)) { //Es del ambito actual
-			desplazamiento += ambitoActual.indexOf(a);
-			s= "#" + desplazamiento + "[.IX]";
+		if (ambitoGlobal.contains(a)) { 	//ES GLOBAL
+			s= "#" + desplazamiento(a, ambitoGlobal) + "[.IY]";
+		} else if (ambitoActual.contains(a)) { //ES DEL ÁMBITO ACTUAL
+			s= "#" + desplazamiento(a, ambitoActual) + "[.IX]";
 		} else {
-			output.add(";Error en getDesplazamiento. Variable no encontrada.");
+			System.err.println("Traductor error: Error en getDesplazamiento. Variable no encontrada.");
 		}
 		return s;
 	}
 	
+	private int desplazamiento(Atributos a, List<Atributos> l) {
+		int d = MARCO_ACTIVACION;
+		Atributos actual = new Atributos("vacio","vacio");
+		for (int i=0; i<l.size() && !actual.equals(a); i++) {
+			actual = l.get(i);
+			if (actual.getEsArray()) {
+				d += actual.getTamArray();
+			} else {
+				d ++;
+			}
+		}
+		return d;
+	}
+	
+	private int calcularTamanoAmbito(List<Atributos> l) {
+		int t = 0;
+		Atributos actual;
+		for (int i=0; i<l.size(); i++) {
+			actual = l.get(i);
+			if (actual.getEsArray()) {
+				t += actual.getTamArray();
+			} else {
+				t ++;
+			}
+		}
+		return t;
+	}
+	
+	//ASIGNACIÓN DE REGISTROS//////////////////////////////////////////////////
+	private boolean estaAsignado(String tmp) {
+		boolean asignado = false;
+		for (int r = 0; r<10 && !asignado; r++) {
+			if (registros[r].equals(tmp)) {
+				//registro encontrado
+				asignado = true;
+			}
+		}
+		return asignado;
+	}
+	
+	private void asignaRegistro(String tmp) {
+		if (!estaAsignado(tmp)) {
+			boolean asignado = false;
+			for (int r = 0; r<9 && !asignado; r++) {
+				if (registros[r].equals("")) {
+					//Hueco encontrado
+					registros[r] = tmp;
+					asignado = true;
+				}
+			}
+		}
+	}
+	
+	private int dameNumeroRegistro(String tmp) {
+		int reg = -1;
+		boolean encontrado = false;
+		for (int r = 0; r<10 && !encontrado; r++) {
+			if (registros[r].equals(tmp)) {
+				//Encontrado!
+				reg = r;
+				encontrado = true;
+			}
+		}
+		return reg;
+	}
+	
+	private void liberaRegistros(int lineaActual) {
+		for (int r = 0; r<10; r++) {
+			boolean aparece = false;
+			for (int i = lineaActual; i<input.size() && !aparece; i++) {
+				if (input.get(i).contains(registros[r])) {
+					//El tmp del registro r aparece en más partes del código, no se puede liberar
+					aparece = true;
+				}
+			}
+			if (!aparece) {
+				registros[r] = "";
+			}
+		}
+	}
 	
 	private boolean esUnNumero(String s) {
 		return (s.startsWith("0") ||
