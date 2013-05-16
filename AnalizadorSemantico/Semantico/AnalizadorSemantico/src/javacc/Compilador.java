@@ -1325,7 +1325,7 @@ void tipo_primitivo() :
         String lexema = t.image;
         if(!gestorTSIntermedia.estaLexema(lexema))
         {
-                Atributos a = new Atributos(lexema,"");
+                Atributos a = new Atributos(lexema,"",false);//FIXME 
                 gestorTSIntermedia.insertar(lexema, a);
                 System.out.println("TS: Insertando ident: "+ lexema +" con alias " +a.getAlias());
         }

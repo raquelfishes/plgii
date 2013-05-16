@@ -23,7 +23,7 @@ class Nododeclarador_variable_id extends SimpleNode {
 		  nTipo = (Nodotipo)((SimpleNode)parent).children[0];
 		  if(nTipo != null){
 			  if (Compilador.gestorTS.esLexemaValido((String)value)){
-				  Atributos atribs = new Atributos((String)value, (String)nTipo.value);
+				  Atributos atribs = new Atributos((String)value, (String)nTipo.value, false);//XXX);
 				  Compilador.gestorTS.insertar((String)value, atribs);
 				  System.out.println("Insertando identificador en TS: " + (String)value +
 						  " de tipo " + (String)nTipo.value);
@@ -40,7 +40,7 @@ class Nododeclarador_variable_id extends SimpleNode {
 		  nTipo = (Nodotipo)((SimpleNode)parent).children[0];
 		  if(nTipo != null){
 			  if (Compilador.gestorTS.esLexemaValido((String)value)){
-				  Atributos a = new Atributos((String)value, (String)nTipo.value);
+				  Atributos a = new Atributos((String)value, (String)nTipo.value, false);//XXX););
 				  // lo añadimos a los atributos del metodo
 				  ((Nododeclarador_metodo)parent).atribs.add(a);
 				  // peo tambien al ambito actual
