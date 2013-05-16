@@ -1,7 +1,5 @@
 package tabla.simbolos.v2;
 
-import java.util.LinkedList;
-
 public interface IGestorTS {
 	
 	/**
