@@ -1527,31 +1527,31 @@ Simbolo asignacion()               :
   if (t == "=")
     {
       if (sim2.comienzo == "post"){
-        aux = nuevaTemp();
-        sim.codigo += aux + ":=" + sim2.lugar + "\n";
-    sim.codigo += sim.lugar + ":=" + aux + "\n";
-    sim.codigo += sim2.codigo;
-    }
-    else{
-      sim.codigo += sim2.codigo;
-      sim.codigo += sim.lugar + ":=" + sim2.lugar + "\n";
+        sim.codigo += sim2.codigo;
+        sim.codigo += sim.lugar + ":=" + sim2.lugar + "\n";
+	    sim.codigo += sim2.verdadera;
+      }
+	  else{
+	    sim.codigo += sim2.codigo;
+	    sim.codigo += sim.lugar + ":=" + sim2.lugar + "\n";
       }
     }
     else
     {
       if (sim2.comienzo == "post")
       {
+		aux = nuevaTemp();
+        sim.codigo += sim2.codigo;
+        sim.codigo += aux + ":=" + sim1.lugar + t + sim2.lugar + "\n";
+		sim.codigo += sim1.lugar + ":=" + aux + "\n";
+	    sim.codigo += sim2.verdadera;
+      }
+      else
+      {
         aux = nuevaTemp();
-        sim.codigo += aux + ":=" + sim2.lugar + "\n";
-    sim.codigo += sim.lugar + t + aux;
-    sim.codigo += sim2.codigo;
-    }
-    else
-    {
-      aux = nuevaTemp();
-      sim.codigo += sim2.codigo;
-      sim.codigo += aux + ":=" + sim1.lugar + t + sim2.lugar + "\n";
-      sim.codigo += sim1.lugar + ":=" + aux + "\n";
+        sim.codigo += sim2.codigo;
+        sim.codigo += aux + ":=" + sim1.lugar + t + sim2.lugar + "\n";
+        sim.codigo += sim1.lugar + ":=" + aux + "\n";
       }
     }
     return sim;
@@ -2718,7 +2718,6 @@ Simbolo expresion_pre_inc()      :
                   }
 /*@egen*/          
   {
-    aux = nuevaTemp();
     sim.codigo += sim.lugar + ":=" + "++" + "\n";
     return sim;
   }
@@ -2767,7 +2766,6 @@ Simbolo expresion_pre_dec()      :
                 }
 /*@egen*/        
   {
-    aux = nuevaTemp();
     sim.codigo += sim.lugar + ":=" + "--" + "\n";
     return sim;
   }
@@ -2910,15 +2908,13 @@ Simbolo expresion_post()      :
   sim = expresion_primaria()
   [ t=<PLUS_PLUS> {s = t.image;}
     {    
-      aux = nuevaTemp();
       sim.comienzo = "post";
-      sim.codigo += sim.lugar + ":=" + "++" + "\n";
+      sim.verdadera += sim.lugar + ":=" + "++" + "\n";
     }
   | t=<SUB_SUB> {s = t.image;} 
     {
-      aux = nuevaTemp();
       sim.comienzo = "post";
-      sim.codigo += sim.lugar + ":=" + "--" + "\n";
+      sim.verdadera += sim.lugar + ":=" + "--" + "\n";
     }
   ]
   { return sim; }
@@ -2975,6 +2971,8 @@ Simbolo expresion_primaria()      :
       }
       else
       {
+		System.out.println(sim1.lugar + "\t" + sim1.codigo);
+		System.out.println(sim2.lugar + "\t" + sim2.codigo);
         s += sim2.lugar;
 		s1 += sim2.codigo;
 		sim2.lugar = s;
@@ -2985,12 +2983,6 @@ Simbolo expresion_primaria()      :
   {
     sim.lugar = sim1.lugar + sim2.lugar;
     sim.codigo = sim1.codigo + sim2.codigo;
-    if (!sim2.lugar.equals(""))
-    {
-      aux = sim.lugar;
-      sim.lugar = nuevaTemp();
-      sim.codigo += sim.lugar + ":=" + aux + "\n";
-    }
     return sim;
   }
 }
