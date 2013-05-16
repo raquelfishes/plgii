@@ -1929,7 +1929,7 @@ Simbolo expresion_equal()      :
       }
       try {
 /*@egen*/
-      sim2 = expresion_instanceof()/*@bgen(jjtree)*/
+      sim1 = expresion_instanceof()/*@bgen(jjtree)*/
       } catch (Throwable jjte001) {
         if (jjtc001) {
           jjtree.clearNodeScope(jjtn001);
@@ -1956,8 +1956,8 @@ Simbolo expresion_equal()      :
         s1 = nuevaEtiq();
         s2 = nuevaEtiq();
         sim.lugar = nuevaTemp();
-        sim.codigo = sim1.codigo + sim2.codigo;
-        sim.codigo += "if (" + s + "=" + sim2.lugar + ") goto " + s1 + "\n";
+        sim.codigo += sim1.codigo;
+        sim.codigo += "if (" + s + "=" + sim1.lugar + ") goto " + s1 + "\n";
         sim.codigo += sim.lugar + ":=0\n";
         sim.codigo += "goto " + s2 + "\n";
         sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
@@ -1972,7 +1972,7 @@ Simbolo expresion_equal()      :
     }
     try {
 /*@egen*/
-    sim2 = expresion_instanceof()/*@bgen(jjtree)*/
+    sim1 = expresion_instanceof()/*@bgen(jjtree)*/
     } catch (Throwable jjte002) {
       if (jjtc002) {
         jjtree.clearNodeScope(jjtn002);
@@ -1999,8 +1999,8 @@ Simbolo expresion_equal()      :
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + "!=" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo += sim1.codigo;
+      sim.codigo += "if (" + s + "!=" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
@@ -2082,7 +2082,7 @@ Simbolo expresion_relacional()      :
                     jjtn001.jjtSetFirstToken(getToken(1));
                   }
                   try {
-/*@egen*/ sim2 = expresion_shift()/*@bgen(jjtree)*/
+/*@egen*/ sim1 = expresion_shift()/*@bgen(jjtree)*/
                   } catch (Throwable jjte001) {
                     if (jjtc001) {
                       jjtree.clearNodeScope(jjtn001);
@@ -2109,8 +2109,8 @@ Simbolo expresion_relacional()      :
         s1 = nuevaEtiq();
         s2 = nuevaEtiq();
         sim.lugar = nuevaTemp();
-        sim.codigo = sim1.codigo + sim2.codigo;
-        sim.codigo += "if (" + s + "<" + sim2.lugar + ") goto " + s1 + "\n";
+        sim.codigo += sim2.codigo;
+        sim.codigo += "if (" + s + "<" + sim1.lugar + ") goto " + s1 + "\n";
         sim.codigo += sim.lugar + ":=0\n";
         sim.codigo += "goto " + s2 + "\n";
         sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
@@ -2124,7 +2124,7 @@ Simbolo expresion_relacional()      :
                   jjtn002.jjtSetFirstToken(getToken(1));
                 }
                 try {
-/*@egen*/ sim2 = expresion_shift()/*@bgen(jjtree)*/
+/*@egen*/ sim1 = expresion_shift()/*@bgen(jjtree)*/
                 } catch (Throwable jjte002) {
                   if (jjtc002) {
                     jjtree.clearNodeScope(jjtn002);
@@ -2151,8 +2151,8 @@ Simbolo expresion_relacional()      :
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + ">" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo += sim1.codigo;
+      sim.codigo += "if (" + s + ">" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
@@ -2166,7 +2166,7 @@ Simbolo expresion_relacional()      :
                      jjtn003.jjtSetFirstToken(getToken(1));
                    }
                    try {
-/*@egen*/ sim2 = expresion_shift()/*@bgen(jjtree)*/
+/*@egen*/ sim1 = expresion_shift()/*@bgen(jjtree)*/
                    } catch (Throwable jjte003) {
                      if (jjtc003) {
                        jjtree.clearNodeScope(jjtn003);
@@ -2193,8 +2193,8 @@ Simbolo expresion_relacional()      :
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + "<=" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo = sim1.codigo;
+      sim.codigo += "if (" + s + "<=" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
@@ -2208,7 +2208,7 @@ Simbolo expresion_relacional()      :
                      jjtn004.jjtSetFirstToken(getToken(1));
                    }
                    try {
-/*@egen*/ sim2 = expresion_shift()/*@bgen(jjtree)*/
+/*@egen*/ sim1 = expresion_shift()/*@bgen(jjtree)*/
                    } catch (Throwable jjte004) {
                      if (jjtc004) {
                        jjtree.clearNodeScope(jjtn004);
@@ -2235,8 +2235,8 @@ Simbolo expresion_relacional()      :
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + ">=" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo = sim1.codigo;
+      sim.codigo += "if (" + s + ">=" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
@@ -2917,7 +2917,8 @@ Simbolo expresion_post()      :
       sim.verdadera += sim.lugar + ":=" + "--" + "\n";
     }
   ]
-  { return sim; }
+  { //sim.codigo += sim.verdadera; 
+    return sim; }
 }
 
 Simbolo expresion_cast()      :
@@ -2971,9 +2972,7 @@ Simbolo expresion_primaria()      :
       }
       else
       {
-		System.out.println(sim1.lugar + "\t" + sim1.codigo);
-		System.out.println(sim2.lugar + "\t" + sim2.codigo);
-        s += sim2.lugar;
+		s += sim2.lugar;
 		s1 += sim2.codigo;
 		sim2.lugar = s;
 		sim2.codigo = s1;
@@ -2983,6 +2982,7 @@ Simbolo expresion_primaria()      :
   {
     sim.lugar = sim1.lugar + sim2.lugar;
     sim.codigo = sim1.codigo + sim2.codigo;
+    System.out.println("EXPRESION_PRIMARIA\t" + sim.codigo);
     return sim;
   }
 }
@@ -3211,7 +3211,7 @@ Simbolo sentencia()      :
 |
   sim = sentencia_vacia() { return sim; }
 |
-  sim = expresion_sentencia() <PYC> { return sim; }
+  sim = expresion_sentencia() <PYC> { sim.codigo += sim.verdadera; return sim; }
 |
   sim = sentencia_switch() { return sim; }
 |
@@ -3612,6 +3612,7 @@ Simbolo sentencia_if() :
       }
     else
       {
+        System.out.println("IF\t" + sim2.codigo);
         sim.codigo += "goto " + sim.comienzo + "\n";
         sim.codigo += sim.comienzo + ":\n" + "if (" + sim1.lugar + "=0) goto " + sim.siguiente + "\n";
         sim.codigo += sim2.codigo;

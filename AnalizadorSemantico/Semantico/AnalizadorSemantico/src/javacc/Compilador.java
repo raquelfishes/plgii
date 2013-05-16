@@ -2355,7 +2355,7 @@ void tipo_primitivo() :
         jjtree.openNodeScope(jjtn001);
         jjtn001.jjtSetFirstToken(getToken(1));
         try {
-          sim2 = expresion_instanceof();
+          sim1 = expresion_instanceof();
         } catch (Throwable jjte001) {
         if (jjtc001) {
           jjtree.clearNodeScope(jjtn001);
@@ -2380,8 +2380,8 @@ void tipo_primitivo() :
         s1 = nuevaEtiq();
         s2 = nuevaEtiq();
         sim.lugar = nuevaTemp();
-        sim.codigo = sim1.codigo + sim2.codigo;
-        sim.codigo += "if (" + s + "=" + sim2.lugar + ") goto " + s1 + "\u005cn";
+        sim.codigo += sim1.codigo;
+        sim.codigo += "if (" + s + "=" + sim1.lugar + ") goto " + s1 + "\u005cn";
         sim.codigo += sim.lugar + ":=0\u005cn";
         sim.codigo += "goto " + s2 + "\u005cn";
         sim.codigo += s1 + ":\u005cn" + sim.lugar + ":=1\u005cn";
@@ -2394,7 +2394,7 @@ void tipo_primitivo() :
       jjtree.openNodeScope(jjtn002);
       jjtn002.jjtSetFirstToken(getToken(1));
         try {
-          sim2 = expresion_instanceof();
+          sim1 = expresion_instanceof();
         } catch (Throwable jjte002) {
       if (jjtc002) {
         jjtree.clearNodeScope(jjtn002);
@@ -2419,8 +2419,8 @@ void tipo_primitivo() :
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + "!=" + sim2.lugar + ") goto " + s1 + "\u005cn";
+      sim.codigo += sim1.codigo;
+      sim.codigo += "if (" + s + "!=" + sim1.lugar + ") goto " + s1 + "\u005cn";
       sim.codigo += sim.lugar + ":=0\u005cn";
       sim.codigo += "goto " + s2 + "\u005cn";
       sim.codigo += s1 + ":\u005cn" + sim.lugar + ":=1\u005cn";
@@ -2519,7 +2519,7 @@ void tipo_primitivo() :
                     jjtree.openNodeScope(jjtn001);
                     jjtn001.jjtSetFirstToken(getToken(1));
         try {
-          sim2 = expresion_shift();
+          sim1 = expresion_shift();
         } catch (Throwable jjte001) {
                     if (jjtc001) {
                       jjtree.clearNodeScope(jjtn001);
@@ -2544,8 +2544,8 @@ void tipo_primitivo() :
         s1 = nuevaEtiq();
         s2 = nuevaEtiq();
         sim.lugar = nuevaTemp();
-        sim.codigo = sim1.codigo + sim2.codigo;
-        sim.codigo += "if (" + s + "<" + sim2.lugar + ") goto " + s1 + "\u005cn";
+        sim.codigo += sim2.codigo;
+        sim.codigo += "if (" + s + "<" + sim1.lugar + ") goto " + s1 + "\u005cn";
         sim.codigo += sim.lugar + ":=0\u005cn";
         sim.codigo += "goto " + s2 + "\u005cn";
         sim.codigo += s1 + ":\u005cn" + sim.lugar + ":=1\u005cn";
@@ -2558,7 +2558,7 @@ void tipo_primitivo() :
                   jjtree.openNodeScope(jjtn002);
                   jjtn002.jjtSetFirstToken(getToken(1));
         try {
-          sim2 = expresion_shift();
+          sim1 = expresion_shift();
         } catch (Throwable jjte002) {
                   if (jjtc002) {
                     jjtree.clearNodeScope(jjtn002);
@@ -2583,8 +2583,8 @@ void tipo_primitivo() :
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + ">" + sim2.lugar + ") goto " + s1 + "\u005cn";
+      sim.codigo += sim1.codigo;
+      sim.codigo += "if (" + s + ">" + sim1.lugar + ") goto " + s1 + "\u005cn";
       sim.codigo += sim.lugar + ":=0\u005cn";
       sim.codigo += "goto " + s2 + "\u005cn";
       sim.codigo += s1 + ":\u005cn" + sim.lugar + ":=1\u005cn";
@@ -2597,7 +2597,7 @@ void tipo_primitivo() :
                      jjtree.openNodeScope(jjtn003);
                      jjtn003.jjtSetFirstToken(getToken(1));
         try {
-          sim2 = expresion_shift();
+          sim1 = expresion_shift();
         } catch (Throwable jjte003) {
                      if (jjtc003) {
                        jjtree.clearNodeScope(jjtn003);
@@ -2622,8 +2622,8 @@ void tipo_primitivo() :
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + "<=" + sim2.lugar + ") goto " + s1 + "\u005cn";
+      sim.codigo = sim1.codigo;
+      sim.codigo += "if (" + s + "<=" + sim1.lugar + ") goto " + s1 + "\u005cn";
       sim.codigo += sim.lugar + ":=0\u005cn";
       sim.codigo += "goto " + s2 + "\u005cn";
       sim.codigo += s1 + ":\u005cn" + sim.lugar + ":=1\u005cn";
@@ -2636,7 +2636,7 @@ void tipo_primitivo() :
                      jjtree.openNodeScope(jjtn004);
                      jjtn004.jjtSetFirstToken(getToken(1));
         try {
-          sim2 = expresion_shift();
+          sim1 = expresion_shift();
         } catch (Throwable jjte004) {
                      if (jjtc004) {
                        jjtree.clearNodeScope(jjtn004);
@@ -2661,8 +2661,8 @@ void tipo_primitivo() :
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + ">=" + sim2.lugar + ") goto " + s1 + "\u005cn";
+      sim.codigo = sim1.codigo;
+      sim.codigo += "if (" + s + ">=" + sim1.lugar + ") goto " + s1 + "\u005cn";
       sim.codigo += sim.lugar + ":=0\u005cn";
       sim.codigo += "goto " + s2 + "\u005cn";
       sim.codigo += s1 + ":\u005cn" + sim.lugar + ":=1\u005cn";
@@ -3464,6 +3464,7 @@ void tipo_primitivo() :
       jj_la1[71] = jj_gen;
       ;
     }
+    //sim.codigo += sim.verdadera; 
     {if (true) return sim;}
     throw new Error("Missing return statement in function");
   }
@@ -3566,9 +3567,7 @@ void tipo_primitivo() :
       }
       else
       {
-                System.out.println(sim1.lugar + "\u005ct" + sim1.codigo);
-                System.out.println(sim2.lugar + "\u005ct" + sim2.codigo);
-        s += sim2.lugar;
+                s += sim2.lugar;
                 s1 += sim2.codigo;
                 sim2.lugar = s;
                 sim2.codigo = s1;
@@ -3576,6 +3575,7 @@ void tipo_primitivo() :
     }
     sim.lugar = sim1.lugar + sim2.lugar;
     sim.codigo = sim1.codigo + sim2.codigo;
+    System.out.println("EXPRESION_PRIMARIA\u005ct" + sim.codigo);
     {if (true) return sim;}
     throw new Error("Missing return statement in function");
   }
@@ -3893,7 +3893,7 @@ void tipo_primitivo() :
       case IDENTIFICADOR:
         sim = expresion_sentencia();
         jj_consume_token(PYC);
-                                      {if (true) return sim;}
+                                      sim.codigo += sim.verdadera; {if (true) return sim;}
         break;
       case SWITCH:
         sim = sentencia_switch();
@@ -4467,6 +4467,7 @@ void tipo_primitivo() :
       }
     else
       {
+        System.out.println("IF\u005ct" + sim2.codigo);
         sim.codigo += "goto " + sim.comienzo + "\u005cn";
         sim.codigo += sim.comienzo + ":\u005cn" + "if (" + sim1.lugar + "=0) goto " + sim.siguiente + "\u005cn";
         sim.codigo += sim2.codigo;

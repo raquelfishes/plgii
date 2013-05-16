@@ -1258,28 +1258,28 @@ Simbolo expresion_equal() #void:
 {
   sim = expresion_instanceof()
   ( ( t = <IGUAL_IGUAL>
-      sim2 = expresion_instanceof() #IgualIgual(2)
+      sim1 = expresion_instanceof() #IgualIgual(2)
       {
         s = sim.lugar;
         s1 = nuevaEtiq();
         s2 = nuevaEtiq();
         sim.lugar = nuevaTemp();
-        sim.codigo = sim1.codigo + sim2.codigo;
-        sim.codigo += "if (" + s + "=" + sim2.lugar + ") goto " + s1 + "\n";
+        sim.codigo += sim1.codigo;
+        sim.codigo += "if (" + s + "=" + sim1.lugar + ") goto " + s1 + "\n";
         sim.codigo += sim.lugar + ":=0\n";
         sim.codigo += "goto " + s2 + "\n";
         sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
         sim.codigo += s2 + ":\n";
       }
  |  t = <N_IGUAL>
-    sim2 = expresion_instanceof() #NIgual(2)
+    sim1 = expresion_instanceof() #NIgual(2)
     {
       s = sim.lugar;
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + "!=" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo += sim1.codigo;
+      sim.codigo += "if (" + s + "!=" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
@@ -1324,53 +1324,53 @@ Simbolo expresion_relacional() #void:
 }
 {
   sim = expresion_shift() 
-  ( ( t = <MENOR> sim2 = expresion_shift() #Menor(2)
+  ( ( t = <MENOR> sim1 = expresion_shift() #Menor(2)
       {
         s = sim.lugar;
         s1 = nuevaEtiq();
         s2 = nuevaEtiq();
         sim.lugar = nuevaTemp();
-        sim.codigo = sim1.codigo + sim2.codigo;
-        sim.codigo += "if (" + s + "<" + sim2.lugar + ") goto " + s1 + "\n";
+        sim.codigo += sim2.codigo;
+        sim.codigo += "if (" + s + "<" + sim1.lugar + ") goto " + s1 + "\n";
         sim.codigo += sim.lugar + ":=0\n";
         sim.codigo += "goto " + s2 + "\n";
         sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
         sim.codigo += s2 + ":\n";
       }
-  | t = <MAYOR> sim2 = expresion_shift() #Mayor(2)
+  | t = <MAYOR> sim1 = expresion_shift() #Mayor(2)
     {
       s = sim.lugar;
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + ">" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo += sim1.codigo;
+      sim.codigo += "if (" + s + ">" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
       sim.codigo += s2 + ":\n";
       }
-  | t = <MENOR_EQ> sim2 = expresion_shift() #MenorEq(2)
+  | t = <MENOR_EQ> sim1 = expresion_shift() #MenorEq(2)
     {
       s = sim.lugar;
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + "<=" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo = sim1.codigo;
+      sim.codigo += "if (" + s + "<=" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
       sim.codigo += s2 + ":\n";
       }
-  | t = <MAYOR_EQ> sim2 = expresion_shift() #MayorEq(2)
+  | t = <MAYOR_EQ> sim1 = expresion_shift() #MayorEq(2)
     {
       s = sim.lugar;
       s1 = nuevaEtiq();
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
-      sim.codigo = sim1.codigo + sim2.codigo;
-      sim.codigo += "if (" + s + ">=" + sim2.lugar + ") goto " + s1 + "\n";
+      sim.codigo = sim1.codigo;
+      sim.codigo += "if (" + s + ">=" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
@@ -1645,7 +1645,8 @@ Simbolo expresion_post() #void:
       sim.verdadera += sim.lugar + ":=" + "--" + "\n";
     }
   ]
-  { return sim; }
+  { //sim.codigo += sim.verdadera; 
+    return sim; }
 }
 
 Simbolo expresion_cast() #void:
@@ -1699,9 +1700,7 @@ Simbolo expresion_primaria() #void:
       }
       else
       {
-		System.out.println(sim1.lugar + "\t" + sim1.codigo);
-		System.out.println(sim2.lugar + "\t" + sim2.codigo);
-        s += sim2.lugar;
+		s += sim2.lugar;
 		s1 += sim2.codigo;
 		sim2.lugar = s;
 		sim2.codigo = s1;
@@ -1711,6 +1710,7 @@ Simbolo expresion_primaria() #void:
   {
     sim.lugar = sim1.lugar + sim2.lugar;
     sim.codigo = sim1.codigo + sim2.codigo;
+    System.out.println("EXPRESION_PRIMARIA\t" + sim.codigo);
     return sim;
   }
 }
@@ -1899,7 +1899,7 @@ Simbolo sentencia() #void:
 |
   sim = sentencia_vacia() { return sim; }
 |
-  sim = expresion_sentencia() <PYC> { return sim; }
+  sim = expresion_sentencia() <PYC> { sim.codigo += sim.verdadera; return sim; }
 |
   sim = sentencia_switch() { return sim; }
 |
@@ -2127,6 +2127,7 @@ Simbolo sentencia_if() :
       }
     else
       {
+        System.out.println("IF\t" + sim2.codigo);
         sim.codigo += "goto " + sim.comienzo + "\n";
         sim.codigo += sim.comienzo + ":\n" + "if (" + sim1.lugar + "=0) goto " + sim.siguiente + "\n";
         sim.codigo += sim2.codigo;
