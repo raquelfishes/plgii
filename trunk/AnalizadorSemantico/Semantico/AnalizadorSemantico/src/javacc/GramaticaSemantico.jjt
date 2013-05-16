@@ -1714,7 +1714,7 @@ Simbolo expresion_primaria() #void:
   {
     sim.lugar = sim1.lugar + sim2.lugar;
     sim.codigo = sim1.codigo + sim2.codigo;
-    System.out.println("EXPRESION_PRIMARIA\t" + sim.codigo);
+    //System.out.println("EXPRESION_PRIMARIA\t" + sim.codigo);
     return sim;
   }
 }

@@ -3579,7 +3579,7 @@ void tipo_primitivo() :
     }
     sim.lugar = sim1.lugar + sim2.lugar;
     sim.codigo = sim1.codigo + sim2.codigo;
-    System.out.println("EXPRESION_PRIMARIA\u005ct" + sim.codigo);
+    //System.out.println("EXPRESION_PRIMARIA\t" + sim.codigo);
     {if (true) return sim;}
     throw new Error("Missing return statement in function");
   }

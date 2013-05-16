@@ -4,14 +4,15 @@ public class Prueba {
 	boolean isEnable;
 		
 	void main(){
-		Gato unArray [ ] = new Gato [ 5 ] ;
+		int unArray [ ] = new int [ 5 ] ;
+		unArray[2] = 23;
+		
 		i = 2+3;
 		//isEnable = 3;
 		boolean b = false || isEnable;
 		//b = true || 3;
 		
 		for (int i = 0; i < 10; i++){
-			int k,b;
 			k = b*2;			
 		}
 		
@@ -20,13 +21,13 @@ public class Prueba {
 	
 	//Hay que comprobar la sobrecarga de métodos?¿?¿?¿?¿¿?
 	
-	public int dameint1(char c){
+	public int dameint(char c){
 		
 		return 3+4;
 		
 	}
 	
-	public int dameint2(char c, boolean val){
+	public int dameint(char c, boolean val){
 		
 		return 3;//+"4";
 	}
