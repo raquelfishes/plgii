@@ -1208,7 +1208,9 @@ Simbolo declarador_variable_id() :
     jjtn000.value = t.image;
 
 	String lexema = t.image;
-	if(!gestorTSIntermedia.estaLexema(lexema))	{		gestorTSIntermedia.insertar(lexema, new Atributos(lexema,""));
+	if(!gestorTSIntermedia.estaLexema(lexema))	{
+	  	Atributos a = new Atributos(lexema,"");		gestorTSIntermedia.insertar(lexema, a);
+		System.out.println("TS: Insertando ident: "+ lexema +" con alias " +a.getAlias());
   	}
   	else  	{		System.err.println("No se puede insertar el lexema: "+lexema);
   	}

@@ -47,7 +47,7 @@ class Nododeclarador_variable_id extends SimpleNode {
 				  Compilador.gestorTS.insertar((String)value, a);
 				  
 				  System.out.println("Insertando parámetro: " + (String)value +
-						  " de tipo " + (String)nTipo.value);
+						  " de tipo " + (String)nTipo.value + " con alias "+a.getAlias());
 			  }
 			  else{
 				  addErrSemantico(firstToken.beginLine, "el identificador: "+(String)value+" no es válido");
