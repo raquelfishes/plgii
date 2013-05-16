@@ -2970,7 +2970,9 @@ Simbolo expresion_primaria()      :
   sim1 = prefijo_primario()
   ( sim2 = sufijo_primario()
     {
-      if (sim2.verdadera.equals("argumentos"))      {        sim2.codigo +="call " + sim1.lugar + ", " + sim2.comienzo + "\n";
+      if (sim2.verdadera.equals("argumentos"))      {
+        sim1.lugar = sim1.verdadera;
+        sim1.verdadera = "";        sim2.codigo +="call " + sim1.lugar + ", " + sim2.comienzo + "\n";
       }
       else
       {
@@ -3013,7 +3015,7 @@ Simbolo prefijo_primario()      :
 		sim.lugar = gestorTSIntermedia.getAtributos(t.image).getAlias();
 	else
 		sim.lugar = t.image;
-    //sim.lugar = t.image;
+    sim.verdadera = t.image;
     sim.codigo = "";
     return sim;
   }
