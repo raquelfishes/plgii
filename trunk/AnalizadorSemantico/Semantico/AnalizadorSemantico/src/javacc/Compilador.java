@@ -1469,7 +1469,7 @@ void tipo_primitivo() :
     InterfazPlg.escribirAvisos();
   }
     try {
-   System.out.println("-----------------ABRIENDO-------------------");
+   System.out.println("----------------- ABRIENDO-AMBITO ------------------");
 
     gestorTSIntermedia.nuevoAmbito("");
       label_15:
@@ -1544,7 +1544,7 @@ void tipo_primitivo() :
       jjtc000 = false;
       jjtn000.jjtSetLastToken(getToken(0));
         gestorTSIntermedia.cierraAmbito();
-    System.out.println("-----------------cerraNDO-------------------");
+    System.out.println("----------------- CERRANDO-AMBITO ------------------");
 
       if(t1.image=="void") {
         sim.codigo += sim1.codigo + "&return\u005cn";
@@ -3585,7 +3585,7 @@ void tipo_primitivo() :
     }
     sim.lugar = sim1.lugar + sim2.lugar;
     sim.codigo = sim1.codigo + sim2.codigo;
-    System.out.println("EXPRESION_PRIMARIA\u005ct" + sim.codigo);
+    //System.out.println("EXPRESION_PRIMARIA\t" + sim.codigo);
     {if (true) return sim;}
     throw new Error("Missing return statement in function");
   }
@@ -4478,7 +4478,7 @@ void tipo_primitivo() :
       }
     else
       {
-        System.out.println("IF\u005ct" + sim2.codigo);
+        //System.out.println("IF\t" + sim2.codigo);
         sim.codigo += "goto " + sim.comienzo + "\u005cn";
         sim.codigo += sim.comienzo + ":\u005cn" + "if (" + sim1.lugar + "=0) goto " + sim.siguiente + "\u005cn";
         sim.codigo += sim2.codigo;
