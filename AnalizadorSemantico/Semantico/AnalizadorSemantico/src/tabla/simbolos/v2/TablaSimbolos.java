@@ -28,8 +28,9 @@ public class TablaSimbolos {
 	{
 		Iterable<Atributos> listaAtributos = ts.values();
 		
+		//El alias de los arrays puede llegar a null
 		for(Atributos a : listaAtributos){
-			if(a.getAlias().equals(alias)){
+			if(a.getAlias()!=null && a.getAlias().equals(alias)){
 				return a;
 			}
 		}
