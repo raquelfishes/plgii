@@ -1,4 +1,4 @@
-A
+k
 class Prueba:
 tmp0:=1
 $var_0:=tmp0
@@ -26,4 +26,8 @@ tmp10:=9
 $var_3:=tmp10
 tmp11:=10
 $var_4:=tmp11
+&return
+&llamada:
+tmp13:=0
+$var_12:=tmp13
 &return

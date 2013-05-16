@@ -23,7 +23,8 @@ public class Prueba {
 		//f = array[3];
 	}
 	
-	//void llamada(int x){ FIXME Parece ser que la TS no añade las variables de parámetro, como esta "int x"
-	//	x = x+b;
-	//}
+	void llamada(int x){
+		//x = x+b; //FIXME Parece ser que la TS no encuentra las variables del método, como esta "int x"
+		int w = 0; //FIXME o esta w;
+	}
 }
