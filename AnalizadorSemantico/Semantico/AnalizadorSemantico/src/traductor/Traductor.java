@@ -379,8 +379,13 @@ public class Traductor {
 			nombreAmbitoActual = nombreAmbitoClase;
 			ambitoActual = ambitoGlobal;
 		} else {
-			//TODO Return con valor
-			output.add(";LINEA DE CODIGO SIN HACER, RETURN CON VALOR");
+			//Return devolviendo valor
+			linea = linea.replaceAll("return","");
+			linea = linea.replaceAll(" ", "");
+			linea = linea.replaceAll("&", "");
+			bloqueReturnConValor(linea);
+			nombreAmbitoActual = nombreAmbitoClase;
+			ambitoActual = ambitoGlobal;
 		}
 	}
 	
@@ -431,7 +436,6 @@ public class Traductor {
 		String s9 = "\t\tPUSH .R5";
 		String s10 = "\t\tPUSH .R6";
 		String s11 = "\t\tPUSH .R7";
-		String s12 = "\t\tPUSH .R8";
 		String s13 = "\t\tPUSH .R9";
 		String s14 = "\t\t;reservamos el espacio para variables locales en la pila";
 		String s15 = "\t\tSUB .SP, #" + calcularTamanoAmbito(ambitoActual);
@@ -450,7 +454,6 @@ public class Traductor {
 		output.add(s9);
 		output.add(s10);
 		output.add(s11);
-		output.add(s12);
 		output.add(s13);
 		output.add(s14);
 		output.add(s15);
@@ -491,7 +494,6 @@ public class Traductor {
 		output.add("\t\tMOVE .A, .SP");
 		output.add("\t\t;cargamos los registros de la pila");
 		output.add("\t\tPOP .R9");
-		output.add("\t\tPOP .R8");
 		output.add("\t\tPOP .R7");
 		output.add("\t\tPOP .R6");
 		output.add("\t\tPOP .R5");
@@ -523,6 +525,62 @@ public class Traductor {
 		output.add("");
 	}
 	
+	/**
+	 * Añade a output el bloque de código correspondiente al retorno de una función.
+	 */
+	private void bloqueReturnConValor(String s) {
+		//XXX
+		if (esUnNumero(s)) {
+			// Token es un número (inmediato)
+			output.add("\t\t\t\tMOVE #" + s + ", .R8");
+		} else if (!s.contains("$")){
+			// Token es un tmp
+			output.add("\t\t\t\tMOVE .R" + dameNumeroRegistro(s) + ", .R8");
+		} else if (!s.contains("[")){
+			// Token es una variable
+			output.add("\t\t\t\tMOVE " + getDesplazamientoVariable(s) + ", .R8");
+		} else {
+			// Token es un array
+			// XXX Array
+		}
+		output.add("");
+		output.add("");
+		output.add(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo " + nombreAmbitoActual);
+		output.add("\t\t;liberamos el espacio para variables locales de la pila");
+		output.add("\t\tADD .SP, #" + calcularTamanoAmbito(ambitoActual));
+		output.add("\t\tMOVE .A, .SP");
+		output.add("\t\t;cargamos los registros de la pila");
+		output.add("\t\tPOP .R9");
+		output.add("\t\tPOP .R7");
+		output.add("\t\tPOP .R6");
+		output.add("\t\tPOP .R5");
+		output.add("\t\tPOP .R4");
+		output.add("\t\tPOP .R3");
+		output.add("\t\tPOP .R2");
+		output.add("\t\tPOP .R1");
+		output.add("\t\tPOP .R0");
+		output.add("\t\tPOP .IX");
+		
+		output.add("\t\t;copiamos el antiguo .PC unas posiciones más abajo, justo encima del SP anterior");
+		output.add("\t\tMOVE .IY, .R9");
+		output.add("\t\tMOVE .SP, .IY");
+		output.add("\t\tMOVE #1[.IY], #0[.IX]");
+		output.add("\t\tMOVE .R9, .IY");
+		
+		String s17 = "\t\t;liberamos el espacio de los parametros de la llamada";
+		ArrayList<Atributos> aL = (ArrayList<Atributos>) gestorTS.dameParametrosMetodo(nombreAmbitoActual);
+		String s18 = "\t\tADD .SP, #" + aL.size();
+		String s19 = "\t\tMOVE .A, .SP";
+		String s20 = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;";
+		String s21 = "\t\tRET";
+		
+		output.add(s17);
+		output.add(s18);
+		output.add(s19);
+		output.add(s20);
+		output.add(s21);
+		output.add("");
+	}
 	
 	///////////////////////////////////////////////////////////////////////////
 	// ASIGNACIONES
@@ -535,13 +593,31 @@ public class Traductor {
 		StringTokenizer sT = new StringTokenizer(linea);
 		String s1 = sT.nextToken(":=");
 		String s2 = sT.nextToken(":=");
-		if (!s1.contains("$")) {
+		
+		//Atributos a = gestorTS.getAtributos(s2);
+		//if (a!=null && a.getEsMetodo()) {
+		if (!esUnNumero(s2) && !s2.startsWith("$") && !s2.startsWith("tmp")) {
+			//Segundo token es una función
+			if (esUnNumero(s1)) {
+				// Primer token es un número (inmediato)
+				output.add("\t\t\t\tMOVE .R8, #"+ s1);
+			} else if (!s1.contains("$")){
+				// Primer token es un tmp
+				output.add("\t\t\t\tMOVE .R8, .R" + dameNumeroRegistro(s1));
+			} else if (!s1.contains("[")){
+				// Primer token es una variable
+				output.add("\t\t\t\tMOVE .R8, " + getDesplazamientoVariable(s1));
+			} else {
+				// Primer token es un array
+				// XXX Array
+			}
+		} else if (!s1.contains("$")) {
 			//Primer token es un tmp
 			asignaRegistro(s1);
 			if (esUnNumero(s2)) {
 				// Segundo token es un número (inmediato)
 				bloqueAsignacionTmpInmediato(s1,s2);
-			} else if (!s2.contains("&")){
+			} else if (!s2.contains("$")){
 				// Segundo token es un tmp
 				asignaRegistro(s2);
 				bloqueAsignacionTmpTmp(s1,s2);
