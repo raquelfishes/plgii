@@ -17,11 +17,7 @@ class NodoMult extends SimpleNode {
   public void interpret()
   { 
 	 
-	  
 	  super.comprobacionNumerica(); 
-	  
-//    stack[--top] = new Integer(((Integer)stack[top]).intValue() +
-//    ((Integer)stack[top + 1]).intValue());
 	  
   }
 

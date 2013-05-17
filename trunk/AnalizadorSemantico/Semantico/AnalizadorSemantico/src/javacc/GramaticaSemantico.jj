@@ -75,7 +75,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@ege
         fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ejemplos/ProgramaIntermedio.txt"));
       }
       catch(java.io.FileNotFoundException e){
-        System.out.println ("MAL, NO HAS CREADO EL FICHERO");
+        System.out.println ("Error, el fichero no existe");
         return;
       }
       try {
@@ -379,33 +379,6 @@ SimpleNode compilar():
 /*@egen*/
 }
 
-
-/* Descomentar si se quiere volver a la version antigua sin comprobacion sem\u00e1ntica de las funciones
-void identificador() :
-{
-  Token t, t1 = null;
-  String s = "";
-  String restoTipo = "";
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  t = <IDENTIFICADOR> ( LOOKAHEAD(2) <PUNTO> t1=<IDENTIFICADOR> {restoTipo += "." + t1.image;} )*
-  {
-    if (usaInterfaz){
-      InterfazPlg.escribirIdentificadores(t.toString());
-    }
-
-	jjtThis.value = t.image + restoTipo;
-
-	//jjtThis.pilaTipos.push(jjtThis.nodeType);
-    //System.out.println("identificador "+t.image.toString());
-    //System.out.println("identificador "+t.kind);
-  }
-}*/
-
 Token identificador() :
 {/*@bgen(jjtree) identificador */
   Nodoidentificador jjtn000 = new Nodoidentificador(JJTIDENTIFICADOR);
@@ -437,12 +410,7 @@ Token identificador() :
     }
 
 	jjtn000.value = t.image + restoTipo;
-
-	//jjtThis.pilaTipos.push(jjtThis.nodeType);
-    //System.out.println("identificador "+t.image.toString());
-    //System.out.println("identificador "+t.kind);
-
-    /* NECESITO ENVIAR ESTE STRING */
+	
     s = t.image + restoTipo;
     return t;
   }/*@bgen(jjtree)*/
@@ -696,6 +664,7 @@ if (usaInterfaz)
     t = <LITERAL_STRING> { return t.image; }
 }
 
+
 String literal_boolean()      : 
 {
   Token t = new Token();
@@ -707,6 +676,7 @@ if (usaInterfaz)
     t = <LITERAL_BOOLEAN> { return t.image; }
 }
 
+
 String literal_null()      : 
 {
   Token t = new Token();
@@ -717,19 +687,6 @@ if (usaInterfaz)
     t = <LITERAL_NULL> { return t.image; }
 }
 
-/*
-void tipo() :
-{
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  ( tipo_primitivo() | identificador() ) ( <COR_A> <COR_C> )*
-}
-
-*/
 
 Token tipo() :
 {/*@bgen(jjtree) tipo */
@@ -756,7 +713,7 @@ Token tipo() :
     jjtc000 = false;
     jjtn000.jjtSetLastToken(getToken(0));
   }
-/*@egen*/ //FIXME Aun no se bien como coger los corchetes(a lo mejor ni es necesario), preguntar a Ricky
+/*@egen*/
   {
     return t;
   }/*@bgen(jjtree)*/
@@ -784,25 +741,6 @@ Token tipo() :
   
 }
 
-/* Descomentar si se quiere volver a la version antigua sin comprobacion sem\u00e1ntica de las funciones
-void tipo_primitivo() :
-{
-  if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }
-}
-{
-  	(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})
-    | <CHAR> { jjtThis.value = ConstantesTipos.CHAR;}
-    | <SHORT> { jjtThis.value = ConstantesTipos.SHORT;}
-    | <INT> { jjtThis.value = ConstantesTipos.INT;}
-    | <LONG> { jjtThis.value = ConstantesTipos.LONG;}
-    | <FLOAT> { jjtThis.value = ConstantesTipos.FLOAT;}
-    | <DOUBLE> { jjtThis.value = ConstantesTipos.DOUBLE;}
-
-}
-*/
 
 Token tipo_primitivo() :
 {/*@bgen(jjtree) tipo_primitivo */
@@ -820,7 +758,6 @@ Token tipo_primitivo() :
 {/*@bgen(jjtree) tipo_primitivo */
         try {
 /*@egen*/
-  	//t =(<BOOLEAN> { jjtThis.value = ConstantesTipos.BOOLEAN;})<-- CAMBIO MIO(Ricardo el m\u00e1s guay), no entiendo que diferencia hay si le quitas los parentesis
   	t =<BOOLEAN>/*@bgen(jjtree)*/
                      {
                        jjtree.closeNodeScope(jjtn000, true);
@@ -878,12 +815,6 @@ Token tipo_primitivo() :
         }
 /*@egen*/ 
     
-    /* 
-    * NECESITO DEVOLVER LA IMAGEN DEL TOKEN
-    * return t.image
-    * en lugar de:
-    * return t
-    */
 }
 
 
@@ -964,11 +895,6 @@ Token tipo_metodo() :
     }
   }
 /*@egen*/
-  /* NECESITO DEVOLER EL STRING QUE ME VIENE DE TIPO O "VOID"
-  * s = tipo() return s;
-  * en void:
-  * return t.image
-  */
 }
  
 
@@ -1205,14 +1131,10 @@ Simbolo declarador_variable_id() :
 	String lexema = t.image;
 	if(!gestorTSIntermedia.estaLexema(lexema))	{
 	  	Atributos a = new Atributos(lexema,"",false);//FIXME 		gestorTSIntermedia.insertar(lexema, a);
-		System.out.println("TS: Insertando ident: "+ lexema +" con alias " +a.getAlias());
+		System.out.println("TS-Intermedia: Insertando identificador: "+ lexema +" con alias " +a.getAlias());
   	}
-  	else  	{		System.err.println("No se puede insertar el lexema: "+lexema);
+  	else  	{		System.err.println("TS-Intermedia: No se puede insertar el identificador: "+lexema);
   	}
-    
-	//Atributos atribs = new Atributos(jjtThis.name, jjtThis.pilaTipos.peek());
-	//Compilador.gestorTS.insertar(jjtThis.name, atribs);
-	//System.out.println("Identificador: "+ jjtThis.name + " con tipo "+jjtThis.pilaTipos.peek());
   } ( <COR_A> <COR_C> /*{ s = '[' + ']';}*/ )*/*@bgen(jjtree)*/
   {
     jjtree.closeNodeScope(jjtn000, true);
@@ -1241,10 +1163,6 @@ Simbolo iniciar_variable()      :
   String s ="";
   String s1 = "";
   String s2 = "";
-  /*if (usaInterfaz)
-  {
-    InterfazPlg.escribirAvisos();
-  }*/
 }
 {
   <LLAVE_A> [ sim1 = iniciar_variable() ( LOOKAHEAD(2) <COMA> sim2 = iniciar_variable() { s = ',' + s; } )* ] [ <COMA> { s2 = ',' + "";} ] <LLAVE_C>
@@ -4062,13 +3980,8 @@ Simbolo sentencia_throw() :
 /*@egen*/
 }
 
-Simbolo sentencia_synchronized() :
-{/*@bgen(jjtree) sentencia_synchronized */
-  Nodosentencia_synchronized jjtn000 = new Nodosentencia_synchronized(JJTSENTENCIA_SYNCHRONIZED);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/
+Simbolo sentencia_synchronized()      :
+{
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
   Simbolo sim2 = new Simbolo();
@@ -4077,41 +3990,12 @@ Simbolo sentencia_synchronized() :
     InterfazPlg.escribirAvisos();
   }
 }
-{/*@bgen(jjtree) sentencia_synchronized */
-  try {
-/*@egen*/
-  <SYNCHRONIZED> <PAR_A> sim1=expresion() <PAR_C> sim2 = bloque()/*@bgen(jjtree)*/
-  {
-    jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-    jjtn000.jjtSetLastToken(getToken(0));
-  }
-/*@egen*/
+{
+  <SYNCHRONIZED> <PAR_A> sim1=expresion() <PAR_C> sim2 = bloque()
   { 
     sim.codigo = "synchronized" + '(' + sim1.codigo + ')' + sim2.codigo;
     return sim; 
-  }/*@bgen(jjtree)*/
-  } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      throw (RuntimeException)jjte000;
-    }
-    if (jjte000 instanceof ParseException) {
-      throw (ParseException)jjte000;
-    }
-    throw (Error)jjte000;
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtn000.jjtSetLastToken(getToken(0));
-    }
   }
-/*@egen*/
 }
 
 Simbolo sentencia_try() :

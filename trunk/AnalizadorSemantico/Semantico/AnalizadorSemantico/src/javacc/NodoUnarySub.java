@@ -13,6 +13,15 @@ class NodoUnarySub extends SimpleNode {
     super(p, id);
     this.value = ConstantesTipos.INT;
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=a00b3ab1f13f97af45ae7b091fb275e9 (do not edit this line) */

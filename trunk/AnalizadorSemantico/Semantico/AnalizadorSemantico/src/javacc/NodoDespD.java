@@ -11,6 +11,15 @@ class NodoDespD extends SimpleNode {
   public NodoDespD(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=2e5c51d2bdd07521a6873889c204470f (do not edit this line) */

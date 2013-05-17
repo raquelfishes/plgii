@@ -53,12 +53,23 @@ class Nodoasignacion extends SimpleNode {
 					  (String)n2.value+" a "+(String)n1.value+" al tener tipos incompatibles");
 		  }
 	  }
-	  else {
-		  addErrSemantico(firstToken.beginLine, "no puede asignarse "+
-				  (String)n1.value+", debe ser un identificador");
-	  }
-	  
+	  else{
+		  if (n1 instanceof NodoLiteralInteger){
+			  // estamos en un array
+			  Nodoidentificador idenArray = (Nodoidentificador)parent.jjtGetChild(0);
+			  String tipoArray = Compilador.gestorTS.getAtributos((String)idenArray.value).getTipo();
+			  String tipoVariable = a2 != null ? a2.getTipo() : (String)n2.value;
+			  
+			  if (!ConstantesTipos.esCompatible(tipoArray, tipoVariable)){
+				  addErrSemantico(firstToken.beginLine, "tipo de datos del array "+
+						  (String)idenArray.value+", incompatible");
+			  }
+		  }
+		  else{	  
+			  addErrSemantico(firstToken.beginLine, "no puede asignarse "+
+					  (String)n1.value+", debe ser un identificador");
+		  }
+	  }	  
   }
-
 }
 /* JavaCC - OriginalChecksum=90ac55abfb3ed5f52371f3ed38ec99c7 (do not edit this line) */

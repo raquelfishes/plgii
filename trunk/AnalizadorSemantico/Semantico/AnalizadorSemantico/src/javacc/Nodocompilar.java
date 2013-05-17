@@ -22,7 +22,7 @@ class Nodocompilar extends SimpleNode {
 
 	  for (i = 0; i < k; i++)
 	  {
-		  System.out.print("Executing:");
+		  System.out.print("Ejecutando:");
 		  Token first  = ((SimpleNode)jjtGetChild(i)).jjtGetFirstToken();
 		  Token last = ((SimpleNode)jjtGetChild(i)).jjtGetLastToken();
 		  for (Token t = first; t != null; t = t.next)

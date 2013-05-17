@@ -11,6 +11,15 @@ class Nodoexpresion_post extends SimpleNode {
   public Nodoexpresion_post(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=94c9b1958b9e6793648568996a17ea9e (do not edit this line) */

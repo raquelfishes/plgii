@@ -19,10 +19,6 @@ class NodoSub extends SimpleNode {
 	 
 	 super.comprobacionNumerica(); 
 		  
-	  
-//    stack[--top] = new Integer(((Integer)stack[top]).intValue() +
-//    ((Integer)stack[top + 1]).intValue());
-	  
   }
 
 }

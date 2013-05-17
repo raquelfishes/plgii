@@ -14,17 +14,11 @@ class Nodosentencia_return extends SimpleNode {
   
   public void interpret()
   {
-	 
-//    int i, k = jjtGetNumChildren();
-//
-//       for (i = 0; i < k; i++)
-//          jjtGetChild(i).interpret();
       
       //Puede tener uno o ningún hijo
       int numHijos = jjtGetNumChildren();
       
       if(numHijos==0){
-              //Estoy 99% seguro de que no deberia comprobar nada
       }
       else{//numHijos==1
               
