@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 import javacc.Compilador;
 import javacc.ParseException;
@@ -52,7 +53,7 @@ public class InterfazPlg {
 	private JTextArea JTextAreaArchivo;
 	private static JTextArea JTextArea_ID;
 	private static InterfazPlg INSTANCE;
-	
+	private List<Atributos> lista;
 	
 	/**
 	 * Launch the application.
@@ -259,6 +260,8 @@ public class InterfazPlg {
 		frmGrupo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmGrupo.getContentPane().setLayout(new MigLayout("", "[180.00,grow][360.00,grow][324.00,grow,fill][327.00,grow][]", "[64.00,grow][416.00,grow][grow 600]"));
 		
+		JTextArea_ID = new JTextArea();
+		
 		JPanel JPanelCI = new JPanel();
 		frmGrupo.getContentPane().add(JPanelCI, "cell 2 0 1 2,grow");
 		JPanelCI.setLayout(new MigLayout("", "[grow]", "[16.00][grow]"));
@@ -351,6 +354,7 @@ public class InterfazPlg {
 					     
 				         try {
 				        	 compilador = new Compilador(new java.io.FileInputStream(fich));
+				        	        	
 					     }
 				         catch(java.io.FileNotFoundException e) {
 				        	 System.out.println ("Compilador: El fichero no ha sido encontrado.");
@@ -364,11 +368,12 @@ public class InterfazPlg {
 					        return;
 				         }
 				         try {
+				        	 				        	 
 				        	 SimpleNode root = Compilador.compilar();
 				        	 Atributos.resetAliasCounter();
 				        	 root.dump("");
 				        	 System.out.println ("Compilador: La entrada ha sido leida con \u00e9xito.");
-				        	 compilador.jjtree.rootNode().interpret();
+				        	 compilador.rootNode().interpret();
 				        	 escribirFicheroCI();
 				        	 
 				        	 //Codigo final
@@ -378,6 +383,7 @@ public class InterfazPlg {
 				        	 
 				        	 generarFicheroENS();
 				        	 escribirFicheroCF();
+				        	 lista = compilador.gestorTS.dameListaAtributosDeClase();
 
 					      }
 					      catch(ParseException e){
@@ -398,27 +404,47 @@ public class InterfazPlg {
 		JButton_Ejecutar.setFont(new Font("Tahoma", Font.BOLD, 12));
 		JPanelBotones.add(JButton_Ejecutar, "cell 0 1,growx,aligny center");
 		
-		JButton JButton_ConsultaId = new JButton("Ver Identificadores");
+		//Descomentar esto si se quiere ver una lista con Lexemas.
+		
+		JButton JButton_ConsultaId = new JButton("Ver ElementosTS"); // Cambiar por Lexemas en su caso.
 		JButton_ConsultaId.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				frmGrupoID = new JFrame();
-				frmGrupoID.setTitle("Grupo3 - Compilador Java - Identificadores");
+				frmGrupoID.setTitle("Grupo3 - Compilador Java - GestionTS");
 				frmGrupoID.setBounds(100, 100, 460, 421);
 				frmGrupoID.setDefaultCloseOperation(frmGrupoID.DISPOSE_ON_CLOSE);
 				frmGrupoID.getContentPane().setLayout(new MigLayout("", "[grow]", "[][grow]"));
 				
-				JLabel lblListaDeIdentificadores = new JLabel("Lista de Identificadores procesados:");
-				lblListaDeIdentificadores.setHorizontalAlignment(SwingConstants.CENTER);
-				lblListaDeIdentificadores.setFont(new Font("Tahoma", Font.BOLD, 12));
-				frmGrupoID.getContentPane().add(lblListaDeIdentificadores, "cell 0 0");
+				JLabel lblListaDeTS = new JLabel("Lista de elementos procesados:");
+				lblListaDeTS.setHorizontalAlignment(SwingConstants.CENTER);
+				lblListaDeTS.setFont(new Font("Tahoma", Font.BOLD, 12));
+				frmGrupoID.getContentPane().add(lblListaDeTS, "cell 0 0");
 				
 				JScrollPane JScrollPane_ID = new JScrollPane();
 				frmGrupoID.getContentPane().add(JScrollPane_ID, "cell 0 1,grow");
 				
-				Compilador.usaInterfaz = true;
 				
-				JTextArea_ID = new JTextArea();
+				JTextArea_ID.setText("----Lexemas----");
+				for(int i=0; i< lista.size(); i++) {
+	        		String parcial = JTextArea_ID.getText();
+	        		JTextArea_ID.setText(parcial+"\n"+lista.get(i).getLexema());
+	            }
+				
+				String parcialA = JTextArea_ID.getText();
+				JTextArea_ID.setText(parcialA+"\n"+"----Alias----");
+				for(int i=0; i< lista.size(); i++) {
+	        		String parcial = JTextArea_ID.getText();
+	        		JTextArea_ID.setText(parcial+"\n"+lista.get(i).getAlias());
+	            }
+				
+				String parcialT = JTextArea_ID.getText();
+				JTextArea_ID.setText(parcialT+"\n"+"----Tipos----");
+				for(int i=0; i< lista.size(); i++) {
+	        		String parcial = JTextArea_ID.getText();
+	        		JTextArea_ID.setText(parcial+"\n"+lista.get(i).getTipo());
+	            }
+				
 				JTextArea_ID.setEditable(false);
 				JScrollPane_ID.setViewportView(JTextArea_ID);
 				frmGrupoID.setVisible(true);
@@ -449,10 +475,11 @@ public class InterfazPlg {
 		JButton_Reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				fich = null;
-				JTextAreaArchivo.setText(null);
+				JTextAreaArchivo.setText("");
 				JTextAreaCI.setText("");
 				JTextAreaCF.setText("");
 				JTextAreaAvisos.setText("");
+				JTextArea_ID.setText("");
 				
 			}
 		});
