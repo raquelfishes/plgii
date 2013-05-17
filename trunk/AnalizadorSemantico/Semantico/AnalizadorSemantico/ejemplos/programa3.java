@@ -1,21 +1,14 @@
+//BUCLE FOR
+
+//Aquí se comprueba el correcto funcionamiento del bucle for
+
 public class Prueba {
-	int i, k;
-	int b = 100;
-	boolean a;
-	
+	int a = 100;	
 	
 	void main(){
-		for (int l=0; l < 20; l++) {
-			b = b+1;
+		int j = 5;
+		for (int i=0; i < j; i=i+1) {
+			a = a+2;
 		}
 	}
-	/*
-	void main(){
-		if (b <= 100) {
-			i = 25;
-		} else {
-			i = 50;
-		}
-	}
-	*/
 }
