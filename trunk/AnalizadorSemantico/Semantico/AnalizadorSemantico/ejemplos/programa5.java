@@ -3,17 +3,16 @@
 //Comprobamos que la función devuelve el valor adecuadamente
 
 public class Prueba {
-	int i, k;
-	int b = 100;
-	boolean a;
-	
-	int llamada(int x){
-		x = x+b;
-		return x;
-	}
+	int resultado = 0;
 	
 	void main(){
-		i = 25;
-		k = llamada (i);
+		int x = 10;
+		int y = 22;
+		resultado = suma(x,y);
+	}
+	
+	int suma(int a, int b){
+		//int s = a+b;
+		return a+b;
 	}
 }

@@ -1,59 +1,35 @@
-Ÿ
+Á
 class Prueba:
-tmp0:=100
-$var_2:=tmp0
+tmp0:=6
+$var_0:=tmp0
+tmp1:=0
+$var_1:=tmp1
 &main:
-tmp2:=25
-$var_0:=tmp2
-if0:
-tmp3:=0
-if ($var_0=tmp3) goto etiq0
-tmp3:=0
+param $var_0
+call factorial_rec, 
+$var_1:=factorial_rec
+&return
+&factorial_rec:
+tmp4:=1
+$var_3:=tmp4
+tmp5:=1
+if ($var_2>tmp5) goto etiq0
+tmp6:=0
 goto etiq1
 etiq0:
-tmp3:=1
+tmp6:=1
 etiq1:
-if (tmp3=0) goto case1
-tmp4:=11
-$var_1:=tmp4
-case1:
-tmp5:=1
-if ($var_0=tmp5) goto etiq2
-tmp5:=0
-goto etiq3
-etiq2:
-tmp5:=1
-etiq3:
-if (tmp5=0) goto case2
-tmp6:=22
-$var_1:=tmp6
-goto fin_if0
-case2:
-tmp7:=2
-if ($var_0=tmp7) goto etiq4
-tmp7:=0
-goto etiq5
-etiq4:
+goto if0
+if0:
+if (tmp6=0) goto fin_if0
+$var_4:=$var_2
 tmp7:=1
-etiq5:
-if (tmp7=0) goto case3
-tmp8:=33
-$var_1:=tmp8
-goto fin_if0
-case3:
-tmp9:=5
-if ($var_0=tmp9) goto etiq6
-tmp9:=0
-goto etiq7
-etiq6:
-tmp9:=1
-etiq7:
-if (tmp9=0) goto case4
-tmp10:=44
-$var_1:=tmp10
-goto fin_if0
-case4:
-tmp11:=111
-$var_1:=tmp11
-fin_if0:
-&return
+tmp8:=$var_4-tmp7
+$var_4:=tmp8
+param $var_4
+call factorial_rec, 
+$var_3:=factorial_rec
+tmp9:=$var_3*$var_2
+$var_3:=tmp9
+fin_if0: 
+&return $var_3

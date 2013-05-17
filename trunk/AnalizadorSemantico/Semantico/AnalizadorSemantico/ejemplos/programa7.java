@@ -4,4 +4,21 @@
 
 public class Prueba {
 	
+	int a = 6;
+	int fact = 0; //fact(6) es 720
+	
+	void main() {
+		fact = factorial_rec(a);
+	}
+	
+	int factorial_rec(int x) {
+		int f = 1;
+		if (x>1) {
+			int x2 = x;
+			x2 = x2-1;
+			f = factorial_rec(x2);
+			f = f*x;
+		}
+		return f;
+	}
 }
