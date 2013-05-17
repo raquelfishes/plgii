@@ -4,7 +4,7 @@ Prueba:
 ;colocamos el puntero de pila en la cima de la memoria
 MOVE #65535, .SP
 ;reservamos el espacio para variables globales de clase en la pila
-SUB .SP, #4
+SUB .SP, #2
 MOVE .A, .SP
 ;guardamos en .IY el puntero a pila, para tener controladas las variables globales
 MOVE .SP, .IY
@@ -12,10 +12,7 @@ MOVE .SP, .IY
 MOVE .SP, .IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-MOVE #0, .R0
-MOVE .R0, #1[.IY]
 MOVE .R8, .R-1
-MOVE .R-1, #2[.IY]
+MOVE .R-1, #1[.IY]
 MOVE #3, .R0
-MOVE .R0, #3[.IY]
-MOVE #1[.IY], #4[.IY]
+MOVE .R0, #2[.IY]
