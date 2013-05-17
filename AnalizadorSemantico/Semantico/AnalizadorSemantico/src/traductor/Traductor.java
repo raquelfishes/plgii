@@ -314,7 +314,6 @@ public class Traductor {
 	 * @param linea
 	 */
 	private void esProcedimientoPasoParam(String linea) {
-		//XXX Paso de parámetros POR COPIA
 		linea = linea.replaceAll("param", "").replaceAll(" ", "");
 		String s = "\t\t\t\tPUSH ";
 		if (esUnNumero(linea)) {
@@ -344,9 +343,7 @@ public class Traductor {
 		String s2 = sT.nextToken(",");
 		s1 = s1.replaceAll("call", "").replaceAll(" ","");
 		s2 = s2.replaceAll(" ", "");
-		String s = "\t\t\t\tPUSH #" + s2; //Este numero indicará a la funcion llamada cuantos push de parámetros ha habido
-		output.add(s);
-		s = "\t\t\t\tCALL /" + s1;
+		String s = "\t\t\t\tCALL /" + s1;
 		output.add(s);
 	}
 	
@@ -357,14 +354,15 @@ public class Traductor {
 	private void esProcedimientoRetorno(String linea) {
 		if (linea.replaceAll(" ", "").equals("&return")) {
 			// Return sin devolver valor
-			bloqueReturnSinValor();
 			if (nombreAmbitoActual.toLowerCase().equals("main")) { //Fin de la ejecución
-				output.add("\t\t;liberamos el espacio para variables locales de la pila");
-				output.add("\t\tADD .SP, #" + (calcularTamanoAmbito(ambitoActual)-1));
+				output.add("\t\t;liberamos el espacio para variables globales");
+				output.add("\t\tADD .SP, #" + calcularTamanoAmbito(ambitoGlobal));
 				output.add("\t\tMOVE .A, .SP");
 				output.add("");
 				output.add("\t\t;Fin de la ejecución.");
 				output.add("\t\tHALT");
+			} else {
+				bloqueReturnSinValor();
 			}
 			nombreAmbitoActual = nombreAmbitoClase;
 			ambitoActual = ambitoGlobal;
@@ -426,7 +424,7 @@ public class Traductor {
 		String s14 = "\t\t;reservamos el espacio para variables locales en la pila";
 		String s15 = "\t\tSUB .SP, #" + calcularTamanoAmbito(ambitoActual);
 		String s16 = "\t\tMOVE .A, .SP";
-		String s17 = "\t\t;.IX apunta todavía al anterior marco de pila, lo usamos para rescatar los parámetros";
+		
 		output.add("");
 		output.add(s0);
 		output.add(s1);
@@ -445,18 +443,27 @@ public class Traductor {
 		output.add(s14);
 		output.add(s15);
 		output.add(s16);
-		output.add(s17);
-		//int desp =  1/*numParams*/; //Desp desde .IX
-		//ArrayList<Atributos> aL = gestorTS.getAtributos(nombreAmbitoActual).getListaParametros(); //XXX comprobar
-		//for (int i = desp; i< aL.size(); i++) {
-		//	String s= "\t\tMOVE #" + (desp+aL.size()-i) + "[.IX], #" + desplazamiento(aL.get(i), ambitoActual) + "[.SP]";
-		//	output.add(s);
-		//}
-		String s18 = "\t\t;guardamos en .IX el puntero a pila, para usar este registro como índice de este método";
-		String s19 = "\t\tMOVE .SP, .IX";
 		
-		output.add(s18);
-		output.add(s19);
+		
+		//Parte encargada de gestionar los parámetros pasados
+		output.add("\t\t;salvamos el valor de .IY");
+		output.add("\t\tMOVE .IY, .R9");
+		output.add("\t\t;.IX apunta todavía al anterior marco de pila, lo usaremos para rescatar los parámetros (si hay)");
+		output.add("\t\tMOVE .IX, .IY");
+		output.add("\t\t;guardamos en .IX el puntero a pila, para usar este registro como índice de este método");
+		output.add("\t\tMOVE .SP, .IX");
+		output.add("\t\t;guardamos los parámetros pasados (si los hay) en sus respectivas variables locales");
+		int desp =  0; //Desp desde .IX
+		ArrayList<Atributos> aL = (ArrayList<Atributos>) gestorTS.dameParametrosMetodo(nombreAmbitoActual);
+		for (int i = desp; i< aL.size(); i++) {
+			String s= "\t\tMOVE #" + -i + "[.IY], #" + desplazamiento(aL.get(i), ambitoActual) + "[.IX]";
+			output.add(s);
+		}
+		output.add("\t\t;restauramos el valor de .IY");
+		output.add("\t\tMOVE .R9, .IY");		
+		
+		
+		
 		output.add(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
 		output.add("");
 	}
@@ -465,48 +472,42 @@ public class Traductor {
 	 * Añade a output el bloque de código correspondiente al retorno de un método.
 	 */
 	private void bloqueReturnSinValor() {
-		String s1 = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo " + nombreAmbitoActual;
-		String s2 = "\t\t;liberamos el espacio para variables locales de la pila";
-		String s3 = "\t\tADD .SP, #" + calcularTamanoAmbito(ambitoActual);
-		String s4 = "\t\tMOVE .A, .SP";
-		String s5 = "\t\t;cargamos los registros de la pila";
-		String s6 = "\t\tPOP .R9";
-		String s7 = "\t\tPOP .R8";
-		String s8 = "\t\tPOP .R7";
-		String s9 = "\t\tPOP .R6";
-		String s10 = "\t\tPOP .R5";
-		String s11 = "\t\tPOP .R4";
-		String s12 = "\t\tPOP .R3";
-		String s13 = "\t\tPOP .R2";
-		String s14 = "\t\tPOP .R1";
-		String s15 = "\t\tPOP .R0";
-		String s16 = "\t\tPOP .IX";
-		String s17 = "\t\t;liberamos el espacio de los parametros de la llamada";
-		//ArrayList<Atributos> aL = gestorTS.getAtributos(nombreAmbitoActual).getListaParametros(); //XXX comprobar
-		//String s18 = "\t\tADD .SP, #" + aL.size()+1/*numParams*/;
-		//String s19 = "\t\tMOVE .A, .SP";
-		String s20 = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;";
 		output.add("");
-		output.add(s1);
-		output.add(s2);
-		output.add(s3);
-		output.add(s4);
-		output.add(s5);
-		output.add(s6);
-		output.add(s7);
-		output.add(s8);
-		output.add(s9);
-		output.add(s10);
-		output.add(s11);
-		output.add(s12);
-		output.add(s13);
-		output.add(s14);
-		output.add(s15);
-		output.add(s16);
+		output.add(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo " + nombreAmbitoActual);
+		output.add("\t\t;liberamos el espacio para variables locales de la pila");
+		output.add("\t\tADD .SP, #" + calcularTamanoAmbito(ambitoActual));
+		output.add("\t\tMOVE .A, .SP");
+		output.add("\t\t;cargamos los registros de la pila");
+		output.add("\t\tPOP .R9");
+		output.add("\t\tPOP .R8");
+		output.add("\t\tPOP .R7");
+		output.add("\t\tPOP .R6");
+		output.add("\t\tPOP .R5");
+		output.add("\t\tPOP .R4");
+		output.add("\t\tPOP .R3");
+		output.add("\t\tPOP .R2");
+		output.add("\t\tPOP .R1");
+		output.add("\t\tPOP .R0");
+		output.add("\t\tPOP .IX");
+		
+		output.add("\t\t;copiamos el antiguo .PC unas posiciones más abajo, justo encima del SP anterior");
+		output.add("\t\tMOVE .IY, .R9");
+		output.add("\t\tMOVE .SP, .IY");
+		output.add("\t\tMOVE #1[.IY], #0[.IX]");
+		output.add("\t\tMOVE .R9, .IY");
+		
+		String s17 = "\t\t;liberamos el espacio de los parametros de la llamada";
+		ArrayList<Atributos> aL = (ArrayList<Atributos>) gestorTS.dameParametrosMetodo(nombreAmbitoActual);
+		String s18 = "\t\tADD .SP, #" + aL.size();
+		String s19 = "\t\tMOVE .A, .SP";
+		String s20 = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;";
+		String s21 = "\t\tRET";
+		
 		output.add(s17);
-		//output.add(s18);
-		//output.add(s19);
+		output.add(s18);
+		output.add(s19);
 		output.add(s20);
+		if (!nombreAmbitoActual.toLowerCase().equals("main")) 	output.add(s21);
 		output.add("");
 	}
 	
@@ -585,8 +586,7 @@ public class Traductor {
 	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
 	 */
 	private void bloqueAsignacionTmpInmediato(String s1, String s2) {
-		registros[0] = s1;
-		String s = "\t\t\t\tMOVE #" + s2 + ", .R" + dameNumeroRegistro(s1) + "\t\t\t\t;r0 contiene " + registros[0];
+		String s = "\t\t\t\tMOVE #" + s2 + ", .R" + dameNumeroRegistro(s1);
 		output.add(s);
 	}
 	
@@ -594,8 +594,7 @@ public class Traductor {
 	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
 	 */
 	private void bloqueAsignacionTmpTmp(String s1, String s2) {
-		registros[0] = s1;
-		String s = "\t\t\t\tMOVE .R" + dameNumeroRegistro(s2) + ", .R" + dameNumeroRegistro(s1) + "\t\t\t\t;r0 contiene " + registros[0];
+		String s = "\t\t\t\tMOVE .R" + dameNumeroRegistro(s2) + ", .R" + dameNumeroRegistro(s1);
 		output.add(s);
 	}
 	
@@ -603,8 +602,7 @@ public class Traductor {
 	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
 	 */
 	private void bloqueAsignacionTmpVariable(String s1, String s2) {
-		registros[0] = s1;
-		String s = "\t\t\t\tMOVE " + getDesplazamientoVariable(s2) + ", .R" + dameNumeroRegistro(s1) + "\t\t\t\t;r0 contiene " + registros[0];
+		String s = "\t\t\t\tMOVE " + getDesplazamientoVariable(s2) + ", .R" + dameNumeroRegistro(s1);
 		output.add(s);
 	}
 
@@ -612,7 +610,7 @@ public class Traductor {
 	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
 	 */
 	private void bloqueAsignacionVariableInmediato(String s1, String s2) {
-		String s = "\t\t\t\tMOVE #" + s2 + ", " + getDesplazamientoVariable(s1) + "\t\t\t\t;Asignacion Variable:=Inmediato";
+		String s = "\t\t\t\tMOVE #" + s2 + ", " + getDesplazamientoVariable(s1);
 		output.add(s);
 	}
 	
@@ -620,8 +618,7 @@ public class Traductor {
 	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
 	 */
 	private void bloqueAsignacionVariableTmp(String s1, String s2) {
-		registros[0] = s2;
-		String s = "\t\t\t\tMOVE .R" + dameNumeroRegistro(s2) + ", " + getDesplazamientoVariable(s1) + "\t\t\t\t;r0 contiene " + registros[0];
+		String s = "\t\t\t\tMOVE .R" + dameNumeroRegistro(s2) + ", " + getDesplazamientoVariable(s1);
 		output.add(s);
 	}
 	
@@ -629,8 +626,7 @@ public class Traductor {
 	 * Añade a output el bloque de código correspondiente a este tipo de asignación.
 	 */
 	private void bloqueAsignacionVariableVariable(String s1, String s2) {
-		registros[0] = s2;
-		String s = "\t\t\t\tMOVE " + getDesplazamientoVariable(s2) + ", " + getDesplazamientoVariable(s1) + "\t\t\t\t;r0 contiene " + registros[0];
+		String s = "\t\t\t\tMOVE " + getDesplazamientoVariable(s2) + ", " + getDesplazamientoVariable(s1);
 		output.add(s);
 	}
 
@@ -721,7 +717,7 @@ public class Traductor {
 				t ++;
 			}
 		}
-		return t;
+		return t;//-1;  // XXX ¿?
 	}
 	
 	//ASIGNACIÓN DE REGISTROS//////////////////////////////////////////////////

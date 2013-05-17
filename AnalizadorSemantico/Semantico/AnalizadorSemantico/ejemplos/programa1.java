@@ -1,56 +1,32 @@
+//ASIGNACIONES Y MÉTODOS
+
+//Este programa va a asignar 800 a la variable global "w" y 600 a la variable global "h", mediante
+//llamadas a funciones y paso de parámetros
+
 public class Prueba {
 	
-	int a = 1;
-	int b = 2;
-	int c = 3;
-	int d = 4;
-	int e = 5;
+	int w = 1;
+	int h = 2;
+	int l = 3;
 	
 	void main(){
-		//int a = 0;
-		int[] array = new int[10];
-		i = array[b];
-		
+		int width = 800;
+		llamada1(width);
 	}
 	
-	void llamada1(int x){
-		//x = x+b; //FIXME Parece ser que la TS no encuentra las variables del método, como esta "int x"
-		int w = 0; //FIXME o esta w;
+	void llamada1(int width){
+		int height = 600;
+		llamada2(width, height);
 	}
 	
-	void llamada2(){
-		//x = x+b; //FIXME Parece ser que la TS no encuentra las variables del método, como esta "int x"
-		int w = 0; //FIXME o esta w;
+	void llamada2(int width, int height) {
+		int length = 100;
+		llamada3(width, height, length);
 	}
 	
-	/*
-	int a = 1;
-	int b = 2;
-	int c = 3;
-	int d = 4;
-	int e = 5;
-	
-	void main(){
-		//int a = 0;
-		int[] array = new int[10];
-		int f, g, h, i, j;
-		f = a;
-		g = b;
-		h = c;
-		i = d;
-		j = e;
-		a = 6;
-		b = 7;
-		c = 8;
-		d = 9;
-		e = 10;
-		//llamada(i, j, a);
-		//f = array[3];
+	void llamada3(int width, int height, int length){
+		w = width;
+		h = height;
+		l = length;
 	}
-	
-	void llamada(int x){
-		//x = x+b; //FIXME Parece ser que la TS no encuentra las variables del método, como esta "int x"
-		int w = 0; //FIXME o esta w;
-	}
-	*/
 }
