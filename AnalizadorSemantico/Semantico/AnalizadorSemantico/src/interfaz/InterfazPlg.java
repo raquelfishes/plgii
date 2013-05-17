@@ -236,7 +236,6 @@ public class InterfazPlg {
 	        	FileReader lector = new FileReader(fich);
 	            BufferedReader buffer = new BufferedReader(lector);
 	            String linea = "";
-	            linea = buffer.readLine();
 	            int numLinea = 1;
 	            
 	            while((linea = buffer.readLine()) != null){

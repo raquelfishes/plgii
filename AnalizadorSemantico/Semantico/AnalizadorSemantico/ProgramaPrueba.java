@@ -1,4 +1,3 @@
-
 public class Prueba {
 	boolean b = 'c';
 	int a1 = 3;
