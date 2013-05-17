@@ -27,30 +27,31 @@ class Nodoasignacion extends SimpleNode {
 	  
 	  if (n1 instanceof Nodoidentificador){
 		  a1 = Compilador.gestorTS.getAtributos((String)n1.value);
-		  if (a1 == null){
-			  addErrSemantico(firstToken.beginLine, "el identificador "+
-					  (String)n1.value+" no existe en este ámbito o es un tipo");
+		  if (a1 == null ){
+			  if (!Compilador.gestorTS.esMetodoRepetido((String)n1.value))
+			  addErrSemantico(firstToken.beginLine, "el identificador '"+
+					  (String)n1.value+"' no existe en este ámbito o es un tipo");
 		  }
 	  }
 	  
 	  if (n2 instanceof Nodoidentificador){
 		  a2 = Compilador.gestorTS.getAtributos((String)n2.value);
 		  if (a2 == null){
-			  addErrSemantico(firstToken.beginLine, "el identificador "+
-					  (String)n2.value+" no existe en este ámbito  o es un tipo");
+			  addErrSemantico(firstToken.beginLine, "el identificador '"+
+					  (String)n2.value+"' no existe en este ámbito  o es un tipo");
 		  }
 	  }
 	  
 	  if (a1 != null && a2 != null){
 		  if (!ConstantesTipos.esCompatible(a1.getTipo(), a2.getTipo())){
-			  addErrSemantico(firstToken.beginLine, "no puede asignarse "+
-					  (String)n2.value+" a "+(String)n1.value+" al tener tipos incompatibles");
+			  addErrSemantico(firstToken.beginLine, "no puede asignarse '"+
+					  (String)n2.value+"' a '"+(String)n1.value+"' al tener tipos incompatibles");
 		  }
 	  }
 	  else if(a1 != null){
 		  if (!ConstantesTipos.esCompatible(a1.getTipo(), (String)n2.value)){
-			  addErrSemantico(firstToken.beginLine, "no puede asignarse "+
-					  (String)n2.value+" a "+(String)n1.value+" al tener tipos incompatibles");
+			  addErrSemantico(firstToken.beginLine, "no puede asignarse '"+
+					  (String)n2.value+"' a '"+(String)n1.value+"' al tener tipos incompatibles");
 		  }
 	  }
 	  else{
@@ -61,13 +62,16 @@ class Nodoasignacion extends SimpleNode {
 			  String tipoVariable = a2 != null ? a2.getTipo() : (String)n2.value;
 			  
 			  if (!ConstantesTipos.esCompatible(tipoArray, tipoVariable)){
-				  addErrSemantico(firstToken.beginLine, "tipo de datos del array "+
-						  (String)idenArray.value+", incompatible");
+				  addErrSemantico(firstToken.beginLine, "tipo de datos del array '"+
+						  (String)idenArray.value+"', incompatible");
 			  }
 		  }
 		  else{	  
-			  addErrSemantico(firstToken.beginLine, "no puede asignarse "+
-					  (String)n1.value+", debe ser un identificador");
+			  if (!(n2 instanceof Nodoidentificador && 
+					  Compilador.gestorTS.esMetodoRepetido((String)n1.value))){
+				  addErrSemantico(firstToken.beginLine, "no puede asignarse '"+
+						  (String)n1.value+"', debe ser un identificador");
+			  }
 		  }
 	  }	  
   }

@@ -1,36 +1,25 @@
-public class Prueba {
-	boolean b = 'c';
-	int a1 = 3;
+//RECURSION
 
+//Vemos como se pueden emplear funciones recursivas 
+
+public class Prueba {
 	
-	/*
-	int a = 1;
-	int b = 2;
-	int c = 3;
-	int d = 4;
-	int e = 5;
+	int a = 6;
+	int fact = 0; //fact(6) es 720
 	
-	void main(){
-		//int a = 0;
-		int[] array = new int[10];
-		int f, g, h, i, j;
-		f = a;
-		g = b;
-		h = c;
-		i = d;
-		j = e;
-		a = 6;
-		b = 7;
-		c = 8;
-		d = 9;
-		e = 10;
-		//llamada(i, j, a);
-		//f = array[3];
+	int factorial_rec(int x) {
+		int f = 1;
+		if (x>1) {
+			int x2 = x;
+			x2 = x2-1;
+			f = factorial_rec(x2);
+			f = f*x;
+		}
+		return f;
 	}
 	
-	void llamada(int x){
-		//x = x+b; //FIXME Parece ser que la TS no encuentra las variables del método, como esta "int x"
-		int w = 0; //FIXME o esta w;
+	void main() {
+		fact = factorial_rec(a);
 	}
-	*/
+	
 }

@@ -12,7 +12,138 @@ MOVE .SP, .IY
 MOVE .SP, .IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-MOVE .R8, .R-1
-MOVE .R-1, #1[.IY]
-MOVE #3, .R0
+MOVE #6, .R0
 MOVE .R0, #2[.IY]
+MOVE #0, .R0
+MOVE .R0, #1[.IY]
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito factorial_rec
+factorial_rec:
+;guardamos los registros en pila
+PUSH .IX
+PUSH .R0
+PUSH .R1
+PUSH .R2
+PUSH .R3
+PUSH .R4
+PUSH .R5
+PUSH .R6
+PUSH .R7
+PUSH .R9
+;reservamos el espacio para variables locales en la pila
+SUB .SP, #4
+MOVE .A, .SP
+;salvamos el valor de .IY
+MOVE .IY, .R9
+;.IX apunta todavía al anterior marco de pila, lo usaremos para rescatar los parámetros (si hay)
+MOVE .IX, .IY
+;guardamos en .IX el puntero a pila, para usar este registro como índice de este método
+MOVE .SP, .IX
+;guardamos los parámetros pasados (si los hay) en sus respectivas variables locales
+MOVE #0[.IY], #3[.IX]
+;restauramos el valor de .IY
+MOVE .R9, .IY
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+MOVE #1, .R0
+MOVE .R0, #1[.IX]
+MOVE #1, .R0
+CMP #3[.IX], .R0
+BN $etiqueta_0
+BNZ $etiq0
+etiqueta_0:
+MOVE #0, .R0
+BR $etiq1
+
+etiq0:
+NOP
+MOVE #1, .R0
+
+etiq1:
+NOP
+BR $if0
+
+if0:
+NOP
+CMP .R0, #0
+BZ $fin_if0
+MOVE #3[.IX], #4[.IX]
+MOVE #1, .R0
+SUB #4[.IX], .R0
+MOVE .A, .R1
+MOVE .R1, #4[.IX]
+PUSH #4[.IX]
+CALL /factorial_rec
+MOVE .R8, #1[.IX]
+MUL #1[.IX], #3[.IX]
+MOVE .A, .R0
+MOVE .R0, #1[.IX]
+
+fin_if0:
+NOP
+MOVE #1[.IX], .R8
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo factorial_rec
+;liberamos el espacio para variables locales de la pila
+ADD .SP, #4
+MOVE .A, .SP
+;cargamos los registros de la pila
+POP .R9
+POP .R7
+POP .R6
+POP .R5
+POP .R4
+POP .R3
+POP .R2
+POP .R1
+POP .R0
+POP .IX
+;copiamos el antiguo .PC unas posiciones más abajo, justo encima del SP anterior
+MOVE .IY, .R9
+MOVE .SP, .IY
+MOVE #1[.IY], #0[.IX]
+MOVE .R9, .IY
+;liberamos el espacio de los parametros de la llamada
+ADD .SP, #1
+MOVE .A, .SP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+RET
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito main
+main:
+;guardamos los registros en pila
+PUSH .IX
+PUSH .R0
+PUSH .R1
+PUSH .R2
+PUSH .R3
+PUSH .R4
+PUSH .R5
+PUSH .R6
+PUSH .R7
+PUSH .R9
+;reservamos el espacio para variables locales en la pila
+SUB .SP, #1
+MOVE .A, .SP
+;salvamos el valor de .IY
+MOVE .IY, .R9
+;.IX apunta todavía al anterior marco de pila, lo usaremos para rescatar los parámetros (si hay)
+MOVE .IX, .IY
+;guardamos en .IX el puntero a pila, para usar este registro como índice de este método
+MOVE .SP, .IX
+;guardamos los parámetros pasados (si los hay) en sus respectivas variables locales
+;restauramos el valor de .IY
+MOVE .R9, .IY
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PUSH #2[.IY]
+CALL /factorial_rec
+MOVE .R8, #1[.IY]
+;liberamos el espacio para variables globales
+ADD .SP, #2
+MOVE .A, .SP
+
+;Fin de la ejecución.
+HALT
