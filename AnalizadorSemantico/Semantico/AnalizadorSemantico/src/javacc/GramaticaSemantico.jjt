@@ -1276,7 +1276,8 @@ Simbolo expresion_relacional() #void:
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
       sim.codigo = sim1.codigo;
-      sim.codigo += "if (" + s + "<=" + sim1.lugar + ") goto " + s1 + "\n";
+      sim.codigo += "if (" + s + "<" + sim1.lugar + ") goto " + s1 + "\n";
+      sim.codigo += "if (" + s + "=" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
@@ -1289,7 +1290,8 @@ Simbolo expresion_relacional() #void:
       s2 = nuevaEtiq();
       sim.lugar = nuevaTemp();
       sim.codigo = sim1.codigo;
-      sim.codigo += "if (" + s + ">=" + sim1.lugar + ") goto " + s1 + "\n";
+      sim.codigo += "if (" + s + ">" + sim1.lugar + ") goto " + s1 + "\n";
+      sim.codigo += "if (" + s + "=" + sim1.lugar + ") goto " + s1 + "\n";
       sim.codigo += sim.lugar + ":=0\n";
       sim.codigo += "goto " + s2 + "\n";
       sim.codigo += s1 + ":\n" + sim.lugar + ":=1\n";
