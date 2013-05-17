@@ -1001,7 +1001,7 @@ public class Traductor {
 		} else if (ambitoActual.contains(a)) { //ES DEL ÁMBITO ACTUAL
 			s= "#" + desplazamiento(a, ambitoActual) + "[.IX]";
 		} else {
-			System.err.println("Traductor error: Error en getDesplazamiento. Variable no encontrada.");
+			System.err.println(">>> Traductor error: Error en getDesplazamiento. Variable no encontrada.");
 		}
 		return s;
 	}

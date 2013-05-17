@@ -354,8 +354,8 @@ public class InterfazPlg {
 				        	 else
 				        		 Compilador.ReInit(new java.io.FileInputStream(fich));
 				        	 
-				        	 Compilador.usaInterfaz = false;
 							 Compilador.initGestorTS();
+							 Atributos.resetAliasCounter();
 
 						     System.out.println ("Compilador: Leyendo de fichero ");
 				        	        	

@@ -1,9 +1,7 @@
 
 public class Prueba {
-	boolean b = true;
-	int a1 = 'c';
-	int a2 = 3;
-	int a3 = b;
+	boolean b = 'c';
+	int a1 = 3;
 
 	
 	/*
