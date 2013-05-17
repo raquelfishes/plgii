@@ -141,7 +141,7 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants/*@ege
     return "bucle"+(actualBucle);
   }
   public static String finBucle(){
-    return "fin-bucle"+(actualBucle++);
+    return "fin_bucle"+(actualBucle++);
   }
   public static String nuevaEtiq(){
     return "etiq"+(actualEtiq++);
@@ -1981,7 +1981,6 @@ Simbolo expresion_relacional()      :
 {
   Simbolo sim = new Simbolo();
   Simbolo sim1 = new Simbolo();
-  Simbolo sim2 = new Simbolo();
   String s = "";
   String s1 = "";
   String s2 = "";
@@ -2028,7 +2027,7 @@ Simbolo expresion_relacional()      :
         s1 = nuevaEtiq();
         s2 = nuevaEtiq();
         sim.lugar = nuevaTemp();
-        sim.codigo += sim2.codigo;
+        sim.codigo += sim1.codigo;
         sim.codigo += "if (" + s + "<" + sim1.lugar + ") goto " + s1 + "\n";
         sim.codigo += sim.lugar + ":=0\n";
         sim.codigo += "goto " + s2 + "\n";
@@ -3726,6 +3725,7 @@ Simbolo sentencia_for() :
   }
 /*@egen*/
   {
+    System.out.println("simbolo2\t" + sim2.codigo);
     sim.comienzo = nuevoBucle();
     sim.siguiente = finBucle();
     sim.codigo = sim1.codigo;
