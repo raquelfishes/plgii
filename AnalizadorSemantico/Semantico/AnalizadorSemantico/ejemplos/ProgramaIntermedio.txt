@@ -1,35 +1,34 @@
-Á
+ˆ
 class Prueba:
-tmp0:=6
+tmp0:=1
 $var_0:=tmp0
-tmp1:=0
+tmp1:=2
 $var_1:=tmp1
+tmp2:=3
+$var_2:=tmp2
 &main:
-param $var_0
-call factorial_rec, 
-$var_1:=factorial_rec
-&return
-&factorial_rec:
-tmp4:=1
+tmp4:=800
 $var_3:=tmp4
-tmp5:=1
-if ($var_2>tmp5) goto etiq0
-tmp6:=0
-goto etiq1
-etiq0:
-tmp6:=1
-etiq1:
-goto if0
-if0:
-if (tmp6=0) goto fin_if0
-$var_4:=$var_2
-tmp7:=1
-tmp8:=$var_4-tmp7
-$var_4:=tmp8
+param $var_3
+call llamada1, 
+&return
+&llamada1:
+tmp6:=600
+$var_5:=tmp6
 param $var_4
-call factorial_rec, 
-$var_3:=factorial_rec
-tmp9:=$var_3*$var_2
-$var_3:=tmp9
-fin_if0: 
-&return $var_3
+param $var_5
+call llamada2, 
+&return
+&llamada2:
+tmp8:=100
+$var_8:=tmp8
+param $var_6
+param $var_7
+param $var_8
+call llamada3, 
+&return
+&llamada3:
+$var_0:=$var_9
+$var_1:=$var_10
+$var_2:=$var_11
+&return
