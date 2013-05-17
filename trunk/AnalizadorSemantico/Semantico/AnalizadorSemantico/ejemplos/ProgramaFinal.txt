@@ -4,7 +4,7 @@ Prueba:
 		;colocamos el puntero de pila en la cima de la memoria
 		MOVE #65535, .SP
 		;reservamos el espacio para variables globales de clase en la pila
-		SUB .SP, #3
+		SUB .SP, #4
 		MOVE .A, .SP
 		;guardamos en .IY el puntero a pila, para tener controladas las variables globales
 		MOVE .SP, .IY
@@ -12,12 +12,8 @@ Prueba:
 		MOVE .SP, .IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-				MOVE #1, .R0
-				MOVE .R0, #3[.IY]
-				MOVE #2, .R0
+				MOVE #100, .R0
 				MOVE .R0, #1[.IY]
-				MOVE #3, .R1
-				MOVE .R1, #2[.IY]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito main
 main:
@@ -34,7 +30,7 @@ main:
 		PUSH .R8
 		PUSH .R9
 		;reservamos el espacio para variables locales en la pila
-		SUB .SP, #1
+		SUB .SP, #2
 		MOVE .A, .SP
 		;salvamos el valor de .IY
 		MOVE .IY, .R9
@@ -47,22 +43,30 @@ main:
 		MOVE .R9, .IY
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-				MOVE #100, .R1
-				MOVE #1, .R2
-SUB .R1, .R2
-MOVE .A, .R3				;PRUEBAS
-				MOVE .R3, #3[.IY]
-				MOVE #100, .R1
-SUB .R1, #1[.IY]
-MOVE .A, .R2				;PRUEBAS
-				MOVE .R2, #1[.IY]
-SUB #3[.IY], #1[.IY]
+				MOVE #0, .R0
+				MOVE .R0, #2[.IX]
+
+bucle0:
+				CMP #2[.IX], .R-1
+				BN $etiq0
+				MOVE #0, .R0
+		BR $etiq1
+
+etiq0:
+				MOVE #1, .R0
+
+etiq1:
+				CMP .R0, #0
+				BZ $fin-bucle0
+				MOVE #1, .R0
+ADD #1[.IY], .R0
 MOVE .A, .R1				;PRUEBAS
-SUB .R1, #2[.IY]
-MOVE .A, .R2				;PRUEBAS
-				MOVE .R2, #2[.IY]
+				MOVE .R1, #1[.IY]
+		BR $bucle0
+
+fin-bucle0:
 		;liberamos el espacio para variables globales
-		ADD .SP, #3
+		ADD .SP, #4
 		MOVE .A, .SP
 
 		;Fin de la ejecución.

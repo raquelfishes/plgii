@@ -168,7 +168,7 @@ public class Traductor {
 	 * @param linea
 	 */
 	private void esEtiqueta(String linea) {
-		if (linea.endsWith(":")) { //Sí es etiqueta
+		if (linea.replaceAll(" ","").endsWith(":")) { //Sí es etiqueta
 			if (!linea.contains("class ")) { 
 				//NO ES COMIENZO DE UNA CLASE:
 				if (linea.contains("&")){
@@ -205,7 +205,7 @@ public class Traductor {
 	 * @param linea
 	 */
 	private void esSalto(String linea) {
-		if (linea.contains("if")) {
+		if (linea.startsWith("if")) {
 			// Condicionales: (if x op_rel y goto E), que compara x e y mediante un operador relacional op_rel (<,>, <=, etc.). Si dicha relación se verifica, la siguiente proposicion que debe ejecutarse es la etiquetada con E. En caso contrario, la siguiente proposición que debe ejecutarse es la siguiente a la actual (secuencia habitual, no se produce salto)
 			esSaltoCondicional(linea);
 		} else {
@@ -231,8 +231,11 @@ public class Traductor {
 		StringTokenizer sT = new StringTokenizer(linea);
 		String s1 = sT.nextToken(")");
 		String s2 = sT.nextToken(")");
-		s1 = s1.replaceAll("if(", "").replaceAll(" ", "");	//comparación
-		s2 = s2.replaceAll("goto","").replaceAll(" ","");	//etiqueta
+		s1 = s1.replace('(', ' ');
+		s1 = s1.replaceAll(" ", "");
+		s1 = s1.replaceAll("if", "");   //comparación
+		s2 = s2.replaceAll(" ","");
+		s2 = s2.replaceAll("goto","");	//etiqueta
 		bloqueComparacion(s1);
 		bloqueSaltoCondicional(s1,s2);
 	}
@@ -256,7 +259,7 @@ public class Traductor {
 			//XXX Array
 			s += "";
 		}
-		s += " ";
+		s += ", ";
 		if (esUnNumero(s2)) {
 			//Segundo token es un número
 			s += "#" + s2;
@@ -275,7 +278,6 @@ public class Traductor {
 	}
 	
 	private void bloqueSaltoCondicional(String comp, String etiq){
-		//TODO Completar tipos de salto condicional
 		String s = "\t\t\t\t";
 		if (comp.contains("!=")){
 			s += "BNZ";
@@ -286,7 +288,7 @@ public class Traductor {
 		} else if (comp.contains("<")){
 			s += "BN";
 		} //...
-		s += " " + etiq;
+		s += " $" + etiq;
 		output.add(s);
 	}
 	
@@ -949,7 +951,7 @@ public class Traductor {
 	//ASIGNACIÓN DE REGISTROS//////////////////////////////////////////////////
 	private boolean estaAsignado(String tmp) {
 		boolean asignado = false;
-		for (int r = 0; r<4 && !asignado; r++) {
+		for (int r = 0; r<8 && !asignado; r++) {
 			if (registros[r].equals(tmp)) {
 				//registro encontrado
 				asignado = true;
@@ -961,7 +963,7 @@ public class Traductor {
 	private void asignaRegistro(String tmp) {
 		if (!estaAsignado(tmp)) {
 			boolean asignado = false;
-			for (int r = 0; r<4 && !asignado; r++) {
+			for (int r = 0; r<8 && !asignado; r++) {
 				if (registros[r].equals("")) {
 					//Hueco encontrado
 					registros[r] = tmp;
@@ -974,7 +976,7 @@ public class Traductor {
 	private int dameNumeroRegistro(String tmp) {
 		int reg = -1;
 		boolean encontrado = false;
-		for (int r = 0; r<4 && !encontrado; r++) {
+		for (int r = 0; r<8 && !encontrado; r++) {
 			if (registros[r].equals(tmp)) {
 				//Encontrado!
 				reg = r;
@@ -985,7 +987,7 @@ public class Traductor {
 	}
 	
 	private void liberaRegistros(int lineaActual) {
-		for (int r = 0; r<4; r++) {
+		for (int r = 0; r<8; r++) {
 			boolean aparece = false;
 			for (int i = lineaActual; i<input.size() && !aparece; i++) {
 				if (input.get(i).contains(registros[r])) {
