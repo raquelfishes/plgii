@@ -513,11 +513,6 @@ Token tipo() :
     { s += '[' + ']'; }
   )* //FIXME Aun no se bien como coger los corchetes(a lo mejor ni es necesario), preguntar a Ricky
   {
-    /* 
-    NECESITO DEVOLVER EL STRING QUE ME VIENE DE TIPO_PRIMITIVO O DE IDENTIFICADOR 
-    * s = tipo_primitivo | s = identificador
-    * return s;
-    */
     return t;
   }
   
@@ -859,16 +854,12 @@ Simbolo declaracion_metodo() :
   }
 }
 {
-  {System.out.println("----------------- ABRIENDO-AMBITO ------------------");
-
-    gestorTSIntermedia.nuevoAmbito("");  }
+  {gestorTSIntermedia.nuevoAmbito("");  }
   ( t = <PUBLIC> | t = <PROTECTED> | t = <PRIVATE> | t = <STATIC> | t = <ABSTRACT> | t = <FINAL> | t = <SYNCHRONIZED> )*
   t1 = tipo_metodo() sim = declarador_metodo() [ <THROWS> s1 = lista_de_tipos() {s2 = "throws" + s1;} ]
   ( sim1 = bloque() | <PYC> )
     {
 	gestorTSIntermedia.cierraAmbito();
-    System.out.println("----------------- CERRANDO-AMBITO ------------------");  
-      
       if(t1.image=="void") {
         sim.codigo += sim1.codigo + "&return\n";
           return sim;
@@ -975,13 +966,13 @@ Simbolo const_explic() #void:
   }
 }
 {
-  <THIS> sim = argumentos() <PYC> //TODO
+  <THIS> sim = argumentos() <PYC> 
   { 
     sim.codigo += "this" + sim.codigo + ';';
     return sim;
   }
 |
-  <SUPER> sim = argumentos() <PYC> //TODO
+  <SUPER> sim = argumentos() <PYC> 
   { 
     sim.codigo += "super" + sim.codigo + ';';
     return sim;
@@ -1722,7 +1713,6 @@ Simbolo expresion_primaria() #void:
   {
     sim.lugar = sim1.lugar + sim2.lugar;
     sim.codigo = sim1.codigo + sim2.codigo;
-    //System.out.println("EXPRESION_PRIMARIA\t" + sim.codigo);
     return sim;
   }
 }
@@ -1759,13 +1749,11 @@ Simbolo prefijo_primario() #void:
   t = <THIS>
   {
     s = t.image;
-    //TODO
     return sim;
   }
 |
   <SUPER> <PUNTO> t = <IDENTIFICADOR>
   {
-    //TODO
     return sim;
   }
 |
@@ -1840,8 +1828,7 @@ Simbolo lista_argumentos() #void:
     }
   )*
   {
-    sim.verdadera = "argumentos"; //FIXME es una cutrada
-    sim.comienzo = "" + numeroarg;
+    sim.verdadera = "argumentos"; 
     sim.codigo += s;
     return sim;
   }
@@ -2050,7 +2037,6 @@ Simbolo sentencia_switch() :
   }
 }
 {
-  /*TODO*/
   <SWITCH> <PAR_A> sim3 = expresion() <PAR_C> <LLAVE_A>
   {
     sim.comienzo = nuevoIf();
@@ -2147,7 +2133,6 @@ Simbolo sentencia_if() :
       }
     else
       {
-        //System.out.println("IF\t" + sim2.codigo);
         sim.codigo += "goto " + sim.comienzo + "\n";
         sim.codigo += sim.comienzo + ":\n" + "if (" + sim1.lugar + "=0) goto " + sim.siguiente + "\n";
         sim.codigo += sim2.codigo;

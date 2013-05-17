@@ -45,6 +45,7 @@ main:
 		MOVE .SP, .IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+				MOVE .R1, .R0				;r0 contiene i
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Return del metodo main
 		;liberamos el espacio para variables locales de la pila
