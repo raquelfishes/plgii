@@ -7,12 +7,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import javacc.Compilador;
 import javacc.ParseException;
+import javacc.SimpleNode;
 import javacc.TokenMgrError;
 
 import javax.swing.JButton;
@@ -24,11 +26,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import net.miginfocom.swing.MigLayout;
+import tabla.simbolos.v2.Atributos;
+import traductor.Traductor;
 
 
 public class InterfazPlg {
@@ -36,6 +41,8 @@ public class InterfazPlg {
 	private JFrame frmGrupo;
 	private JFrame frmGrupoID;
 	private static JTextArea JTextAreaAvisos;
+	private static JTextArea JTextAreaCF;
+	private static JTextArea JTextAreaCI;
 	private String fich;
 	private JTextArea JTextAreaArchivo;
 	private static JTextArea JTextArea_ID;
@@ -86,7 +93,6 @@ public class InterfazPlg {
 		try {
 			initialize();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}	
@@ -106,30 +112,104 @@ public class InterfazPlg {
 		JTextAreaAvisos.setText(parcial+"\n"+t);
 	}
 
-private void abrirFichero (){
+	public static void escribirConsola(){
+		
+		
+	}
+	
+	private void updateTextArea(final String text) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JTextAreaAvisos.append(text);
+			}
+		});
+	}
+			 
+	private void redirectSystemStreams() {
+		OutputStream out = new OutputStream() {
+	    
+		    public void write(int b) throws IOException {
+		      updateTextArea(String.valueOf((char) b));
+		    }
+		 
+		    public void write(byte[] b, int off, int len) throws IOException {
+		      updateTextArea(new String(b, off, len));
+		    }
+		 
+		    public void write(byte[] b) throws IOException {
+		      write(b, 0, b.length);
+		    }
+	 	};
+	 
+	 	System.setOut(new PrintStream(out, true));
+	 	System.setErr(new PrintStream(out, true));
+	}	
+	
+	
+	public static void escribirFicheroCI() throws IOException{
+	    		
+    	JTextAreaCI.setText("");
+    	String pathCI = "ejemplos/ProgramaIntermedio.txt"; 
+    	FileReader lector = new FileReader(pathCI);
+        BufferedReader buffer = new BufferedReader(lector);
+        String linea = "";
+        linea = buffer.readLine();
+        int numLinea = 0;
         
-        try {  
-        	JTextAreaArchivo.setText("");
-        	FileReader lector = new FileReader(fich);
-            BufferedReader buffer = new BufferedReader(lector);
-            String linea = "";
-            linea = buffer.readLine();
-            int numLinea = 0;
-            
-            while((linea = buffer.readLine()) != null){
-            	JTextAreaArchivo.append(numLinea + ": " + linea + "\n");
-            	numLinea ++;
-            }
-            buffer.close();
-            lector.close();
-                
-                
-        }catch(Exception e){
-                
-        e.printStackTrace();
-        
+        while((linea = buffer.readLine()) != null){
+        	JTextAreaCI.append(numLinea + ": " + linea + "\n");
+        	numLinea ++;
         }
+        buffer.close();
+        lector.close();
+
+	}
+	
+	public static void escribirFicheroCF() throws IOException{
+		
+    	JTextAreaCF.setText("");
+    	String pathCF = "ejemplos/ProgramaFinal.txt"; 
+    	FileReader lector = new FileReader(pathCF);
+        BufferedReader buffer = new BufferedReader(lector);
+        String linea = "";
+        linea = buffer.readLine();
+        int numLinea = 0;
+        
+        while((linea = buffer.readLine()) != null){
+        	JTextAreaCF.append(numLinea + ": " + linea + "\n");
+        	numLinea ++;
+        }
+        buffer.close();
+        lector.close();
+
 }
+	
+	private void abrirFichero (){
+	        
+	        try {  
+	        	JTextAreaArchivo.setText("");
+	        	FileReader lector = new FileReader(fich);
+	            BufferedReader buffer = new BufferedReader(lector);
+	            String linea = "";
+	            linea = buffer.readLine();
+	            int numLinea = 0;
+	            
+	            while((linea = buffer.readLine()) != null){
+	            	JTextAreaArchivo.append(numLinea + ": " + linea + "\n");
+	            	numLinea ++;
+	            }
+	            buffer.close();
+	            lector.close();
+	                
+	                
+	        }catch(Exception e){
+	                
+	        e.printStackTrace();
+	        
+	        }
+	}
+
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -145,10 +225,11 @@ private void abrirFichero (){
 		
 		
 		frmGrupo = new JFrame();
+		frmGrupo.setLocationRelativeTo(null);
 		frmGrupo.setTitle("Grupo 3 - Compilador Java ");
 		frmGrupo.setBounds(100, 100, 1299, 692);
 		frmGrupo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmGrupo.getContentPane().setLayout(new MigLayout("", "[180.00,grow][360.00,grow][324.00,grow,fill][327.00,grow][]", "[64.00,grow][480.00,grow][grow 600]"));
+		frmGrupo.getContentPane().setLayout(new MigLayout("", "[180.00,grow][360.00,grow][324.00,grow,fill][327.00,grow][]", "[64.00,grow][416.00,grow][grow 600]"));
 		
 		JPanel JPanelCI = new JPanel();
 		frmGrupo.getContentPane().add(JPanelCI, "cell 2 0 1 2,grow");
@@ -162,7 +243,7 @@ private void abrirFichero (){
 		JScrollPane JScrollPaneCI = new JScrollPane();
 		JPanelCI.add(JScrollPaneCI, "cell 0 1,grow");
 		
-		JTextArea JTextAreaCI = new JTextArea();
+		JTextAreaCI = new JTextArea();
 		JTextAreaCI.setEditable(false);
 		JScrollPaneCI.setViewportView(JTextAreaCI);
 		
@@ -178,13 +259,13 @@ private void abrirFichero (){
 		JScrollPane JScrollPaneCF = new JScrollPane();
 		JPanelCF.add(JScrollPaneCF, "cell 0 1,grow");
 		
-		JTextArea JTtextAreaCF = new JTextArea();
-		JTtextAreaCF.setEditable(false);
-		JScrollPaneCF.setViewportView(JTtextAreaCF);
+		JTextAreaCF = new JTextArea();
+		JTextAreaCF.setEditable(false);
+		JScrollPaneCF.setViewportView(JTextAreaCF);
 		
 		JPanel JPanelBotones = new JPanel();
 		frmGrupo.getContentPane().add(JPanelBotones, "cell 0 1,alignx center,aligny top");
-		JPanelBotones.setLayout(new MigLayout("", "[168.00]", "[31.00px][31.00][81.00][31.00][30.00][31.00][102.00][][31.00]"));
+		JPanelBotones.setLayout(new MigLayout("", "[168.00]", "[31.00px][31.00][70.00][31.00][30.00][31.00][102.00][][31.00]"));
 		
 		JButton JButton_Abrir = new JButton("Abrir");
 		JButton_Abrir.addActionListener(new ActionListener() {
@@ -230,34 +311,55 @@ private void abrirFichero (){
 		JButton JButton_Ejecutar = new JButton("Ejecutar");
 		JButton_Ejecutar.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mousePressed(MouseEvent arg0) {
 				if(fich!=null){
 					if (fich.endsWith(".pdf")) System.out.print("*.PDF no es un formato correcto.");
-					try {
-						new Compilador(new java.io.FileInputStream(fich));
-						
-						try {
-							Compilador.usaInterfaz = true;
-							Compilador.initGestorTS();
-							Compilador.compilar();
-					        
-					        System.out.println ("ExampleParser: La entrada ha sido leida con \u00e9xito.");
+										
+						 Compilador compilador = null;
+						 compilador.usaInterfaz = false;
+						 compilador.initGestorTS();
+
+					     System.out.println ("Compilador: Leyendo de fichero ");
+					     
+				         try {
+				        	 compilador = new Compilador(new java.io.FileInputStream(fich));
+					     }
+				         catch(java.io.FileNotFoundException e) {
+				        	 System.out.println ("Compilador: El fichero no ha sido encontrado.");
+				        	 return;
+				         }
+				         try {
+				        	 compilador.fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ejemplos/ProgramaIntermedio.txt"));
+				         }
+				         catch(java.io.FileNotFoundException e){
+					        System.out.println ("MAL, NO HAS CREADO EL FICHERO");
+					        return;
+				         }
+				         try {
+				        	 SimpleNode root = Compilador.compilar();
+				        	 Atributos.resetAliasCounter();
+				        	 root.dump("");
+				        	 System.out.println ("Compilador: La entrada ha sido leida con \u00e9xito.");
+				        	 compilador.jjtree.rootNode().interpret();
+				        	 escribirFicheroCI();
+				        	 
+				        	 //Codigo final
+				        	 compilador.traductor = new Traductor(compilador.gestorTS);
+				        	 compilador.traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
+				        	 System.out.println("Traducido.");
+				        	 escribirFicheroCF();
+
 					      }
 					      catch(ParseException e){
-					        System.out.println ("ExampleParser: Ha ocurrido un error durante el an\u00e1lisis.");
+					        System.out.println ("Compilador: Ha ocurrido un error durante el an\u00e1lisis.");
 					        System.out.println (e.getMessage());
-					        JOptionPane.showMessageDialog (frmGrupo, e.getMessage(), "ExampleParser: Ha ocurrido un error durante el analisis.", JOptionPane.ERROR_MESSAGE); 
 					      }
 					      catch(TokenMgrError e){
-					        System.out.println ("ExampleParser: Ha ocurrido un error.");
+					        System.out.println ("Compilador: Ha ocurrido un error.");
 					        System.out.println (e.getMessage());
-					        System.out.println (e.getMessage());
-					        JOptionPane.showMessageDialog (frmGrupo, e.getMessage(), "ExampleParser: Ha ocurrido un error.", JOptionPane.ERROR_MESSAGE); 
-					      }
-						
-					} catch (FileNotFoundException fn1) {
-						JOptionPane.showMessageDialog (frmGrupo, "Selecciona un archivo antes de ejecutar."); 
-					}
+					      } catch (IOException e) {
+					    	JOptionPane.showMessageDialog (frmGrupo, "Archivo Vacío."); 
+						}
 				}		
 			
 			}
@@ -273,7 +375,7 @@ private void abrirFichero (){
 				frmGrupoID = new JFrame();
 				frmGrupoID.setTitle("Grupo3 - Compilador Java - Identificadores");
 				frmGrupoID.setBounds(100, 100, 460, 421);
-				frmGrupoID.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frmGrupoID.setDefaultCloseOperation(frmGrupoID.DISPOSE_ON_CLOSE);
 				frmGrupoID.getContentPane().setLayout(new MigLayout("", "[grow]", "[][grow]"));
 				
 				JLabel lblListaDeIdentificadores = new JLabel("Lista de Identificadores procesados:");
@@ -284,10 +386,11 @@ private void abrirFichero (){
 				JScrollPane JScrollPane_ID = new JScrollPane();
 				frmGrupoID.getContentPane().add(JScrollPane_ID, "cell 0 1,grow");
 				
+				Compilador.usaInterfaz = true;
+				
 				JTextArea_ID = new JTextArea();
 				JTextArea_ID.setEditable(false);
 				JScrollPane_ID.setViewportView(JTextArea_ID);
-				
 				frmGrupoID.setVisible(true);
 				
 			}
@@ -298,22 +401,38 @@ private void abrirFichero (){
 		JButton JButton_ENS = new JButton("Ejecutar ENS2001");
 		JButton_ENS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Prueba de botón ENS2001 ");
-				// Hasta que el código final no haya terminado, este botón debe ser not enable.
-				//     TODO: Usar misma variable que en el Botón: Ver CF.
+				Runtime obj = Runtime.getRuntime(); 
+				try {
+					
+					obj.exec("ENS2001/winens.exe");
+					//System.out.print("");
+					//System.console().readLine("ens2001 [ENS2001/cadenas.ens]");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}  
 				
-				//TODO: Generar un fichero de tipo CFinal.ens que contiene ProgramaFinal.txt y sirve de entrada al ENS2001.
-				//TODO: Generar una llamada a WENS2001 e intentar que abra directamente este fichero.
 			}
 		});
 		JButton_ENS.setFont(new Font("Tahoma", Font.BOLD, 12));
 		JPanelBotones.add(JButton_ENS, "cell 0 5,growx,aligny center");
 		
 		JButton JButton_Reset = new JButton("Reset");
+		JButton_Reset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				fich = null;
+				//JTextAreaCI.setText(t);
+			}
+		});
 		JButton_Reset.setFont(new Font("Tahoma", Font.BOLD, 12));
 		JPanelBotones.add(JButton_Reset, "cell 0 7,growx,aligny center");
 		
 		JButton JButton_Salir = new JButton("Salir");
+		JButton_Salir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmGrupo.dispose();
+				System.exit(0);
+			}
+		});
 		JButton_Salir.setFont(new Font("Tahoma", Font.BOLD, 12));
 		JPanelBotones.add(JButton_Salir, "cell 0 8,growx");
 		
@@ -338,8 +457,10 @@ private void abrirFichero (){
 		 	
 		JPanelAvisos.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		JScrollPane JScrollPaneAvisos = new JScrollPane();
+		JScrollPaneAvisos.setFocusable(false);
 		JPanelAvisos.add(JScrollPaneAvisos, "cell 0 0,grow");		
 		JTextAreaAvisos = new JTextArea();
+		redirectSystemStreams();
 		JTextAreaAvisos.setEditable(false);
 		JScrollPaneAvisos.setViewportView(JTextAreaAvisos);
 	}
