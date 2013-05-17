@@ -7,8 +7,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -112,8 +117,31 @@ public class InterfazPlg {
 		JTextAreaAvisos.setText(parcial+"\n"+t);
 	}
 
-	public static void escribirConsola(){
-		
+	public static void generarFicheroENS () throws IOException{
+		try{
+	          File f1 = new File("ejemplos/ProgramaFinal.txt");
+	          File f2 = new File("ENS2001/CodigoFinal.ens");
+	          InputStream in = new FileInputStream(f1);
+
+	          //For Append the file.
+	          //OutputStream out = new FileOutputStream(f2,true);
+
+	          //For Overwrite the file.
+	          OutputStream out = new FileOutputStream(f2);
+
+	          byte[] buf = new byte[1024];
+	          int len;
+	          while ((len = in.read(buf)) > 0){
+	            out.write(buf, 0, len);
+	          }
+	          in.close();
+	          out.close();
+	          System.out.println("Generado el código final en ensamblador en el directorio ENS2001");
+	        }
+        catch(FileNotFoundException ex){
+         
+        }
+	        
 		
 	}
 	
@@ -347,6 +375,8 @@ public class InterfazPlg {
 				        	 compilador.traductor = new Traductor(compilador.gestorTS);
 				        	 compilador.traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
 				        	 System.out.println("Traducido.");
+				        	 
+				        	 generarFicheroENS();
 				        	 escribirFicheroCF();
 
 					      }
@@ -405,8 +435,7 @@ public class InterfazPlg {
 				try {
 					
 					obj.exec("ENS2001/winens.exe");
-					//System.out.print("");
-					//System.console().readLine("ens2001 [ENS2001/cadenas.ens]");
+					
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}  
@@ -420,7 +449,11 @@ public class InterfazPlg {
 		JButton_Reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				fich = null;
-				//JTextAreaCI.setText(t);
+				JTextAreaArchivo.setText(null);
+				JTextAreaCI.setText("");
+				JTextAreaCF.setText("");
+				JTextAreaAvisos.setText("");
+				
 			}
 		});
 		JButton_Reset.setFont(new Font("Tahoma", Font.BOLD, 12));
