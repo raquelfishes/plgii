@@ -9,6 +9,7 @@ public class Prueba {
 	void main(){
 		//int a = 0;
 		int[] array = new int[10];
+		i = array[b];
 		
 	}
 	
