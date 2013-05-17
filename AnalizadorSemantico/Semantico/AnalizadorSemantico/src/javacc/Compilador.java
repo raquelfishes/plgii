@@ -12,8 +12,11 @@ import javacc.Simbolo;
 import traductor.Traductor;
 
 public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, CompiladorConstants {/*@bgen(jjtree)*/
-  protected static JJTCompiladorState jjtree = new JJTCompiladorState();public static CGestorTS gestorTS;
+  //protected static JJTCompiladorState jjtree = new JJTCompiladorState();public static CGestorTS gestorTS;
+  public static JJTCompiladorState jjtree = new JJTCompiladorState();public static CGestorTS gestorTS;
   public static boolean usaInterfaz = false;
+  //public static boolean escribeCI = false;
+  
   public static java.io.DataOutputStream fichero;
 
   public static CGestorTS gestorTSIntermedia;
@@ -31,7 +34,8 @@ public class Compilador/*@bgen(jjtree)*/implements CompiladorTreeConstants, Comp
 
         System.out.println ("Compilador: Leyendo de fichero ");
         try {
-          compilador = new Compilador(new java.io.FileInputStream("ProgramaPrueba.java"));
+          compilador = new Compilador(new java.io.FileInputStream("ejemplos/programa3.java"));
+        	
         }
         catch(java.io.FileNotFoundException e) {
           System.out.println ("Compilador: El fichero no ha sido encontrado.");
