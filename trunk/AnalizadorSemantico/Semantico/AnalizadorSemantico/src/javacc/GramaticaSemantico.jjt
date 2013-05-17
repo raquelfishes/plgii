@@ -128,10 +128,10 @@ public class Compilador {
     return "if"+(actualIf);
   }
   public static String elseIf(){
-    return "else-if"+(actualIf);
+    return "else_if"+(actualIf);
   }
   public static String finIf(){
-    return "fin-if"+(actualIf++);
+    return "fin_if"+(actualIf++);
   }
   public static String nuevoBucle(){
     return "bucle"+(actualBucle);
