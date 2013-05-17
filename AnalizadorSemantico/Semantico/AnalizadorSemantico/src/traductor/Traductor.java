@@ -14,7 +14,7 @@ import tabla.simbolos.v2.*;
 
 /**
  * 
- * @author Jesús
+ * @author Jesús, Víctor
  *
  * Clase Traductor, traduce código intermedio a código final.
  */
@@ -153,7 +153,8 @@ public class Traductor {
 	 * @param linea
 	 */
 	private void esAsignacionUOperacion(String linea) {
-		if (linea.contains("+")||linea.contains("-")||linea.contains("*")||linea.contains("/")) {
+		if (linea.contains("+")||linea.contains("-")||linea.contains("*")||linea.contains("/") ||
+				linea.contains("%")||linea.contains("&")||linea.contains("|")||linea.contains("^")) {
 			//Operación
 			esOperacion(linea);
 		} else {
@@ -326,9 +327,7 @@ public class Traductor {
 			//Primer token es una variable
 			s += getDesplazamientoVariable(linea);
 		} else {
-			//Primer token es un array
-			//XXX Array
-			s += "";
+			s = "";
 		}
 		output.add(s);
 	}
@@ -513,17 +512,8 @@ public class Traductor {
 	
 	
 	///////////////////////////////////////////////////////////////////////////
-	// ASIGNACIONES Y OPERACIONES
-	///////////////////////////////////////////////////////////////////////////
-	
-	/**
-	 * ¿Qué tipo de operación es esta línea? Actúa en consecuencia.
-	 * @param linea
-	 */
-	private void esOperacion(String linea) {
-		//TODO OPERACIONES	
-	}
-	
+	// ASIGNACIONES
+	///////////////////////////////////////////////////////////////////////////	
 	/**
 	 * ¿Qué tipo de asignación es esta línea? Actúa en consecuencia.
 	 * @param linea
@@ -673,6 +663,242 @@ public class Traductor {
 	}
 	
 	
+	///////////////////////////////////////////////////////////////////////////
+	// OPERACIONES
+	///////////////////////////////////////////////////////////////////////////	
+	/**
+	 * ¿Qué tipo de operación es esta línea? Actúa en consecuencia.
+	 * @param linea
+	 */
+	private void esOperacion(String linea) {
+		//OPERACIONES
+		StringTokenizer sT = new StringTokenizer(linea);
+		String s1 = sT.nextToken(":="); //Parte izquierda (siempre es un tmp)
+		String s2 = sT.nextToken(":="); //Parte derecha (la que contiene la operacion)
+		//Primer token es un tmp
+		asignaRegistro(s1);
+		if (s2.contains("~")||s2.contains("|")) {
+//			Con operadores unarios: (x := op y), donde op será  un operador unario. Las operaciones unarias principales incluyen el menos unario, la negación lógica, los operador de desplazamiento y  operador de conversión de tipos (de entero a real, por ejemplo).		
+			//Segundo token es la parte derecha
+			esOperacionUnaria(s2); //Esta llamada imprime la operacion (antes del MOVE)
+		}
+		else if (s2.contains("+")||s2.contains("-")||s2.contains("*")||s2.contains("/")||s2.contains("%")||s2.contains("&")||s2.contains("|")||s2.contains("^")) {
+//			Con operadores binarios: (x := y op z), donde op será un operador binario aritmético o lógico.
+			//Segundo token es la parte derecha
+			esOperacionBinaria(s2); //Esta llamada imprime la operacion (antes del MOVE)
+		}
+		String s = "MOVE .A, .R" + dameNumeroRegistro(s1) + "\t\t\t\t;PRUEBAS";
+		output.add(s);		
+	}
+	
+	/**
+	 * ¿Que tipo de operacion unaria es? Actúa en consecuencia
+	 * @param linea
+	 */
+	private void esOperacionUnaria(String linea) {
+		StringTokenizer sT = new StringTokenizer(linea);
+		String op, s1;
+		//Primero distinguimos el tipo de operacion
+		if (linea.contains("~")) {
+		//Es Complento ->> temp1 := ~a
+			op = "NEG"; //Cambio de signo del operando
+			s1 = sT.nextToken("~");
+		}
+		else /*if (linea.contains("!"))*/ {
+		//Es Negacion ->> temp1 := !a
+			op = "NOT"; //Negacion logica bit a bit
+			s1 = sT.nextToken("!");
+		}
+		//Segundo distinguimos el tipo de operando
+		if (esUnNumero(s1)) {
+			// Segundo token es un número (inmediato)
+			bloqueOperacionUnariaInmediato(op, s1);
+		} else if (!s1.contains("$")){
+			// Segundo token es un tmp
+			asignaRegistro(s1);
+			bloqueOperacionUnariaTmp(op, s1);
+		} else if (!s1.contains("[")){
+			// Segundo token es una variable
+			bloqueOperacionUnariaVariable(op, s1);
+		} else {
+			// Segundo token es un array
+			bloqueOperacionUnariaArray(op, s1);
+		}
+	}
+	
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de operación.
+	 */
+	private void bloqueOperacionUnariaInmediato(String op, String s1) {
+		String s = op + " " + s1;
+		output.add(s);
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de operación.
+	 */
+	private void bloqueOperacionUnariaTmp(String op, String s1) {
+		String s = op + " " + dameNumeroRegistro(s1);
+		output.add(s);
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de operación.
+	 */
+	private void bloqueOperacionUnariaVariable(String op, String s1) {
+		String s = op + " " + getDesplazamientoVariable(s1);
+		output.add(s);
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de operación.
+	 */
+	private void bloqueOperacionUnariaArray(String op, String s1) {
+		String s = op + " "/* + imprimeArray(s1)*/;
+		output.add(s);
+	}
+	
+	/**
+	 * ¿Que tipo de operacion binaria es? Actúa en consecuencia.
+	 * @param linea
+	 */
+	private void esOperacionBinaria(String linea) {
+		StringTokenizer sT = new StringTokenizer(linea);
+		String op, s1, s2; //SubStrings de linea
+		
+		//1º distinguimos el tipo de operacion
+		//OperacionBinariaAritmetica
+		if (linea.contains("+")) {
+//		    + (mas) => temp1 := a + b; ->	ADD op1, op2
+			op = "ADD"; //Cambio de signo del operando
+			s1 = sT.nextToken("+");
+			s2 = sT.nextToken("+");
+		}
+		else if (linea.contains("-")) {
+//			- (menos) => temp1 := a - b;
+			op = "SUB"; //Negacion logica bit a bit
+			s1 = sT.nextToken("-");
+			s2 = sT.nextToken("-");
+		}
+		else if (linea.contains("*")) {
+//			* (por) => temp1 := a * b;
+			op = "MUL"; //Negacion logica bit a bit
+			s1 = sT.nextToken("*");
+			s2 = sT.nextToken("*");
+		}
+		else if (linea.contains("/")) {
+//			/ (div) => temp1 := a / b;
+			op = "DIV"; //Negacion logica bit a bit
+			s1 = sT.nextToken("/");
+			s2 = sT.nextToken("/");
+		}
+		else if (linea.contains("%")) {
+//			% (mod) => temp1 := a % b;
+			op = "MOD"; //Negacion logica bit a bit
+			s1 = sT.nextToken("%");
+			s2 = sT.nextToken("%");
+		}
+		//OperacionBinariaLogica
+		else if (linea.contains("&")) {
+//			& (and) => temp1 := a & b;
+			op = "AND"; //Negacion logica bit a bit
+			s1 = sT.nextToken("&");
+			s2 = sT.nextToken("&");
+		}
+		else if (linea.contains("|")) {
+//			| (or) => temp1 := a | b;
+			op = "OR"; //Negacion logica bit a bit
+			s1 = sT.nextToken("|");
+			s2 = sT.nextToken("|");
+		}
+		else /*if (linea.contains("^"))*/ {
+//			^ (xor) => temp1 := a ^ b;
+			op = "XOR"; //Negacion logica bit a bit
+			s1 = sT.nextToken("^");
+			s2 = sT.nextToken("^");
+		}
+			
+		//2º distinguimos el tipo del 1º operando
+		String oper1;
+		if (esUnNumero(s1)) {
+			// Segundo token es un número (inmediato)
+			oper1 = bloqueOperacionBinariaOperandoInmediato(s1);
+		} else if (!s1.contains("$")){
+			// Segundo token es un tmp
+			asignaRegistro(s1);
+			oper1 = bloqueOperacionBinariaOperandoTmp(s1);
+		} else if (!s1.contains("[")){
+			// Segundo token es una variable
+			oper1 = bloqueOperacionBinariaOperandoVariable(s1);
+		} else {
+			// Segundo token es un array
+			oper1 = bloqueOperacionBinariaOperandoArray(s1);
+		}
+		
+		//3º distinguimos el tipo del 2º operando
+		String oper2;
+		if (esUnNumero(s2)) {
+			// Segundo token es un número (inmediato)
+			oper2 = bloqueOperacionBinariaOperandoInmediato(s2);
+		} else if (!s2.contains("$")){
+			// Segundo token es un tmp
+			asignaRegistro(s2);
+			oper2 = bloqueOperacionBinariaOperandoTmp(s2);
+		} else if (!s2.contains("[")){
+			// Segundo token es una variable
+			oper2 = bloqueOperacionBinariaOperandoVariable(s2);
+		} else {
+			// Segundo token es un array
+			oper2 = bloqueOperacionBinariaOperandoArray(s2);
+		}
+		
+		//4º Imprimimimos el codigo pertinente
+		bloqueOperacionBinariaParam(op, oper1, oper2);
+	}
+	
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de operación.
+	 */
+	private String bloqueOperacionBinariaOperandoInmediato(String s1) {
+		String s = "#"+s1;
+		return s;
+	}
+		
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de operación.
+	 */
+	private String bloqueOperacionBinariaOperandoTmp(String s1) {
+		String s = ".R" + dameNumeroRegistro(s1);
+		return s;
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de operación.
+	 */
+	private String bloqueOperacionBinariaOperandoVariable(String s1) {
+		String s = getDesplazamientoVariable(s1);
+		return s;
+	}
+
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de operación.
+	 */
+	private String bloqueOperacionBinariaOperandoArray(String s1) {
+		//XXX Array
+		String s = ""/* + imprimeArray(s1)*/;
+		return s;
+	}
+	
+	/**
+	 * Añade a output el bloque de código correspondiente a este tipo de operación.
+	 */
+	private void bloqueOperacionBinariaParam(String op, String oper1, String oper2) {
+		String s = op + " " + oper1 + ", " + oper2;
+		output.add(s);
+	}
 	
 	///////////////////////////////////////////////////////////////////////////
 	// AUXILIARES
@@ -717,13 +943,13 @@ public class Traductor {
 				t ++;
 			}
 		}
-		return t;//-1;  // XXX ¿?
+		return t;//-1;  ¿?
 	}
 	
 	//ASIGNACIÓN DE REGISTROS//////////////////////////////////////////////////
 	private boolean estaAsignado(String tmp) {
 		boolean asignado = false;
-		for (int r = 0; r<10 && !asignado; r++) {
+		for (int r = 0; r<4 && !asignado; r++) {
 			if (registros[r].equals(tmp)) {
 				//registro encontrado
 				asignado = true;
@@ -735,7 +961,7 @@ public class Traductor {
 	private void asignaRegistro(String tmp) {
 		if (!estaAsignado(tmp)) {
 			boolean asignado = false;
-			for (int r = 0; r<9 && !asignado; r++) {
+			for (int r = 0; r<4 && !asignado; r++) {
 				if (registros[r].equals("")) {
 					//Hueco encontrado
 					registros[r] = tmp;
@@ -748,7 +974,7 @@ public class Traductor {
 	private int dameNumeroRegistro(String tmp) {
 		int reg = -1;
 		boolean encontrado = false;
-		for (int r = 0; r<10 && !encontrado; r++) {
+		for (int r = 0; r<4 && !encontrado; r++) {
 			if (registros[r].equals(tmp)) {
 				//Encontrado!
 				reg = r;
@@ -759,7 +985,7 @@ public class Traductor {
 	}
 	
 	private void liberaRegistros(int lineaActual) {
-		for (int r = 0; r<10; r++) {
+		for (int r = 0; r<4; r++) {
 			boolean aparece = false;
 			for (int i = lineaActual; i<input.size() && !aparece; i++) {
 				if (input.get(i).contains(registros[r])) {
