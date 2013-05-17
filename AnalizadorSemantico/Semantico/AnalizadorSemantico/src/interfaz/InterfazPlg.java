@@ -35,6 +35,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import net.miginfocom.swing.MigLayout;
@@ -54,6 +55,7 @@ public class InterfazPlg {
 	private static JTextArea JTextArea_ID;
 	private static InterfazPlg INSTANCE;
 	private List<Atributos> lista;
+	private Compilador compilador;
 	
 	/**
 	 * Launch the application.
@@ -288,7 +290,7 @@ public class InterfazPlg {
 		JPanelCF.add(JLabelCF, "cell 0 0");
 		
 		JScrollPane JScrollPaneCF = new JScrollPane();
-		JPanelCF.add(JScrollPaneCF, "cell 0 1,grow");
+		JPanelCF.add(JScrollPaneCF, "cell 0 1, grow");
 		
 		JTextAreaCF = new JTextArea();
 		JTextAreaCF.setEditable(false);
@@ -345,15 +347,17 @@ public class InterfazPlg {
 			public void mousePressed(MouseEvent arg0) {
 				if(fich!=null){
 					if (fich.endsWith(".pdf")) System.out.print("*.PDF no es un formato correcto.");
-										
-						 Compilador compilador = null;
-						 compilador.usaInterfaz = false;
-						 compilador.initGestorTS();
-
-					     System.out.println ("Compilador: Leyendo de fichero ");
-					     
+						 
 				         try {
-				        	 compilador = new Compilador(new java.io.FileInputStream(fich));
+				        	 if (compilador == null) 
+				        		 compilador = new Compilador(new java.io.FileInputStream(fich));
+				        	 else
+				        		 Compilador.ReInit(new java.io.FileInputStream(fich));
+				        	 
+				        	 Compilador.usaInterfaz = false;
+							 Compilador.initGestorTS();
+
+						     System.out.println ("Compilador: Leyendo de fichero ");
 				        	        	
 					     }
 				         catch(java.io.FileNotFoundException e) {
@@ -361,14 +365,18 @@ public class InterfazPlg {
 				        	 return;
 				         }
 				         try {
-				        	 compilador.fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ejemplos/ProgramaIntermedio.txt"));
+				        	 Compilador.fichero = new java.io.DataOutputStream( new java.io.FileOutputStream("ejemplos/ProgramaIntermedio.txt"));
 				         }
 				         catch(java.io.FileNotFoundException e){
-					        System.out.println ("MAL, NO HAS CREADO EL FICHERO");
+					        System.out.println ("Error, el fichero ProgramaIntermedio no existe");
 					        return;
 				         }
 				         try {
-				        	 				        	 
+				        	 JTextAreaCI.setText("");
+							 JTextAreaCF.setText("");
+							 JTextAreaAvisos.setText("");
+							 JTextArea_ID.setText("");		
+				        	 
 				        	 SimpleNode root = Compilador.compilar();
 				        	 Atributos.resetAliasCounter();
 				        	 root.dump("");
@@ -377,13 +385,13 @@ public class InterfazPlg {
 				        	 escribirFicheroCI();
 				        	 
 				        	 //Codigo final
-				        	 compilador.traductor = new Traductor(compilador.gestorTS);
-				        	 compilador.traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
+				        	 Compilador.traductor = new Traductor(Compilador.gestorTS);
+				        	 Compilador.traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
 				        	 System.out.println("Traducido.");
 				        	 
 				        	 generarFicheroENS();
 				        	 escribirFicheroCF();
-				        	 lista = compilador.gestorTS.dameListaAtributosDeClase();
+				        	 lista = Compilador.gestorTS.dameListaAtributosDeClase();
 
 					      }
 					      catch(ParseException e){
@@ -413,7 +421,7 @@ public class InterfazPlg {
 				frmGrupoID = new JFrame();
 				frmGrupoID.setTitle("Grupo3 - Compilador Java - GestionTS");
 				frmGrupoID.setBounds(100, 100, 460, 421);
-				frmGrupoID.setDefaultCloseOperation(frmGrupoID.DISPOSE_ON_CLOSE);
+				frmGrupoID.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				frmGrupoID.getContentPane().setLayout(new MigLayout("", "[grow]", "[][grow]"));
 				
 				JLabel lblListaDeTS = new JLabel("Lista de elementos procesados:");

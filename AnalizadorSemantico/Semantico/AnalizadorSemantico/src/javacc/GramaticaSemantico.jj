@@ -1507,14 +1507,14 @@ String operador_asignacion()       :
   }
 }
 {
-  t = <EQUALS> { return "="; }
-| t = <MULT_E> { return "*"; }
-| t = <DIV_E> { return "/"; }
-| t = <MOD_E> { return "%"; }
-| t = <ADD_E> { return "+"; }
-| t = <SUB_E> { return "-"; }
-| t = <AND_E> { return "&"; }
-| t = <OR_E> { return "|"; }
+	  t = <EQUALS> { return "="; }
+	| t = <MULT_E> { return "*"; }
+	| t = <DIV_E> { return "/"; }
+	| t = <MOD_E> { return "%"; }
+	| t = <ADD_E> { return "+"; }
+	| t = <SUB_E> { return "-"; }
+	| t = <AND_E> { return "&"; }
+	| t = <OR_E> { return "|"; }
 }
 
 Simbolo expresion_cond()      :
