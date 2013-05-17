@@ -494,7 +494,6 @@ public class InterfazPlg {
 		JPanelAvisos.add(JScrollPaneAvisos, "cell 0 0,grow");		
 		JTextAreaAvisos = new JTextArea();
 		redirectSystemStreams();
-		JTextAreaAvisos.setEditable(false);
 		JScrollPaneAvisos.setViewportView(JTextAreaAvisos);
 	}
 }
