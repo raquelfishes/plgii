@@ -27,10 +27,35 @@ class Nododeclarador_variable_id extends SimpleNode {
 				  Compilador.gestorTS.insertar((String)value, atribs);
 				  System.out.println("Insertando identificador en TS: " + (String)value +
 						  " de tipo " + (String)nTipo.value + " con alias "+atribs.getAlias());
+				  
+				  if (parent.jjtGetNumChildren() == 3){
+					  // declaración con asignación
+					  SimpleNode nValor = (SimpleNode) parent.jjtGetChild(2);
+					  if (nValor instanceof Nodoidentificador){
+						  if (Compilador.gestorTS.estaLexema((String)nValor.value)){
+							  if (!ConstantesTipos.esCompatible(
+								  Compilador.gestorTS.getAtributos((String)nValor.value).getTipo(),
+								  (String)nTipo.value))
+							  {
+								  addErrSemantico(firstToken.beginLine, "el identificador al que intentas asignar '" +
+											(String)value +"' no tiene un tipo compatible con '"+(String)nValor.value+"'");
+							  }
+						  }
+						  else{
+							addErrSemantico(firstToken.beginLine, "el identificador al que intentas asignar '" +
+									(String)value +"' no es válido");
+						  }
+					  }
+					  else if (!ConstantesTipos.esCompatible((String)nTipo.value, (String)nValor.value)){
+						  addErrSemantico(firstToken.beginLine, "tipos incompatibles '" +
+								  (String)value +"' , '"+(String)nValor.value+"'");
+					  }
+				  }
 			  }
-			  else{
-				  addErrSemantico(firstToken.beginLine, "el identificador: "+(String)value+" no es válido");
+			  else {
+				  addErrSemantico(firstToken.beginLine, "el identificador: '"+(String)value+"' no es válido");
 			  }
+			  
 		  }
 		  else{
 			  addErrSemantico(firstToken.beginLine, "obteniendo el tipo del identificador");

@@ -1,47 +1,39 @@
+
 public class Prueba {
-	int i, k;
-	Persona paco;
-	boolean isEnable;
-		
-	void main(){
-		int unArray [ ] = new int [ 5 ] ;
-		unArray[2] = 23;
-		
-		i = 2+3;
-		//isEnable = 3;
-		boolean b = false || isEnable;
-		//b = true || 3;
-		
-		for (int r = 0; r < 10; r++){
-			k = b*2;			
-		}
-		
-	}
-	
-	
-	//Hay que comprobar la sobrecarga de métodos?¿?¿?¿?¿¿?
-	
-	public int dameint1(char c){
-		
-		return 3+4;
-		
-	}
-	
-	public int dameint2(char c, boolean val){
-		
-		return 3;//+"4";
-	}
+	boolean b = true;
+	int a1 = 'c';
+	int a2 = 3;
+	int a3 = b;
 
 	
-	public int dameint3(char c,long l, String s){
-		String s2 = s; 
-		
-		return 3+4;//"3+4";
+	/*
+	int a = 1;
+	int b = 2;
+	int c = 3;
+	int d = 4;
+	int e = 5;
+	
+	void main(){
+		//int a = 0;
+		int[] array = new int[10];
+		int f, g, h, i, j;
+		f = a;
+		g = b;
+		h = c;
+		i = d;
+		j = e;
+		a = 6;
+		b = 7;
+		c = 8;
+		d = 9;
+		e = 10;
+		//llamada(i, j, a);
+		//f = array[3];
 	}
 	
-	
-	void procedimiento(){
-		
-		return;
+	void llamada(int x){
+		//x = x+b; //FIXME Parece ser que la TS no encuentra las variables del método, como esta "int x"
+		int w = 0; //FIXME o esta w;
 	}
+	*/
 }
