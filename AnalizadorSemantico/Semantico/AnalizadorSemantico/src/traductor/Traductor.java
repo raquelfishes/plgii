@@ -32,6 +32,8 @@ public class Traductor {
 	private ArrayList<String> input;
 	private ArrayList<String> output;
 	
+	private int contadorEtiquetas = 0;
+	
 	private String []registros;
 	
 	public Traductor(CGestorTS gestorTS) {
@@ -183,6 +185,7 @@ public class Traductor {
 					//ES UNA ETIQUETA NORMAL
 					output.add("");
 					output.add(linea.replaceAll(" ", ""));
+					output.add("\t\t\t\tNOP");
 					
 				}
 			} else {
@@ -268,7 +271,7 @@ public class Traductor {
 			s += ".R" + dameNumeroRegistro(s2);
 		} else if (!s2.contains("[")){
 			//Segundo token es una variable
-			s += getDesplazamientoVariable(s1);
+			s += getDesplazamientoVariable(s2);
 		} else {
 			//Segundo token es un array
 			//XXX Array
@@ -278,18 +281,26 @@ public class Traductor {
 	}
 	
 	private void bloqueSaltoCondicional(String comp, String etiq){
-		String s = "\t\t\t\t";
+		String s = "\t\t";
 		if (comp.contains("!=")){
 			s += "BNZ";
+			s += " $" + etiq;
+			output.add(s);
 		} else if (comp.contains("=")){
 			s += "BZ";
+			s += " $" + etiq;
+			output.add(s);
 		} else if (comp.contains(">")){
-			s += "BP";
+			s += "BN $etiqueta_"+ contadorEtiquetas +"\n\t\tBNZ";
+			s += " $" + etiq;
+			output.add(s);
+			output.add("etiqueta_"+contadorEtiquetas+":");
+			contadorEtiquetas++;
 		} else if (comp.contains("<")){
 			s += "BN";
+			s += " $" + etiq;
+			output.add(s);
 		} //...
-		s += " $" + etiq;
-		output.add(s);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -689,7 +700,7 @@ public class Traductor {
 			//Segundo token es la parte derecha
 			esOperacionBinaria(s2); //Esta llamada imprime la operacion (antes del MOVE)
 		}
-		String s = "MOVE .A, .R" + dameNumeroRegistro(s1) + "\t\t\t\t;PRUEBAS";
+		String s = "\t\t\t\tMOVE .A, .R" + dameNumeroRegistro(s1);
 		output.add(s);		
 	}
 	
@@ -898,7 +909,7 @@ public class Traductor {
 	 * Añade a output el bloque de código correspondiente a este tipo de operación.
 	 */
 	private void bloqueOperacionBinariaParam(String op, String oper1, String oper2) {
-		String s = op + " " + oper1 + ", " + oper2;
+		String s = "\t\t\t\t" + op + " " + oper1 + ", " + oper2;
 		output.add(s);
 	}
 	

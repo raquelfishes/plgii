@@ -1,4 +1,4 @@
-//ASIGNACIONES Y MÉTODOS
+//ASIGNACIONES Y MÉTODOS, PASO DE PARÁMETROS
 
 //Este programa va a asignar 800 a la variable global "w" y 600 a la variable global "h", mediante
 //llamadas a funciones y paso de parámetros

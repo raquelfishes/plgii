@@ -1,12 +1,19 @@
+//IF THEN ELSE
+
+//Este programa comprueba el uso de if/then/else
+
 public class Prueba {
-	int i, k;
-	int b = 100;
-	boolean a;
+	int a=100;
+	int b=100;
+	int c = 3;
 	
 	void main(){
-		for (i=0; i<10; i++){
-			b -= 5;
-			k = b*2;
+		if (b > a) {
+			c = 111;
+		} else if (b < a){ 
+			c = 222;
+		} else {
+			c = 777;
 		}
 	}
 }

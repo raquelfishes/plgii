@@ -30,7 +30,7 @@ main:
 		PUSH .R8
 		PUSH .R9
 		;reservamos el espacio para variables locales en la pila
-		SUB .SP, #2
+		SUB .SP, #1
 		MOVE .A, .SP
 		;salvamos el valor de .IY
 		MOVE .IY, .R9
@@ -43,28 +43,95 @@ main:
 		MOVE .R9, .IY
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-				MOVE #0, .R0
-				MOVE .R0, #2[.IX]
+				MOVE #25, .R0
+				MOVE .R0, #4[.IY]
 
-bucle0:
-				CMP #2[.IX], .R-1
-				BN $etiq0
+if0:
+				NOP
+				MOVE #0, .R0
+				CMP #4[.IY], .R0
+		BZ $etiq0
 				MOVE #0, .R0
 		BR $etiq1
 
 etiq0:
+				NOP
 				MOVE #1, .R0
 
 etiq1:
+				NOP
 				CMP .R0, #0
-				BZ $fin-bucle0
-				MOVE #1, .R0
-ADD #1[.IY], .R0
-MOVE .A, .R1				;PRUEBAS
-				MOVE .R1, #1[.IY]
-		BR $bucle0
+		BZ $case1
+				MOVE #11, .R0
+				MOVE .R0, #3[.IY]
 
-fin-bucle0:
+case1:
+				NOP
+				MOVE #1, .R0
+				CMP #4[.IY], .R0
+		BZ $etiq2
+				MOVE #0, .R0
+		BR $etiq3
+
+etiq2:
+				NOP
+				MOVE #1, .R0
+
+etiq3:
+				NOP
+				CMP .R0, #0
+		BZ $case2
+				MOVE #22, .R0
+				MOVE .R0, #3[.IY]
+		BR $fin_if0
+
+case2:
+				NOP
+				MOVE #2, .R0
+				CMP #4[.IY], .R0
+		BZ $etiq4
+				MOVE #0, .R0
+		BR $etiq5
+
+etiq4:
+				NOP
+				MOVE #1, .R0
+
+etiq5:
+				NOP
+				CMP .R0, #0
+		BZ $case3
+				MOVE #33, .R0
+				MOVE .R0, #3[.IY]
+		BR $fin_if0
+
+case3:
+				NOP
+				MOVE #5, .R0
+				CMP #4[.IY], .R0
+		BZ $etiq6
+				MOVE #0, .R0
+		BR $etiq7
+
+etiq6:
+				NOP
+				MOVE #1, .R0
+
+etiq7:
+				NOP
+				CMP .R0, #0
+		BZ $case4
+				MOVE #44, .R0
+				MOVE .R0, #3[.IY]
+		BR $fin_if0
+
+case4:
+				NOP
+				MOVE #111, .R0
+				MOVE .R0, #3[.IY]
+
+fin_if0:
+				NOP
 		;liberamos el espacio para variables globales
 		ADD .SP, #4
 		MOVE .A, .SP
