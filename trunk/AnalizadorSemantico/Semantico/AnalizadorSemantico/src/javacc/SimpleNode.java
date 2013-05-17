@@ -92,6 +92,21 @@ class SimpleNode extends XNode implements Node {
 	  this.value = value;
   }
   
+  public String dameTipo(Node nodo){
+	  if(nodo instanceof Nodoidentificador){
+		  Object s = ((SimpleNode)nodo).getValor();
+		  if(s!=null){
+			  boolean esta = Compilador.gestorTS.estaLexema(s.toString());
+			  if(esta){
+				  Atributos at = Compilador.gestorTS.getAtributos(s.toString());
+				  String tipo = at.getTipo();
+				  return tipo;
+			  }
+		  }
+	  }
+	  return "";
+  }
+  
   public void comprobacionNumerica(){
 	  
 	  if(esTipoOperacionNumerica(children[0]))
