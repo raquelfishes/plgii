@@ -3,8 +3,19 @@ public class Prueba {
 	int b = 100;
 	boolean a;
 	
+	
 	void main(){
-		if (b == 100)
-			i = 25;
+		for (int l=0; l < 20; l++) {
+			b = b+1;
+		}
 	}
+	/*
+	void main(){
+		if (b <= 100) {
+			i = 25;
+		} else {
+			i = 50;
+		}
+	}
+	*/
 }
