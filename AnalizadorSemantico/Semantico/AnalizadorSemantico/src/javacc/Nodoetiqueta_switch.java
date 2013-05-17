@@ -12,5 +12,13 @@ class Nodoetiqueta_switch extends SimpleNode {
     super(p, id);
   }
 
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 }
 /* JavaCC - OriginalChecksum=514e3851c5745f04cac0bde488a47b49 (do not edit this line) */

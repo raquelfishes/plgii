@@ -13,6 +13,15 @@ class NodoXOr extends SimpleNode {
     super(p, id);
     this.value = ConstantesTipos.BOOLEAN;
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=46144f3b89fc659014d9096cb774d1f0 (do not edit this line) */

@@ -59,8 +59,7 @@ public interface CompiladorTreeConstants
   public int JJTSENTENCIA_CONTINUE = 53;
   public int JJTSENTENCIA_RETURN = 54;
   public int JJTSENTENCIA_THROW = 55;
-  public int JJTSENTENCIA_SYNCHRONIZED = 56;
-  public int JJTSENTENCIA_TRY = 57;
+  public int JJTSENTENCIA_TRY = 56;
 
 
   public String[] jjtNodeName = {
@@ -120,8 +119,7 @@ public interface CompiladorTreeConstants
     "sentencia_continue",
     "sentencia_return",
     "sentencia_throw",
-    "sentencia_synchronized",
     "sentencia_try",
   };
 }
-/* JavaCC - OriginalChecksum=e7d7b4a8defe48768bb05f2c6512bcf8 (do not edit this line) */
+/* JavaCC - OriginalChecksum=c97735ae3ab370a37b6c5a4df99d0001 (do not edit this line) */

@@ -23,7 +23,7 @@ class Nododeclarador_variable_id extends SimpleNode {
 		  nTipo = (Nodotipo)((SimpleNode)parent).children[0];
 		  if(nTipo != null){
 			  if (Compilador.gestorTS.esLexemaValido((String)value)){
-				  Atributos atribs = new Atributos((String)value, (String)nTipo.value, false);//XXX);
+				  Atributos atribs = new Atributos((String)value, (String)nTipo.value, false);
 				  Compilador.gestorTS.insertar((String)value, atribs);
 				  System.out.println("Insertando identificador en TS: " + (String)value +
 						  " de tipo " + (String)nTipo.value + " con alias "+atribs.getAlias());
@@ -33,14 +33,14 @@ class Nododeclarador_variable_id extends SimpleNode {
 			  }
 		  }
 		  else{
-			  throw new RuntimeException("Error obteniendo el tipo del identificador");
+			  addErrSemantico(firstToken.beginLine, "obteniendo el tipo del identificador");
 		  }
 	  }
 	  else if(parent instanceof Nododeclarador_metodo){
 		  nTipo = (Nodotipo)((SimpleNode)parent).children[0];
 		  if(nTipo != null){
 			  if (Compilador.gestorTS.esLexemaValido((String)value)){
-				  Atributos a = new Atributos((String)value, (String)nTipo.value, false);//XXX););
+				  Atributos a = new Atributos((String)value, (String)nTipo.value, true);
 				  // lo añadimos a los atributos del metodo
 				  ((Nododeclarador_metodo)parent).atribs.add(a);
 				  // peo tambien al ambito actual
@@ -54,7 +54,7 @@ class Nododeclarador_variable_id extends SimpleNode {
 			  }
 		  }
 		  else{
-			  throw new RuntimeException("Error obteniendo el tipo del identificador");
+			  addErrSemantico(firstToken.beginLine, "obteniendo el tipo del identificador");
 		  }
 	  }
   }

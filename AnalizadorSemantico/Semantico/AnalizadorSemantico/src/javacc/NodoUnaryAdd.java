@@ -13,6 +13,15 @@ class NodoUnaryAdd extends SimpleNode {
     super(p, id);
     this.value = ConstantesTipos.INT;
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=38750567ee2a874ceb67ba6a8747499b (do not edit this line) */

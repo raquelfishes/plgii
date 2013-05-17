@@ -11,6 +11,15 @@ class Nodosentencia_break extends SimpleNode {
   public Nodosentencia_break(Compilador p, int id) {
     super(p, id);
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=75948e0677b02b429d2e4a1b6bb8078c (do not edit this line) */

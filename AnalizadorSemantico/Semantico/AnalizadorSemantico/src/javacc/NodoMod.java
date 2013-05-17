@@ -13,6 +13,15 @@ class NodoMod extends SimpleNode {
     super(p, id);
     this.value = ConstantesTipos.INT;
   }
+  
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 
 }
 /* JavaCC - OriginalChecksum=b0b737f699b89cc98c51b5b471bc9273 (do not edit this line) */

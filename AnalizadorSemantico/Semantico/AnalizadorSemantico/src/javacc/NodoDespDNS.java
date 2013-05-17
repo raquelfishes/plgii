@@ -12,5 +12,13 @@ class NodoDespDNS extends SimpleNode {
     super(p, id);
   }
 
+  public void interpret()
+  {
+     int i, k = jjtGetNumChildren();
+
+     for (i = 0; i < k; i++)
+        jjtGetChild(i).interpret();
+
+  }
 }
 /* JavaCC - OriginalChecksum=8b054c42adbb77b5df929d1bd4eadfdc (do not edit this line) */
