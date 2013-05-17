@@ -29,7 +29,16 @@ class Nodosentencia_return extends SimpleNode {
               jjtGetChild(0).interpret();
               
               String tipoMetodo = padreNodoDeclaracionMetodo.value.toString();
-              boolean compatibilidad = ConstantesTipos.esCompatible(tipoMetodo, ((SimpleNode)jjtGetChild(0)).value.toString());
+              
+              boolean compatibilidad;
+              if(jjtGetChild(0) instanceof Nodoidentificador){
+            	  Nodoidentificador nodo = (Nodoidentificador)jjtGetChild(0);
+            	  String tipo = dameTipo(nodo);
+            	  compatibilidad = ConstantesTipos.esCompatible(tipoMetodo, tipo);
+              }else
+            	  compatibilidad = ConstantesTipos.esCompatible(tipoMetodo, ((SimpleNode)jjtGetChild(0)).value.toString());
+              
+              
               if(!compatibilidad){
                       addErrSemantico(firstToken.beginLine, "el tipo devuelto no es de tipo "+tipoMetodo);
               }

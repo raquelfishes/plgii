@@ -7,10 +7,6 @@ public class Prueba {
 	int a = 6;
 	int fact = 0; //fact(6) es 720
 	
-	void main() {
-		fact = factorial_rec(a);
-	}
-	
 	int factorial_rec(int x) {
 		int f = 1;
 		if (x>1) {
@@ -21,4 +17,10 @@ public class Prueba {
 		}
 		return f;
 	}
+	
+	void main() {
+		fact = factorial_rec(a);
+	}
+	
+	
 }
