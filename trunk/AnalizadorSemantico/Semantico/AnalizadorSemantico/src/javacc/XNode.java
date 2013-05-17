@@ -49,10 +49,11 @@ public class XNode
   }
   
   public static void addErrSemantico(int linea, String errMsg){
-	  errSemanticos.add("Error semántico ("+linea+") : "+ errMsg+".");
+	  errSemanticos.add(">>> Error semántico ("+linea+") : "+ errMsg+".");
   }
   
   public static void listErrSemantico(){
+	  
 	  while (!errSemanticos.isEmpty()){
 		  System.err.println(errSemanticos.remove());
 	  }
