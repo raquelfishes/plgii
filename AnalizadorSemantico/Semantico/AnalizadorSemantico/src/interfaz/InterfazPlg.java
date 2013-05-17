@@ -56,6 +56,7 @@ public class InterfazPlg {
 	private static InterfazPlg INSTANCE;
 	private List<Atributos> lista;
 	private Compilador compilador;
+	private static boolean CIVacio;
 	
 	/**
 	 * Launch the application.
@@ -179,18 +180,26 @@ public class InterfazPlg {
 	
 	public static void escribirFicheroCI() throws IOException{
 	    		
-    	JTextAreaCI.setText("");
+		
+		JTextAreaCI.setText("");
     	String pathCI = "ejemplos/ProgramaIntermedio.txt"; 
     	FileReader lector = new FileReader(pathCI);
-        BufferedReader buffer = new BufferedReader(lector);
+    	BufferedReader buffer = new BufferedReader(lector);
         String linea = "";
         linea = buffer.readLine();
-        int numLinea = 0;
+        int numLinea = 1;
         
         while((linea = buffer.readLine()) != null){
         	JTextAreaCI.append(numLinea + ": " + linea + "\n");
         	numLinea ++;
         }
+        
+        //Aviso para que no muestre por pantalla CF si no se ha generado CI.
+        if (numLinea == 0) {
+        	CIVacio = true;
+        	JTextAreaCI.setText("Error al generar el Código Intermedio.");
+        }
+        
         buffer.close();
         lector.close();
 
@@ -198,20 +207,25 @@ public class InterfazPlg {
 	
 	public static void escribirFicheroCF() throws IOException{
 		
-    	JTextAreaCF.setText("");
-    	String pathCF = "ejemplos/ProgramaFinal.txt"; 
-    	FileReader lector = new FileReader(pathCF);
-        BufferedReader buffer = new BufferedReader(lector);
-        String linea = "";
-        linea = buffer.readLine();
-        int numLinea = 0;
-        
-        while((linea = buffer.readLine()) != null){
-        	JTextAreaCF.append(numLinea + ": " + linea + "\n");
-        	numLinea ++;
-        }
-        buffer.close();
-        lector.close();
+//	    if (!CIVacio){
+			JTextAreaCF.setText("");
+	    	String pathCF = "ejemplos/ProgramaFinal.txt"; 
+	    	FileReader lector = new FileReader(pathCF);
+	        BufferedReader buffer = new BufferedReader(lector);
+	        String linea = "";
+	        linea = buffer.readLine();
+	        int numLinea = 1;
+	        
+	        while((linea = buffer.readLine()) != null){
+	        	JTextAreaCF.append(numLinea + ": " + linea + "\n");
+	        	numLinea ++;
+	        }
+	        buffer.close();
+	        lector.close();
+//	    } else {
+//	    	JTextAreaCF.setText("Código Intermedio no generado, no se ha podido generar el Código Final.");
+//	    }
+	    	
 
 }
 	
@@ -223,7 +237,7 @@ public class InterfazPlg {
 	            BufferedReader buffer = new BufferedReader(lector);
 	            String linea = "";
 	            linea = buffer.readLine();
-	            int numLinea = 0;
+	            int numLinea = 1;
 	            
 	            while((linea = buffer.readLine()) != null){
 	            	JTextAreaArchivo.append(numLinea + ": " + linea + "\n");
@@ -377,20 +391,26 @@ public class InterfazPlg {
 							 JTextAreaAvisos.setText("");
 							 JTextArea_ID.setText("");		
 				        	 
+				        	 
 				        	 SimpleNode root = Compilador.compilar();
 				        	 Atributos.resetAliasCounter();
 				        	 root.dump("");
 				        	 System.out.println ("Compilador: La entrada ha sido leida con \u00e9xito.");
 				        	 compilador.rootNode().interpret();
 				        	 escribirFicheroCI();
-				        	 
-				        	 //Codigo final
+			        	 
+			        	     //Codigo final
 				        	 Compilador.traductor = new Traductor(Compilador.gestorTS);
 				        	 Compilador.traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
 				        	 System.out.println("Traducido.");
 				        	 
-				        	 generarFicheroENS();
-				        	 escribirFicheroCF();
+				        	 if (!CIVacio) {
+					        	 generarFicheroENS();
+					        	 escribirFicheroCF();
+				        	 } else {
+				        		 JTextAreaCF.setText("Código Intermedio no generado, no se ha podido generar el Código Final.");
+				        	 }
+				        
 				        	 lista = Compilador.gestorTS.dameListaAtributosDeClase();
 
 					      }
