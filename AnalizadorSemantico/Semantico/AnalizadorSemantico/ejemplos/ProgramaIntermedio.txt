@@ -1,4 +1,4 @@
-Á
+Ã
 class Prueba:
 tmp0:=6
 $var_0:=tmp0
@@ -22,7 +22,7 @@ tmp6:=1
 tmp7:=$var_4-tmp6
 $var_4:=tmp7
 param $var_4
-call factorial_rec, 
+call factorial_rec, 1
 $var_3:=factorial_rec
 tmp8:=$var_3*$var_2
 $var_3:=tmp8
@@ -30,6 +30,6 @@ fin_if0:
 &return $var_3
 &main:
 param $var_0
-call factorial_rec, 
+call factorial_rec, 1
 $var_1:=factorial_rec
 &return
