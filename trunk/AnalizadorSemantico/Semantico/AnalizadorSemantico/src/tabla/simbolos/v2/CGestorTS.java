@@ -172,6 +172,10 @@ public class CGestorTS implements IGestorTS {
 			}
 		}
 		
+		if(metodoBuscado==null && "AmbitoClase".equals(nombreMetodo)){
+			metodoBuscado = ambitoGlobal;
+		}
+		
 		List<Atributos> listaAtributos = new ArrayList<Atributos>();
 		listarTodosLosAtributos(metodoBuscado, listaAtributos);
 		
