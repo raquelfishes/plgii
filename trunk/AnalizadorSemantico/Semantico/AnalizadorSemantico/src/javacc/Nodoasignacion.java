@@ -48,14 +48,39 @@ class Nodoasignacion extends SimpleNode {
 		  n2 = (SimpleNode) parent.jjtGetChild(1);		  
 
 		  a1 = Compilador.gestorTS.getAtributos((String)n1.value);
-		  //a2 = Compilador.gestorTS.getAtributos((String)n2.value);
 		  a2 = Compilador.gestorTS.dameAtributoseMetodo((String)n2.value);
 		  
-		  if (n1 instanceof Nodoidentificador && n2 instanceof Nodoidentificador){
+		  if (n1 instanceof Nodoidentificador && n2 instanceof Nodoidentificador && a1 != null && a2 != null){
 			  if (Compilador.gestorTS.existeMetodo((String)n2.value)){
 				  if (ConstantesTipos.esCompatible(a1.getTipo(), a2.getTipo())){
 					  // Aqui primero comprobaria el tipo de retorno de la funcion, y si al menos 
 					  //tiene el numero correcto de params
+					  if (a2.getParamList().size() == jjtGetNumChildren()){ // comprobacion algo peligrosa
+						  int cont = 0;
+						  Atributos aAux;
+						  SimpleNode nAux = (SimpleNode)jjtGetChild(cont);
+						  for(Atributos a : a2.getParamList()){
+							  if (nAux instanceof Nodoidentificador){
+								  aAux = Compilador.gestorTS.getAtributos((String)nAux.value);
+								  if (aAux != null){
+									  if (!ConstantesTipos.esCompatible(a.getTipo(), aAux.getTipo())){
+										  addErrSemantico(firstToken.beginLine, "error parámetro en llamada a método '"+
+												  (String)n2.value+"', parámetro número '"+cont+"' tipos incompatibles");
+									  }
+								  }
+								  else{
+									  addErrSemantico(firstToken.beginLine, "error parámetro en llamada a método '"+
+											  (String)n2.value+"', parámetro número '"+cont);
+								  }
+							  }else{
+								  if (!ConstantesTipos.esCompatible(a.getTipo(), (String)nAux.value)){
+									  addErrSemantico(firstToken.beginLine, "error parámetro en llamada a método '"+
+											  (String)n2.value+"', parámetro número '"+cont+ "error de tipo");
+								  }
+							  }
+							  cont++;
+						  }
+					  }
 				  }
 				  else{
 					  addErrSemantico(firstToken.beginLine, "error asignando método '"+
@@ -72,7 +97,7 @@ class Nodoasignacion extends SimpleNode {
 					  (String)n2.value+"' a '"+(String)n1.value+"'");
 		  }
 	  }
-	  
+	  else
 	  if (a1 != null && a2 != null){
 		  if (!ConstantesTipos.esCompatible(a1.getTipo(), a2.getTipo())){
 			  addErrSemantico(firstToken.beginLine, "no puede asignarse '"+
