@@ -44,7 +44,7 @@ public class CGestorTS implements IGestorTS {
 			return (ambito.getNombre()!=null) && ambito.getNombre().equals(metodo);
 		}
 		
-		return true;
+		return false;
 	}
 
 	/**
