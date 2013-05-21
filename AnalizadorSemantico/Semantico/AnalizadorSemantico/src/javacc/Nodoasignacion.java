@@ -48,7 +48,8 @@ class Nodoasignacion extends SimpleNode {
 		  n2 = (SimpleNode) parent.jjtGetChild(1);		  
 
 		  a1 = Compilador.gestorTS.getAtributos((String)n1.value);
-		  a2 = Compilador.gestorTS.getAtributos((String)n2.value);
+		  //a2 = Compilador.gestorTS.getAtributos((String)n2.value);
+		  a2 = Compilador.gestorTS.dameAtributoseMetodo((String)n2.value);
 		  
 		  if (n1 instanceof Nodoidentificador && n2 instanceof Nodoidentificador){
 			  if (Compilador.gestorTS.existeMetodo((String)n2.value)){
