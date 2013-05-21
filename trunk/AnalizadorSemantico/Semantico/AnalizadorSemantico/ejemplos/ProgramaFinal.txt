@@ -16,6 +16,7 @@ MOVE #6, .R0
 MOVE .R0, #2[.IY]
 MOVE #0, .R0
 MOVE .R0, #1[.IY]
+CALL /main
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito factorial_rec
 factorial_rec:

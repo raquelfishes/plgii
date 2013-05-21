@@ -5,7 +5,7 @@
 public class Prueba {
 	
 	int a = 6;
-	int fact = 0; //fact(6) es 720
+	int fact = 0;
 	
 	int factorial_rec(int x) {
 		int f = 1;

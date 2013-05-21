@@ -32,6 +32,7 @@ public class Traductor {
 	private ArrayList<String> output;
 	
 	private int contadorEtiquetas = 0;
+	private boolean ningunMetodo = true;
 	
 	private String []registros;
 	
@@ -174,6 +175,10 @@ public class Traductor {
 				//NO ES COMIENZO DE UNA CLASE:
 				if (linea.contains("&")){
 					//ES EL COMIENZO DE UN MÉTODO O FUNCIÓN
+					if (ningunMetodo) {
+						ningunMetodo = false;
+						output.add("CALL /main");
+					}
 					String lineaAux = linea.replaceAll(" ", "");
 					String lineaAux2 = lineaAux.replaceAll(":", "");
 					lineaAux2 = lineaAux2.replaceAll("&", "");
