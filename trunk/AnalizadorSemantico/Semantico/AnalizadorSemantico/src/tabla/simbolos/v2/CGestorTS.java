@@ -38,7 +38,7 @@ public class CGestorTS implements IGestorTS {
 		return PalabrasReservadas.esReservada(lexema);
 	}
 	
-	public boolean esMetodoRepetido(String metodo){
+	public boolean existeMetodo(String metodo){
 		
 		for(Ambito ambito : ambitos){
 			return (ambito.getNombre()!=null) && ambito.getNombre().equals(metodo);

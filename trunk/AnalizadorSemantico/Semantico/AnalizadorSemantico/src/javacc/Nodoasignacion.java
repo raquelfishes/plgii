@@ -28,7 +28,7 @@ class Nodoasignacion extends SimpleNode {
 	  if (n1 instanceof Nodoidentificador){
 		  a1 = Compilador.gestorTS.getAtributos((String)n1.value);
 		  if (a1 == null ){
-			  if (!Compilador.gestorTS.esMetodoRepetido((String)n1.value))
+			  if (!Compilador.gestorTS.existeMetodo((String)n1.value))
 			  addErrSemantico(firstToken.beginLine, "el identificador '"+
 					  (String)n1.value+"' no existe en este ámbito o es un tipo");
 		  }
@@ -39,6 +39,36 @@ class Nodoasignacion extends SimpleNode {
 		  if (a2 == null){
 			  addErrSemantico(firstToken.beginLine, "el identificador '"+
 					  (String)n2.value+"' no existe en este ámbito  o es un tipo");
+		  }
+	  }
+	  
+	  if (parent instanceof Nodoexpresion_sentencia && parent.jjtGetNumChildren() == 3){
+		  // Asignacion a método
+		  n1 = (SimpleNode) parent.jjtGetChild(0);
+		  n2 = (SimpleNode) parent.jjtGetChild(1);		  
+
+		  a1 = Compilador.gestorTS.getAtributos((String)n1.value);
+		  a2 = Compilador.gestorTS.getAtributos((String)n2.value);
+		  
+		  if (n1 instanceof Nodoidentificador && n2 instanceof Nodoidentificador){
+			  if (Compilador.gestorTS.existeMetodo((String)n2.value)){
+				  if (ConstantesTipos.esCompatible(a1.getTipo(), a2.getTipo())){
+					  // Aqui primero comprobaria el tipo de retorno de la funcion, y si al menos 
+					  //tiene el numero correcto de params
+				  }
+				  else{
+					  addErrSemantico(firstToken.beginLine, "error asignando método '"+
+							  (String)n2.value+"' a '"+(String)n1.value+"' tipos incompatibles");
+				  }
+			  }
+			  else{
+				  addErrSemantico(firstToken.beginLine, "error asignando método '"+
+						  (String)n2.value+"' a '"+(String)n1.value+"' ese método no existe");
+			  }
+		  }
+		  else{
+			  addErrSemantico(firstToken.beginLine, "error asignando método '"+
+					  (String)n2.value+"' a '"+(String)n1.value+"'");
 		  }
 	  }
 	  
@@ -68,7 +98,7 @@ class Nodoasignacion extends SimpleNode {
 		  }
 		  else{	  
 			  if (!(n2 instanceof Nodoidentificador && 
-					  Compilador.gestorTS.esMetodoRepetido((String)n1.value))){
+					  Compilador.gestorTS.existeMetodo((String)n1.value))){
 				  addErrSemantico(firstToken.beginLine, "no puede asignarse '"+
 						  (String)n1.value+"', debe ser un identificador");
 			  }
