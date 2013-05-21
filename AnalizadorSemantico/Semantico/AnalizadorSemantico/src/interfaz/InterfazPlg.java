@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javacc.Compilador;
@@ -409,8 +410,10 @@ public class InterfazPlg {
 				        	 } else {
 				        		 JTextAreaCF.setText("Código Intermedio no generado, no se ha podido generar el Código Final.");
 				        	 }
-				        
-				        	 lista = Compilador.gestorTS.dameListaAtributosDeClase();
+				        	 
+				        	 //listamos todos los atributos de la TS, se visualizarán posteriormente en su ventana.
+				        	 lista = new ArrayList<Atributos>();
+				        	 lista = Compilador.gestorTS.dameListaAtributos("AmbitoClase");
 
 					      }
 					      catch(ParseException e){
@@ -431,7 +434,6 @@ public class InterfazPlg {
 		JButton_Ejecutar.setFont(new Font("Tahoma", Font.BOLD, 12));
 		JPanelBotones.add(JButton_Ejecutar, "cell 0 1,growx,aligny center");
 		
-		//Descomentar esto si se quiere ver una lista con Lexemas.
 		
 		JButton JButton_ConsultaId = new JButton("Ver ElementosTS"); // Cambiar por Lexemas en su caso.
 		JButton_ConsultaId.addActionListener(new ActionListener() {
@@ -452,26 +454,11 @@ public class InterfazPlg {
 				frmGrupoID.getContentPane().add(JScrollPane_ID, "cell 0 1,grow");
 				
 				
-				JTextArea_ID.setText("----Lexemas----");
 				for(int i=0; i< lista.size(); i++) {
 	        		String parcial = JTextArea_ID.getText();
-	        		JTextArea_ID.setText(parcial+"\n"+lista.get(i).getLexema());
-	            }
-				
-				String parcialA = JTextArea_ID.getText();
-				JTextArea_ID.setText(parcialA+"\n"+"----Alias----");
-				for(int i=0; i< lista.size(); i++) {
-	        		String parcial = JTextArea_ID.getText();
-	        		JTextArea_ID.setText(parcial+"\n"+lista.get(i).getAlias());
-	            }
-				
-				String parcialT = JTextArea_ID.getText();
-				JTextArea_ID.setText(parcialT+"\n"+"----Tipos----");
-				for(int i=0; i< lista.size(); i++) {
-	        		String parcial = JTextArea_ID.getText();
-	        		JTextArea_ID.setText(parcial+"\n"+lista.get(i).getTipo());
-	            }
-				
+	        		JTextArea_ID.setText(parcial+"\n"+lista.get(i).toString());
+	        	}
+							
 				JTextArea_ID.setEditable(false);
 				JScrollPane_ID.setViewportView(JTextArea_ID);
 				frmGrupoID.setVisible(true);
