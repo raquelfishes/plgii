@@ -1749,6 +1749,7 @@ Simbolo lista_argumentos() #void:
   {
     sim.verdadera = "argumentos"; 
     sim.codigo += s;
+    sim.comienzo = "" + numeroarg;
     return sim;
   }
 }

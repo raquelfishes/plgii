@@ -3021,6 +3021,7 @@ Simbolo lista_argumentos()      :
   {
     sim.verdadera = "argumentos"; 
     sim.codigo += s;
+    sim.comienzo = "" + numeroarg;
     return sim;
   }
 }
