@@ -46,6 +46,15 @@ public class CGestorTS implements IGestorTS {
 		
 		return false;
 	}
+	
+	public Atributos dameAtributoseMetodo(String metodo){
+		
+		for(Ambito ambito : ambitos){
+			return ambito.dameAtributosDeLexema(metodo);
+		}
+		
+		return null;
+	}
 
 	/**
 	 * Este método debe ser llamado cuando al ejecutar el analizador se detecte una llave "{" 
