@@ -41,6 +41,8 @@ public class XNode
   protected static java.util.Hashtable<String, Object> symtab = new java.util.Hashtable<String, Object>();
  
   public static LinkedList<String> errSemanticos = new LinkedList<String>();
+  public static boolean hayErroresEnSemantico = false;
+  
   
   /** @throws UnsupportedOperationException if called */
   public void interpret()
@@ -55,6 +57,7 @@ public class XNode
   public static void listErrSemantico(){
 	  
 	  while (!errSemanticos.isEmpty()){
+		  hayErroresEnSemantico = true;
 		  System.err.println(errSemanticos.remove());
 	  }
   }
