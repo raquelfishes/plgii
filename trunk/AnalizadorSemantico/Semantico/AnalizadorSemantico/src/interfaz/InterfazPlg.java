@@ -23,6 +23,7 @@ import javacc.Compilador;
 import javacc.ParseException;
 import javacc.SimpleNode;
 import javacc.TokenMgrError;
+import javacc.XNode;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -58,6 +59,7 @@ public class InterfazPlg {
 	private List<Atributos> lista;
 	private Compilador compilador;
 	private static boolean CIVacio;
+	private SimpleNode root;
 	
 	/**
 	 * Launch the application.
@@ -94,11 +96,11 @@ public class InterfazPlg {
 		String parcial = JTextAreaTokens.getText();
 		JTextAreaTokens.setText(parcial+"\n"+arg0);
 	}*/
-	
-	
+		
 	/**
 	 * @wbp.parser.entryPoint
 	 */
+	
 	private InterfazPlg() {
 		try {
 			initialize();
@@ -111,11 +113,13 @@ public class InterfazPlg {
 		String parcial = JTextArea_ID.getText();
 		JTextArea_ID.setText(parcial+"\n"+id);
 	}
+	
 	/*
 	public static void escribirTokens(String t){
 		String parcial = JTextAreaTokens.getText();
 		JTextAreaTokens.setText(parcial+"\n"+t);
 	}*/
+	
 	public static void escribirAvisos(){
 		String t ="Procesando regla: "+ Thread.currentThread().getStackTrace()[2].getMethodName();
 		String parcial = JTextAreaAvisos.getText();
@@ -146,8 +150,22 @@ public class InterfazPlg {
         catch(FileNotFoundException ex){
          
         }
-	        
-		
+	 	
+	}
+	
+	public void reiniciarCompilador() {
+		//Reiniciando Compilador:
+		compilador.actualTmp=0;
+		compilador.actualCase=0;
+		compilador.actualIf=0;
+		compilador.actualBucle=0;
+		compilador.actualEtiq=0;
+		if(root instanceof XNode){
+             XNode xn = (XNode)root;
+             if(xn.hayErroresEnSemantico){
+            	 xn.hayErroresEnSemantico = false;
+             }
+        }
 	}
 	
 	private void updateTextArea(final String text) {
@@ -208,7 +226,6 @@ public class InterfazPlg {
 	
 	public static void escribirFicheroCF() throws IOException{
 		
-//	    if (!CIVacio){
 			JTextAreaCF.setText("");
 	    	String pathCF = "ejemplos/ProgramaFinal.txt"; 
 	    	FileReader lector = new FileReader(pathCF);
@@ -223,10 +240,6 @@ public class InterfazPlg {
 	        }
 	        buffer.close();
 	        lector.close();
-//	    } else {
-//	    	JTextAreaCF.setText("Código Intermedio no generado, no se ha podido generar el Código Final.");
-//	    }
-	    	
 
 }
 	
@@ -392,18 +405,27 @@ public class InterfazPlg {
 							 JTextArea_ID.setText("");		
 				        	 
 				        	 
-				        	 SimpleNode root = Compilador.compilar();
+				        	 root = Compilador.compilar();
 				        	 Atributos.resetAliasCounter();
 				        	 root.dump("");
 				        	 System.out.println ("Compilador: La entrada ha sido leida con \u00e9xito.");
 				        	 compilador.rootNode().interpret();
+				        	 
+				        	 //Comprobando errores en el semántico:
+				        	 if(root instanceof XNode){
+				                 XNode xn = (XNode)root;
+				                 if(xn.hayErroresEnSemantico){//Sino esta vacía la lista de errores
+				                	 return;//Si hay errores no se prosigue con el resto de la ejecución
+				                 }
+				             }
+				        	 
 				        	 escribirFicheroCI();
 			        	 
-			        	     //Codigo final
+				        	 //Codigo final
 				        	 Compilador.traductor = new Traductor(Compilador.gestorTS);
 				        	 Compilador.traductor.traduce("ejemplos/ProgramaIntermedio.txt", "ejemplos/ProgramaFinal.txt");
 				        	 System.out.println("Traducido.");
-				        	 
+				        	 				        	
 				        	 if (!CIVacio) {
 					        	 generarFicheroENS();
 					        	 escribirFicheroCF();
@@ -415,6 +437,11 @@ public class InterfazPlg {
 				        	 lista = new ArrayList<Atributos>();
 				        	 lista = Compilador.gestorTS.dameListaAtributos("AmbitoClase");
 
+				        	 
+				        	 //preparar para una siguiente ejecución:
+				        	 reiniciarCompilador();
+								
+								
 					      }
 					      catch(ParseException e){
 					        System.out.println ("Compilador: Ha ocurrido un error durante el an\u00e1lisis.");
@@ -453,11 +480,14 @@ public class InterfazPlg {
 				JScrollPane JScrollPane_ID = new JScrollPane();
 				frmGrupoID.getContentPane().add(JScrollPane_ID, "cell 0 1,grow");
 				
-				
-				for(int i=0; i< lista.size(); i++) {
-	        		String parcial = JTextArea_ID.getText();
-	        		JTextArea_ID.setText(parcial+"\n"+lista.get(i).toString());
-	        	}
+				try {
+					for(int i=0; i< lista.size(); i++) {
+		        		String parcial = JTextArea_ID.getText();
+		        		JTextArea_ID.setText(parcial+"\n"+lista.get(i).toString());
+		        	}
+				} catch (Exception e1) {
+			    	 System.out.println("Aun no has ejecutado la aplicación"); 
+			    }
 							
 				JTextArea_ID.setEditable(false);
 				JScrollPane_ID.setViewportView(JTextArea_ID);
@@ -495,6 +525,8 @@ public class InterfazPlg {
 				JTextAreaAvisos.setText("");
 				JTextArea_ID.setText("");
 				
+				reiniciarCompilador();
+			
 			}
 		});
 		JButton_Reset.setFont(new Font("Tahoma", Font.BOLD, 12));
