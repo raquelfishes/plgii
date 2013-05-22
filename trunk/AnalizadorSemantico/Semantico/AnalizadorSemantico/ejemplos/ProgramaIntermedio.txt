@@ -1,33 +1,35 @@
-Ã
+Ü
 class Prueba:
 tmp0:=6
 $var_0:=tmp0
 tmp1:=0
 $var_1:=tmp1
+tmp2:=12345
+$var_2:=tmp2
 &factorial_rec:
-tmp3:=1
-$var_3:=tmp3
 tmp4:=1
-if ($var_2>tmp4) goto etiq0
-tmp5:=0
+$var_4:=tmp4
+tmp5:=1
+if ($var_3>tmp5) goto etiq0
+tmp6:=0
 goto etiq1
 etiq0:
-tmp5:=1
+tmp6:=1
 etiq1:
 goto if0
 if0:
-if (tmp5=0) goto fin_if0
-$var_4:=$var_2
-tmp6:=1
-tmp7:=$var_4-tmp6
-$var_4:=tmp7
-param $var_4
+if (tmp6=0) goto fin_if0
+$var_5:=$var_3
+tmp7:=1
+tmp8:=$var_5-tmp7
+$var_5:=tmp8
+param $var_5
 call factorial_rec, 1
-$var_3:=factorial_rec
-tmp8:=$var_3*$var_2
-$var_3:=tmp8
+$var_4:=factorial_rec
+tmp9:=$var_4*$var_3
+$var_4:=tmp9
 fin_if0: 
-&return $var_3
+&return $var_4
 &main:
 param $var_0
 call factorial_rec, 1

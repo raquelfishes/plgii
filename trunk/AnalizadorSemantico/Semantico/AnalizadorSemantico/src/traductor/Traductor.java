@@ -371,12 +371,24 @@ public class Traductor {
 		if (linea.replaceAll(" ", "").equals("&return")) {
 			// Return sin devolver valor
 			if (nombreAmbitoActual.toLowerCase().equals("main")) { //Fin de la ejecución
+				output.add(";-------------fin");
+				//Escribir variables globales por consola
+				output.add("WRSTR /sVarGlobales");
+				for (int i = 1; i<= calcularTamanoAmbito(ambitoGlobal); i++) {
+					output.add("WRINT #" + i + "[.IY]");
+					output.add("WRSTR /sRetCarro");
+				}
+				
 				output.add(";liberamos el espacio para variables globales");
 				output.add("ADD .SP, #" + calcularTamanoAmbito(ambitoGlobal));
 				output.add("MOVE .A, .SP");
 				output.add("");
 				output.add(";Fin de la ejecución.");
 				output.add("HALT");
+				output.add("");
+				output.add("");
+				output.add("sVarGlobales:    DATA \"Variables globales:\\n\"");
+				output.add("sRetCarro:       DATA \"\\n\"");
 			} else {
 				bloqueReturnSinValor();
 			}
@@ -396,7 +408,7 @@ public class Traductor {
 	/**
 	 * Añade a output el bloque de código correspondiente al comienzo de la clase.
 	 */
-	private void bloqueComienzoClase() {
+	private void bloqueComienzoClase() {		
 		String s0 = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del programa";
 		String s1 = nombreAmbitoActual + ":";
 		String s2 = ";colocamos el puntero de pila en la cima de la memoria";

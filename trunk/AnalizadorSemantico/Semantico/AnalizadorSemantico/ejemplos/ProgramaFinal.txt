@@ -4,7 +4,7 @@ Prueba:
 ;colocamos el puntero de pila en la cima de la memoria
 MOVE #65535, .SP
 ;reservamos el espacio para variables globales de clase en la pila
-SUB .SP, #2
+SUB .SP, #3
 MOVE .A, .SP
 ;guardamos en .IY el puntero a pila, para tener controladas las variables globales
 MOVE .SP, .IY
@@ -16,6 +16,8 @@ MOVE #6, .R0
 MOVE .R0, #2[.IY]
 MOVE #0, .R0
 MOVE .R0, #1[.IY]
+MOVE #12345, .R0
+MOVE .R0, #3[.IY]
 CALL /main
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Comienzo del ámbito factorial_rec
@@ -142,9 +144,21 @@ MOVE .R9, .IY
 PUSH #2[.IY]
 CALL /factorial_rec
 MOVE .R8, #1[.IY]
+;-------------fin
+WRSTR /sVarGlobales
+WRINT #1[.IY]
+WRSTR /sRetCarro
+WRINT #2[.IY]
+WRSTR /sRetCarro
+WRINT #3[.IY]
+WRSTR /sRetCarro
 ;liberamos el espacio para variables globales
-ADD .SP, #2
+ADD .SP, #3
 MOVE .A, .SP
 
 ;Fin de la ejecución.
 HALT
+
+
+sVarGlobales:    DATA "Variables globales:\n"
+sRetCarro:       DATA "\n"

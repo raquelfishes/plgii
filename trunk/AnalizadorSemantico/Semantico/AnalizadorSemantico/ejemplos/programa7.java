@@ -6,6 +6,7 @@ public class Prueba {
 	
 	int a = 6;
 	int fact = 0;
+	int foo = 12345;
 	
 	int factorial_rec(int x) {
 		int f = 1;
