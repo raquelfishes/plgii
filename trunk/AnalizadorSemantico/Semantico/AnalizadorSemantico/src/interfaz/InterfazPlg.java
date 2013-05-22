@@ -519,12 +519,12 @@ public class InterfazPlg {
 		JButton_Reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				fich = null;
+				lista = null;
 				JTextAreaArchivo.setText("");
 				JTextAreaCI.setText("");
 				JTextAreaCF.setText("");
 				JTextAreaAvisos.setText("");
 				JTextArea_ID.setText("");
-				
 				reiniciarCompilador();
 			
 			}
