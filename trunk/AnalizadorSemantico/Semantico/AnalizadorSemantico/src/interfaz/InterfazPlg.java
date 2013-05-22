@@ -415,6 +415,7 @@ public class InterfazPlg {
 				        	 if(root instanceof XNode){
 				                 XNode xn = (XNode)root;
 				                 if(xn.hayErroresEnSemantico){//Sino esta vacía la lista de errores
+				                	 reiniciarCompilador();
 				                	 return;//Si hay errores no se prosigue con el resto de la ejecución
 				                 }
 				             }
