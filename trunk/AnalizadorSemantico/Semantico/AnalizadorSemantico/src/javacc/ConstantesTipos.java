@@ -37,5 +37,13 @@ public class ConstantesTipos {
 		return false;
 		
 	}
+	
+	public static boolean esTipoConocido(String t1){
+		
+		return INT.equals(t1) || INTEGER.equals(t1)|| SHORT.equals(t1)|| LONG.equals(t1)|| 
+				FLOAT.equals(t1)|| DOUBLE.equals(t1)|| CHAR.equals(t1)|| STRING.equals(t1)||
+				BOOLEAN.equals(t1)|| NULL.equals(t1)|| VOID.equals(t1);
+		
+	}
 
 }

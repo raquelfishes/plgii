@@ -46,7 +46,17 @@ class Nododeclarador_variable_id extends SimpleNode {
 									(String)value +"' no es válido");
 						  }
 					  }
-					  else if (!ConstantesTipos.esCompatible((String)nTipo.value, (String)nValor.value)){
+					  
+					  /**
+					   * La linea 58 la he añadido yo(Ricardo) la linea 59 era la única condicion del if
+					   * 
+					   * Al hacer la comprobación de:  int i, k;
+					   * Daba un fallo de tipos porque comparaba  nValor.value="k" y nTipo.value="int"
+					   * Entonces al no ser "k" un tipo valido la condición anterior no era la más adecuada 
+					   * 
+					   */
+					  else if (ConstantesTipos.esTipoConocido((String)nTipo.value) && ConstantesTipos.esTipoConocido((String)nValor.value) &&
+							  !ConstantesTipos.esCompatible((String)nTipo.value, (String)nValor.value)){
 						  addErrSemantico(firstToken.beginLine, "tipos incompatibles '" +
 								  (String)value +"' , '"+(String)nValor.value+"'");
 					  }
